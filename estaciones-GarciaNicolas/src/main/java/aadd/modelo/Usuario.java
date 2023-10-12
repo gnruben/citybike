@@ -1,4 +1,4 @@
-package aadd;
+package aadd.modelo;
 
 import java.util.Date;
 
