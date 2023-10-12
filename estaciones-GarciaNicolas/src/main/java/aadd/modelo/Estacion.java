@@ -11,7 +11,7 @@ public class Estacion {
 	private double latitud;
 	private double longitud;
 	private LocalDate fechaAlta;
-	private List<SitioTuristico> sitiosTuristicos;
+	private List<ResumenSitioTuristico> sitiosTuristicos;
 	public String getId() {
 		return id;
 	}
@@ -54,10 +54,10 @@ public class Estacion {
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-	public List<SitioTuristico> getSitiosTuristicos() {
+	public List<ResumenSitioTuristico> getSitiosTuristicos() {
 		return sitiosTuristicos;
 	}
-	public void setSitiosTuristicos(List<SitioTuristico> sitiosTuristicos) {
+	public void setSitiosTuristicos(List<ResumenSitioTuristico> sitiosTuristicos) {
 		this.sitiosTuristicos = sitiosTuristicos;
 	}
 	
