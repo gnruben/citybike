@@ -1,5 +1,5 @@
 package aadd.servicios;
 
-public class IServicioEstaciones {
+public interface IServicioEstaciones {
 
 }
