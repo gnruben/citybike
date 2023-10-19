@@ -1,4 +1,4 @@
-package aadd.repositorio;
+package repositorio;
 
 /*
  * Excepción que representa un fallo en el sistema de persistencia.

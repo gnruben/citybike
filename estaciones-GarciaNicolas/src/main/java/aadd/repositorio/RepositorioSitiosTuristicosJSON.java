@@ -3,6 +3,9 @@ package aadd.repositorio;
 import java.util.List;
 
 import aadd.modelo.SitioTuristico;
+import repositorio.EntidadNoEncontrada;
+import repositorio.Repositorio;
+import repositorio.RepositorioException;
 
 public class RepositorioSitiosTuristicosJSON implements Repositorio<SitioTuristico, String>{
 

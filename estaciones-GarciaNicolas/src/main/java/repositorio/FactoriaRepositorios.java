@@ -1,4 +1,4 @@
-package aadd.repositorio;
+package repositorio;
 
 import utils.PropertiesReader;
 
