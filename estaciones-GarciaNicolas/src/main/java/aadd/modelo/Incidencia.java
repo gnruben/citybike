@@ -7,7 +7,7 @@ public class Incidencia {
 	private LocalDate fecha;
 	private String descripcion;
 	
-	private enum estado{PENDIENTE,RESUELTO}
+	private EstadoIncidencia estado;
 	public LocalDate getFecha() {
 		return fecha;
 	}
@@ -19,6 +19,12 @@ public class Incidencia {
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+	public EstadoIncidencia getEstado() {
+		return estado;
+	}
+	public void setEstado(EstadoIncidencia estado) {
+		this.estado = estado;
 	};
 	
 	

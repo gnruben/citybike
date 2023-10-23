@@ -1,17 +1,20 @@
 package aadd.modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Estacion {
+import repositorio.Identificable;
+
+public class Estacion implements Identificable {
 	private String id;
 	private String nombre;
 	private int numeroPuestos;
 	private String direccionPostal;
 	private double latitud;
 	private double longitud;
-	private LocalDate fechaAlta;
-	private List<ResumenSitioTuristico> sitiosTuristicos;
+	private LocalDateTime fechaAlta;
+	private List<ResumenSitioTuristico> sitiosTuristicos=new LinkedList<ResumenSitioTuristico>();
 	public String getId() {
 		return id;
 	}
@@ -48,10 +51,10 @@ public class Estacion {
 	public void setLongitud(double longitud) {
 		this.longitud = longitud;
 	}
-	public LocalDate getFechaAlta() {
+	public LocalDateTime getFechaAlta() {
 		return fechaAlta;
 	}
-	public void setFechaAlta(LocalDate fechaAlta) {
+	public void setFechaAlta(LocalDateTime fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 	public List<ResumenSitioTuristico> getSitiosTuristicos() {
@@ -60,7 +63,15 @@ public class Estacion {
 	public void setSitiosTuristicos(List<ResumenSitioTuristico> sitiosTuristicos) {
 		this.sitiosTuristicos = sitiosTuristicos;
 	}
-	
-	
+	@Override
+	public String toString() {
+		String s= "Estacion: { "+"id:"+id+", fecha de alta:"+fechaAlta+", latitud:"+latitud+", longitud:"+longitud+", sitiosTuristicos: [";
+		for(ResumenSitioTuristico t: sitiosTuristicos) {
+			s.concat("nombre:"+t.getNombre());
+		}
+		
+		s.concat("]");
+		return s;
+		}
 	
 }
