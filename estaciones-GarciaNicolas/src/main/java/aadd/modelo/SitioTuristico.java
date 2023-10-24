@@ -10,6 +10,16 @@ public class SitioTuristico {
 	private double latitud;
 	private double longitud;
 	private String urlArticulo;
+	
+	public SitioTuristico(String nombre, String resumen, double latitud, double longitud, String url) {
+		this.nombre = nombre;
+		this.resumen = resumen;
+		this.latitud = latitud;
+		this.longitud = longitud;
+		this.urlArticulo = url;
+	}
+	
+	
 	public String getNombre() {
 		return nombre;
 	}
