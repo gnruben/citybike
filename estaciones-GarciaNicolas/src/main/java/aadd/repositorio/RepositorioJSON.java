@@ -1,54 +1,113 @@
 package aadd.repositorio;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbException;
+
+import repositorio.EntidadNoEncontrada;
+import repositorio.RepositorioException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioJSON<T> {
-    private List<T> elementos;
-    private String rutaArchivo;
+
+    private final String rutaArchivo;
+    private final Jsonb jsonb;
 
     public RepositorioJSON(String rutaArchivo) {
         this.rutaArchivo = rutaArchivo;
-        cargarDesdeJSON();
+        this.jsonb = JsonbBuilder.create();
     }
 
-    public void agregar(T elemento) {
-        elementos.add(elemento);
-        guardarEnJSON();
-    }
-
-    public T obtenerPorId(String id) {
-        // Implementa la lógica para obtener un elemento por su identificador.
-        return null;
-    }
-
-    public List<T> obtenerTodos() {
-        return elementos;
-    }
-
-    public void cargarDesdeJSON() {
-        try (JsonReader reader = Json.createReader(new FileReader(rutaArchivo))) {
-            JsonArray jsonArray = reader.readArray();
-            // Aquí debes implementar la lógica para convertir el JsonArray en elementos de tipo T.
+    public String add(T entity) throws RepositorioException {
+        try {
+            List<T> entidades  = cargarDesdeJSON();
+            entidades.add(entity);
+            guardarAJSON(entidades);
+            return null; //entity.;   //TODO
         } catch (IOException e) {
-            elementos = new ArrayList<>();
+            throw new RepositorioException("Error al agregar entidad al repositorio JSON.", e);
         }
     }
 
-    public void guardarEnJSON() {
-        try (JsonWriter writer = Json.createWriter(new FileWriter(rutaArchivo))) {
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            // Aquí debes agregar los elementos a arrayBuilder en formato JsonObject.
-            writer.writeArray(arrayBuilder.build());
+    public void update(T entity) throws RepositorioException, EntidadNoEncontrada {
+        try {
+            List<T> entidades = cargarDesdeJSON();
+            boolean actualizado = false;
+            for (int i = 0; i < entidades.size(); i++) {
+                if (entidades.get(i).equals(entity)) {
+                    entidades.set(i, entity);
+                    actualizado = true;
+                    break;
+                }
+            }
+            if (actualizado) {
+                guardarAJSON(entidades);
+            } else {
+                throw new EntidadNoEncontrada("La entidad no existe en el repositorio JSON.");
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RepositorioException("Error al actualizar entidad en el repositorio JSON.", e);
         }
     }
+
+    public void delete(T entity) throws RepositorioException, EntidadNoEncontrada {
+        try {
+            List<T> entidades = cargarDesdeJSON();
+            if (entidades.removeIf(e -> e.equals(entity))) {
+                guardarAJSON(entidades);
+            } else {
+                throw new EntidadNoEncontrada("La entidad no existe en el repositorio JSON.");
+            }
+        } catch (IOException e) {
+            throw new RepositorioException("Error al eliminar entidad del repositorio JSON.", e);
+        }
+    }
+
+    public T getById(String id) throws RepositorioException, EntidadNoEncontrada {
+        try {
+            List<T> entidades = cargarDesdeJSON();
+            for (T entity : entidades) {
+                if (entity.equals(id)) {  //TODO
+                    return entity;
+                }
+            }
+            throw new EntidadNoEncontrada("No se ha encontrado la entidad con el identificador especificado.");
+        } catch (IOException e) {
+            throw new RepositorioException("Error al obtener entidad por ID desde el repositorio JSON.", e);
+        }
+    }
+
+    public List<T> getAll() throws RepositorioException {
+        try {
+            return cargarDesdeJSON();
+        } catch (IOException e) {
+            throw new RepositorioException("Error al obtener todas las entidades desde el repositorio JSON.", e);
+        }
+    }
+
+    private List<T> cargarDesdeJSON() throws IOException {
+        File archivo = new File(rutaArchivo);
+        if (!archivo.exists()) {
+            return new ArrayList<>();
+        }
+        try (Reader reader = new FileReader(archivo)) {
+            T[] entidades = jsonb.fromJson(reader, new ArrayList<T>().getClass().getGenericSuperclass());
+            return new ArrayList<>(List.of(entidades));
+        } catch (JsonbException e) {
+            throw new IOException(e);
+        }
+    }
+
+    private void guardarAJSON(List<T> entity) throws IOException {
+        try (Writer writer = new FileWriter(rutaArchivo)) {
+            jsonb.toJson(entity.toArray(), writer);
+        } catch (JsonbException e) {
+            throw new IOException(e);
+        }
+    }
+
+ 
 }

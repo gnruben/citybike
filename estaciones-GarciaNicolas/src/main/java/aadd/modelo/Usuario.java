@@ -1,14 +1,24 @@
 package aadd.modelo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Usuario {
 
 	private String email;
-	private Date fechaNacimiento;
+	private LocalDate fechaNacimiento;
 	private String telef;
-	private String Nombre;
+	private String nombre;
 	private Rol rol; 
+	
+	public Usuario(String email, String telef, LocalDate fechaNacimiento, String nombre, Rol rol) {
+		this.setEmail(email);
+		this.fechaNacimiento = fechaNacimiento;
+		this.setTelef(telef);
+		this.nombre = nombre;
+		this.setRol(rol);
+		
+	}
+	
     // Getters and setters
 
 	
@@ -18,12 +28,12 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Date getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
+//	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+//		this.fechaNacimiento = fechaNacimiento;
+//	}
 	public String getTelef() {
 		return telef;
 	}
@@ -31,11 +41,11 @@ public class Usuario {
 		this.telef = telef;
 	}
 	public String getNombre() {
-		return Nombre;
+		return nombre;
 	}
-	public void setNombre(String nombre) {
-		Nombre = nombre;
-	}
+//	public void setNombre(String nombre) {
+//		Nombre = nombre;
+//	}
 	
 	public Rol getRol() {
 		return rol;
@@ -45,6 +55,7 @@ public class Usuario {
 		this.rol = rol;
 	}
 
+		
 	
 	//Si es administrador puede:
 		// Crear nuebos puntos de préstamo (estaciones)
