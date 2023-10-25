@@ -21,9 +21,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			throw new IllegalArgumentException("El número dee puestos no puede ser menor que 1");
 
 		Estacion estacion=new Estacion();
-		estacion.setFechaAlta(LocalDateTime.now());
+		estacion.setNombre(nombre);
+		estacion.setNumeroPuestos(numeroPuestos);
 		estacion.setLatitud(lat);
 		estacion.setLongitud(lng);
+		estacion.setFechaAlta(LocalDateTime.now());
+
 		
 		String id = repositorio.add(estacion);
 		return id;

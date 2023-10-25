@@ -8,14 +8,14 @@ public class Usuario {
 	private LocalDate fechaNacimiento;
 	private String telef;
 	private String nombre;
-	private Rol rol; 
+	private boolean esAdministrador; 
 	
-	public Usuario(String email, String telef, LocalDate fechaNacimiento, String nombre, Rol rol) {
+	public Usuario(String email, String telef, LocalDate fechaNacimiento, String nombre, boolean esAdministrador) {
 		this.setEmail(email);
 		this.fechaNacimiento = fechaNacimiento;
 		this.setTelef(telef);
 		this.nombre = nombre;
-		this.setRol(rol);
+		this.esAdministrador = esAdministrador;
 		
 	}
 	
@@ -47,13 +47,11 @@ public class Usuario {
 //		Nombre = nombre;
 //	}
 	
-	public Rol getRol() {
-		return rol;
+	public boolean esAdministrador() {
+		return esAdministrador;
 	}
 	
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
+
 
 		
 	

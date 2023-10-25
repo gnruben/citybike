@@ -1,8 +1,13 @@
 package aadd.modelo;
 
 import java.util.List;
+import java.util.UUID;
 
-public class SitioTuristico {
+import repositorio.Identificable;
+
+public class SitioTuristico implements Identificable{
+	
+	private String id;
 	private String nombre;
 	private String resumen;
 	private List<String> categorias;
@@ -11,7 +16,11 @@ public class SitioTuristico {
 	private double longitud;
 	private String urlArticulo;
 	
-	public SitioTuristico(String nombre, String resumen, double latitud, double longitud, String url) {
+	public SitioTuristico() {
+		
+	}
+	public SitioTuristico( String nombre, String resumen, double latitud, double longitud, String url) {
+		this.id = UUID.randomUUID().toString();
 		this.nombre = nombre;
 		this.resumen = resumen;
 		this.latitud = latitud;
@@ -19,7 +28,12 @@ public class SitioTuristico {
 		this.urlArticulo = url;
 	}
 	
-	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -62,8 +76,13 @@ public class SitioTuristico {
 	public void setUrlArticulo(String urlArticulo) {
 		this.urlArticulo = urlArticulo;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "SitioTuristico [id=" + id + ", nombre=" + nombre + ", resumen=" + resumen + ", categorias=" + categorias
+				+ ", enlaces=" + enlaces + ", latitud=" + latitud + ", longitud=" + longitud + ", urlArticulo="
+				+ urlArticulo + "]";
+	}
+
 	
 
 }
