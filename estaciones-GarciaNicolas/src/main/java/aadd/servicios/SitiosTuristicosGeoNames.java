@@ -11,13 +11,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
+import repositorio.FactoriaRepositorios;
+import repositorio.Repositorio;
 
 public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 
 	private final static String raizUrlgeonames = "http://api.geonames.org/findNearbyWikipedia?username=ruben.garcia3&lang=es&country=ES";
 	private DocumentBuilder analizador;
-	
+	private Repositorio<SitioTuristico,String> repositorio=FactoriaRepositorios.getRepositorio(SitioTuristico.class);
 	
 	public SitiosTuristicosGeoNames() throws ParserConfigurationException {
 		DocumentBuilderFactory factoria =
@@ -29,12 +32,12 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 	}
 	
 	@Override
-	public List<SitioTuristico> getByPosicion(double lat, double lon,double radius) {
+	public List<ResumenSitioTuristico> getResumenesCercanos(double lat, double lon,double radius) {
 		// TODO Auto-generated method stub
-		List<SitioTuristico> lista=new LinkedList<SitioTuristico>();
+		List<ResumenSitioTuristico> lista=new LinkedList<ResumenSitioTuristico>();
 		try {
 			Document documento = analizador.parse(raizUrlgeonames+"&lat="+lat+"&lng="+lon+"radius="+radius);
-			
+			//TODO: lista de resumenes 
 			
 			
 			
@@ -49,28 +52,13 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 	}
 
 	@Override
-	public List<SitioTuristico> getByPostalCode(String pcode,double radius) {
-		// TODO Auto-generated method stub
+	public SitioTuristico getSitioTuristico(String id) {
+		//TODO: getSitioTuristico
+		
 		return null;
 	}
 
-	@Override
-	public List<String> getURLWikiByPosicion(double lat, double lon) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public List<String> getURLWikiByPostalCode(String pcode) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SitioTuristico getSitioTuristicoByWikiURL(String WikiUrl) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 }
