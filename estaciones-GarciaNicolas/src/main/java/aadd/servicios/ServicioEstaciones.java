@@ -71,7 +71,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		List<ResumenSitioTuristico> resumenes=serviciosTuristicos.getResumenesCercanos(lat, lng, radius);
 		List<SitioTuristico> stList=new LinkedList<SitioTuristico>();
 		
-		
+		for(ResumenSitioTuristico r:resumenes) {
+			stList.add( serviciosTuristicos.getSitioTuristico(r.getNombre()));
+		}
 		return stList;
 		
 	}
