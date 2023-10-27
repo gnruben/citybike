@@ -120,8 +120,6 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
         JsonObjectBuilder builder = Json.createObjectBuilder()
         		.add("id", sitio.getId())
                 .add("nombre", sitio.getNombre());
-//                .add("resumen", sitio.getResumen())
-//                .add("urlArticulo", sitio.getUrlArticulo());
                 
                 // Serializa el resumen del sitio
                 JsonObjectBuilder resumenBuilder = Json.createObjectBuilder()
@@ -132,20 +130,10 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
                         .add("urlArticulo", sitio.getResumen().getUrlArticulo());
                 builder.add("resumen", resumenBuilder);
 
-        JsonArrayBuilder categoriasBuilder = Json.createArrayBuilder(sitio.getCategorias());//Json.createArrayBuilder();
-//        if (sitio.getCategorias() != null) {
-//	        for (String categoria : sitio.getCategorias()) {
-//	            categoriasBuilder.add(categoria);
-//	        }
-//        }
+        JsonArrayBuilder categoriasBuilder = Json.createArrayBuilder(sitio.getCategorias());
         builder.add("categorias", categoriasBuilder);
 
         JsonArrayBuilder enlacesBuilder = Json.createArrayBuilder(sitio.getEnlaces()); //Json.createArrayBuilder();
-//        if (sitio.getCategorias() != null) {
-//	        for (String enlace : sitio.getEnlaces()) {
-//	            enlacesBuilder.add(enlace);
-//	        }
-//        }
         builder.add("enlaces", enlacesBuilder);
 
         return builder.build();

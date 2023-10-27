@@ -40,7 +40,7 @@ public abstract class RepositorioJSON<T extends Identificable> {
     private void cargarDesdeJSON() {
         try (JsonReader reader = Json.createReader(new FileReader(rutaArchivo))) {
             JsonArray jsonArray = reader.readArray();
-            for (JsonValue jsonValue : jsonArray) {                // Implementa la lógica para convertir el JsonObject en un elemento de tipo T
+            for (JsonValue jsonValue : jsonArray) {                
                 JsonObject jsonObject = (JsonObject) jsonValue;
                 T elemento = deserializar(jsonObject);
                 elementos.add(elemento);
@@ -53,15 +53,7 @@ public abstract class RepositorioJSON<T extends Identificable> {
 
 
 	private void guardarEnJSON() {
-//        try (JsonWriter writer = Json.createWriter(new FileWriter(rutaArchivo))) {
-//            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-//            // Implementa la lógica para agregar los elementos a arrayBuilder en formato JsonObject.
-//            
-//            
-//            writer.writeArray(arrayBuilder.build());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
     	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         for (T elemento : elementos) {
             // Implementa la lógica para serializar el elemento en JsonObject
@@ -70,14 +62,7 @@ public abstract class RepositorioJSON<T extends Identificable> {
         }
 
         JsonArray jsonArray = arrayBuilder.build();
-     /*   String jsonStr = jsonArray.toString();
-
-        try (JsonReader reader = Json.createReader(new StringReader(jsonStr));
-             JsonWriter writer = Json.createWriter(new FileWriter(rutaArchivo))) {
-            JsonArray finalJsonArray = reader.readArray();
-            writer.writeArray(finalJsonArray);
-        }*/ 
-        
+     
         try (JsonWriter writer = Json.createWriter(new FileWriter(rutaArchivo))) {
             writer.writeArray(jsonArray);
         }catch (IOException e) {

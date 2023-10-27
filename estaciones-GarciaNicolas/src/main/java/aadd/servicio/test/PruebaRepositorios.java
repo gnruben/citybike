@@ -82,9 +82,6 @@ public class PruebaRepositorios {
         for (SitioTuristico s : repositorioSitiosTuristicos.getAll()) {
         	System.out.println(s);
         }
-        
-       
-        ;
     }
 }
 

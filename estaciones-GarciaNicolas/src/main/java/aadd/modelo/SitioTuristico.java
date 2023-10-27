@@ -13,18 +13,15 @@ public class SitioTuristico implements Identificable{
 	private ResumenSitioTuristico resumen;
 	private List<String> categorias;
 	private List<String> enlaces;
-	private String imagen;
-	//private String urlArticulo;
+	private String imagen;	
 	
-	
-	public SitioTuristico( String nombre, ResumenSitioTuristico resumen) { //, double latitud, double longitud, String url) {
+	public SitioTuristico( String nombre, ResumenSitioTuristico resumen) { 
 		this.id = UUID.randomUUID().toString();
 		this.nombre = nombre;
 		this.resumen = resumen;
 		
 		this.categorias = new ArrayList<>();
 		this.enlaces = new ArrayList<>();
-		//this.urlArticulo = url;
 
 	}
 	
@@ -50,9 +47,6 @@ public class SitioTuristico implements Identificable{
 		return new ArrayList<>(categorias);
 	}
 	
-//	public void setCategorias(List<String> categorias) {
-//		this.categorias = categorias;
-//	}
 	public void addCategorias(List<String> categoriass) {
 		for(String c: categoriass)
 			categorias.add(c);
@@ -61,23 +55,13 @@ public class SitioTuristico implements Identificable{
 	public List<String> getEnlaces() {
 		return new ArrayList<>(enlaces);
 	}
-//	public void setEnlaces(List<String> enlaces) {
-//		//this.enlaces.removeAll();
-//		this.enlaces = enlaces;
-//	}
+
 	public void addEnlaces(List<String> enlacess) {
 		for(String e: enlacess)
 			enlaces.add(e);
 		
 	}
 
-//	public String getUrlArticulo() {
-//		return urlArticulo;
-//	}
-//	public void setUrlArticulo(String urlArticulo) {
-//		this.urlArticulo = urlArticulo;
-//	}
-	
 	public String getImagen() {
 		return imagen;
 	}
@@ -146,6 +130,4 @@ public class SitioTuristico implements Identificable{
 				+ ", enlaces=" + enlaces + ", imagen=" + imagen + "]";
 	}
 
-	
-	
 }
