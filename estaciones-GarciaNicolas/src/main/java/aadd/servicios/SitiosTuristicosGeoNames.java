@@ -94,7 +94,7 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 			//Si no se encuentra en la caché
 			
 			//Obtener el sitio turístico de dbpedia
-			sitio=getSitioTuristicoDBPedia();
+			sitio=getSitioTuristicoDBPedia(id);
 			repositorio.add(sitio);
 			return sitio;
 			
@@ -103,9 +103,10 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 		
 	}
 
-	private SitioTuristico getSitioTuristicoDBPedia() {
+	private SitioTuristico getSitioTuristicoDBPedia(String id) {
 		SitioTuristico sitio=new SitioTuristico();
 		//TODO:
+		String urlString=raizUrlDBPedia+id+".json";
 		
 		
 		return sitio;

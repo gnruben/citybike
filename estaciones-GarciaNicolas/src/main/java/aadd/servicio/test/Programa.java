@@ -20,7 +20,7 @@ public class Programa {
 		e1.setLongitud(-0.25);
 		e1.setNumeroPuestos(5);
 		try {
-			String id=servicio.crear("E1", 5, 1.25, -0.25);
+			String id=servicio.crear("E1", 5,"", 1.25, -0.25);
 			
 			e2=servicio.getEstacion(id);
 			System.out.println("Añadida estación :" +e2.toString());
