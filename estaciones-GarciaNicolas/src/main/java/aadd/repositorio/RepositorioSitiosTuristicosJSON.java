@@ -115,8 +115,8 @@ public class RepositorioSitiosTuristicosJSON implements Repositorio<SitioTuristi
         		.add("id", sitio.getId())
                 .add("nombre", sitio.getNombre())
                 .add("resumen", sitio.getResumen())
-                .add("latitud", sitio.getLatitud())
-                .add("longitud", sitio.getLongitud())
+                //TODO:adaptar a la nueva versión de SitioTurístico
+                *
                 .add("urlArticulo", sitio.getUrlArticulo());
 
         JsonArrayBuilder categoriasBuilder = Json.createArrayBuilder();

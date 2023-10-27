@@ -12,8 +12,7 @@ public class SitioTuristico implements Identificable{
 	private String resumen;
 	private List<String> categorias;
 	private List<String> enlaces;
-	private double latitud;
-	private double longitud;
+	private String imagen;
 	private String urlArticulo;
 	
 	public SitioTuristico() {
@@ -23,8 +22,7 @@ public class SitioTuristico implements Identificable{
 		this.id = UUID.randomUUID().toString();
 		this.nombre = nombre;
 		this.resumen = resumen;
-		this.latitud = latitud;
-		this.longitud = longitud;
+		
 		this.urlArticulo = url;
 	}
 	
@@ -58,28 +56,24 @@ public class SitioTuristico implements Identificable{
 	public void setEnlaces(List<String> enlaces) {
 		this.enlaces = enlaces;
 	}
-	public double getLatitud() {
-		return latitud;
-	}
-	public void setLatitud(double latitud) {
-		this.latitud = latitud;
-	}
-	public double getLongitud() {
-		return longitud;
-	}
-	public void setLongitud(double longitud) {
-		this.longitud = longitud;
-	}
+
 	public String getUrlArticulo() {
 		return urlArticulo;
 	}
 	public void setUrlArticulo(String urlArticulo) {
 		this.urlArticulo = urlArticulo;
 	}
+	
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 	@Override
 	public String toString() {
 		return "SitioTuristico [id=" + id + ", nombre=" + nombre + ", resumen=" + resumen + ", categorias=" + categorias
-				+ ", enlaces=" + enlaces + ", latitud=" + latitud + ", longitud=" + longitud + ", urlArticulo="
+				+ ", enlaces=" + enlaces + ", urlArticulo="
 				+ urlArticulo + "]";
 	}
 

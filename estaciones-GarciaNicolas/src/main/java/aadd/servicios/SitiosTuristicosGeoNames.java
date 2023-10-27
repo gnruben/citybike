@@ -1,9 +1,19 @@
 package aadd.servicios;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -107,10 +117,109 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 		SitioTuristico sitio=new SitioTuristico();
 		//TODO:
 		String urlString=raizUrlDBPedia+id+".json";
+		try {
+			URL url=new URL(urlString);
+			InputStreamReader fuente=new InputStreamReader(url.openStream(),"UTF-8");
+			
+			JsonReader reader=Json.createReader(fuente);
+			JsonObject obj=reader.readObject();
+			String decoded=URLDecoder.decode(id,StandardCharsets.UTF_8.toString());
+			
+			JsonObject propiedades=obj.getJsonObject("http://es.dbpedia.org/resource"+decoded);
+			
+			//TODO: construir el sitio turístico a partir de las funciones
+			sitio.setNombre(getNombre(propiedades));
+			sitio.setCategorias(getCategorias(propiedades));
+			sitio.setResumen(getResumen(propiedades));
+			sitio.setId(id);
+			sitio.setImagen(getImagen(propiedades));
+			sitio.setUrlArticulo("hzttps://es.wikipedia.org/wiki/"+id);
+			
+			
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		return sitio;
 		
+	}
+	
+	private String getNombre(JsonObject object) {
+		//TODO:
+		JsonArray nombre=object.getJsonArray(propiedadNombre);
+		if(nombre==null) {
+			return null;
+		}
+		String stringNombre="";
+		for(JsonObject valor: nombre.getValuesAs(JsonObject.class)) {
+			if(valor.containsKey("value")) {
+				stringNombre=valor.getString("value");
+			}
+		}
+		return stringNombre;
+	}
+	private String getResumen(JsonObject object) {
+		
+		JsonArray resumen=object.getJsonArray(propiedadResumen);
+		String resumenString = "";
+		
+
+		if (resumen == null)
+			return null;
+		for (JsonObject valor : resumen.getValuesAs(JsonObject.class)) {
+			if (valor.containsKey("value"))
+				resumenString = valor.getString("value");
+		}
+
+		return resumenString;
+	}
+	private List<String> getCategorias(JsonObject object){
+		List<String> categorias=new LinkedList<String>();
+		JsonArray cat = object.getJsonArray(propiedadCategorias);
+
+		if (cat == null)
+			return null;
+		for (JsonObject valor : cat.getValuesAs(JsonObject.class)) {
+			if (valor.containsKey("value"))
+				categorias.add(valor.getString("value"));
+		}
+
+		return categorias;
+	}
+	
+	private List<String> getEnlacesExternos(JsonObject object){
+		List<String> enlaces=new LinkedList<String>();
+		JsonArray links = object.getJsonArray(propiedadEnlaces);
+
+		if (links == null)
+			return null;
+		for (JsonObject valor : links.getValuesAs(JsonObject.class)) {
+			if (valor.containsKey("value"))
+				enlaces.add(valor.getString("value"));
+		}
+
+		return enlaces;
+	}
+	private String getImagen(JsonObject object) {
+		JsonArray img = object.getJsonArray(propiedadImagenes);
+
+		if (img == null)
+			return null;
+		for (JsonObject valor : img.getValuesAs(JsonObject.class)) {
+			if (valor.containsKey("value"))
+				return valor.getString("value");
+		}
+
+		return null;
+
 	}
 
 
