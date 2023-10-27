@@ -10,24 +10,22 @@ public class SitioTuristico implements Identificable{
 	
 	private String id;
 	private String nombre;
-	private String resumen;
+	private ResumenSitioTuristico resumen;
 	private List<String> categorias;
 	private List<String> enlaces;
-	private double latitud;
-	private double longitud;
-	private String urlArticulo;
+	private String imagen;
+	//private String urlArticulo;
 	
-	public SitioTuristico() {}
 	
-	public SitioTuristico( String nombre, String resumen, double latitud, double longitud, String url) {
+	public SitioTuristico( String nombre, ResumenSitioTuristico resumen) { //, double latitud, double longitud, String url) {
 		this.id = UUID.randomUUID().toString();
 		this.nombre = nombre;
 		this.resumen = resumen;
-		this.latitud = latitud;
-		this.longitud = longitud;
-		this.urlArticulo = url;
+		
 		this.categorias = new ArrayList<>();
 		this.enlaces = new ArrayList<>();
+		//this.urlArticulo = url;
+
 	}
 	
 	public String getId() {
@@ -42,10 +40,10 @@ public class SitioTuristico implements Identificable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getResumen() {
+	public ResumenSitioTuristico getResumen() {
 		return resumen;
 	}
-	public void setResumen(String resumen) {
+	public void setResumen(ResumenSitioTuristico resumen) {
 		this.resumen = resumen;
 	}
 	public List<String> getCategorias() {
@@ -72,41 +70,31 @@ public class SitioTuristico implements Identificable{
 			enlaces.add(e);
 		
 	}
-	public double getLatitud() {
-		return latitud;
-	}
-	public void setLatitud(double latitud) {
-		this.latitud = latitud;
-	}
-	public double getLongitud() {
-		return longitud;
-	}
-	public void setLongitud(double longitud) {
-		this.longitud = longitud;
-	}
-	public String getUrlArticulo() {
-		return urlArticulo;
-	}
-	public void setUrlArticulo(String urlArticulo) {
-		this.urlArticulo = urlArticulo;
-	}
+
+//	public String getUrlArticulo() {
+//		return urlArticulo;
+//	}
+//	public void setUrlArticulo(String urlArticulo) {
+//		this.urlArticulo = urlArticulo;
+//	}
 	
-	
-	
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((categorias == null) ? 0 : categorias.hashCode());
 		result = prime * result + ((enlaces == null) ? 0 : enlaces.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(latitud);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(longitud);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((imagen == null) ? 0 : imagen.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + ((resumen == null) ? 0 : resumen.hashCode());
-		result = prime * result + ((urlArticulo == null) ? 0 : urlArticulo.hashCode());
 		return result;
 	}
 
@@ -129,9 +117,15 @@ public class SitioTuristico implements Identificable{
 				return false;
 		} else if (!enlaces.equals(other.enlaces))
 			return false;
-		if (Double.doubleToLongBits(latitud) != Double.doubleToLongBits(other.latitud))
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
-		if (Double.doubleToLongBits(longitud) != Double.doubleToLongBits(other.longitud))
+		if (imagen == null) {
+			if (other.imagen != null)
+				return false;
+		} else if (!imagen.equals(other.imagen))
 			return false;
 		if (nombre == null) {
 			if (other.nombre != null)
@@ -143,19 +137,15 @@ public class SitioTuristico implements Identificable{
 				return false;
 		} else if (!resumen.equals(other.resumen))
 			return false;
-		if (urlArticulo == null) {
-			if (other.urlArticulo != null)
-				return false;
-		} else if (!urlArticulo.equals(other.urlArticulo))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "SitioTuristico [id=" + id + ", nombre=" + nombre + ", resumen=" + resumen + ", categorias= " + getCategorias()
-				+ ", enlaces= " + getEnlaces() + ", latitud=" + latitud + ", longitud=" + longitud + ", urlArticulo="
-				+ urlArticulo + "]";
+		return "SitioTuristico [id=" + id + ", nombre=" + nombre + ", resumen=" + resumen + ", categorias=" + categorias
+				+ ", enlaces=" + enlaces + ", imagen=" + imagen + "]";
 	}
+
+	
 	
 }

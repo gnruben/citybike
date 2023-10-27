@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import aadd.modelo.Estacion;
+import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import aadd.repositorio.RepositorioEstacionesMemoria;
 import aadd.repositorio.RepositorioSitiosTuristicosJSON;
@@ -35,8 +36,14 @@ public class PruebaRepositorios {
         System.out.println("\n");
 
         RepositorioSitiosTuristicosJSON repositorioSitiosTuristicos = new RepositorioSitiosTuristicosJSON();
+        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
+        resumen.setNombre("Resumen 1");
+        resumen.setDescripcion("Descripción 1");
+        resumen.setLatitud(40.123);
+        resumen.setLongitud(-3.456);
+        resumen.setUrlArticulo("URL 1");
         
-        SitioTuristico sitio1 = new SitioTuristico("Sitio 1", "Descripción 1", 40.123, -3.456, "URL 1");
+        SitioTuristico sitio1 = new SitioTuristico("Sitio 1", resumen);
         
         System.out.println("1. Lo que hay en el repositorio de Sitios Turisticos (antes de añadir sitio 1):\n");
         for(SitioTuristico sss : repositorioSitiosTuristicos.getAll()) {
@@ -54,7 +61,14 @@ public class PruebaRepositorios {
         SitioTuristico sitioRecuperado = repositorioSitiosTuristicos.getById(sitioId);
         System.out.println("\n4. Sitio Turístico recuperado (por getById):\n" +sitioRecuperado);
         
-        SitioTuristico sitio2 = new SitioTuristico("\nSitio 2", "Descripción 1", 40.123, -2.456, "URL 1");
+        ResumenSitioTuristico resumen2 = new ResumenSitioTuristico();
+        resumen2.setNombre("Resumen 2");
+        resumen2.setDescripcion("Descripción 2");
+        resumen2.setLatitud(40.123);
+        resumen2.setLongitud(-2.456);
+        resumen2.setUrlArticulo("URL 2");
+        
+        SitioTuristico sitio2 = new SitioTuristico("\nSitio 2", resumen2);
         sitio2.setId(sitioId);
         
         repositorioSitiosTuristicos.update(sitio2);

@@ -1,6 +1,7 @@
 
 package aadd.repositorio;
 
+import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import repositorio.EntidadNoEncontrada;
 import repositorio.Repositorio;
@@ -19,7 +20,6 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
 
     public RepositorioSitiosTuristicosJSON() {
     	super(rutaArchivo);
-    	//this.rutaArchivo = ;
     	this.sitios = new ArrayList<>();
     	cargarDesdeJSON();
        
@@ -119,11 +119,18 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
     protected JsonObject serializar(SitioTuristico sitio) {
         JsonObjectBuilder builder = Json.createObjectBuilder()
         		.add("id", sitio.getId())
-                .add("nombre", sitio.getNombre())
-                .add("resumen", sitio.getResumen())
-                .add("latitud", sitio.getLatitud())
-                .add("longitud", sitio.getLongitud())
-                .add("urlArticulo", sitio.getUrlArticulo());
+                .add("nombre", sitio.getNombre());
+//                .add("resumen", sitio.getResumen())
+//                .add("urlArticulo", sitio.getUrlArticulo());
+                
+                // Serializa el resumen del sitio
+                JsonObjectBuilder resumenBuilder = Json.createObjectBuilder()
+                        .add("nombre", sitio.getResumen().getNombre())
+                        .add("descripcion", sitio.getResumen().getDescripcion())
+                        .add("latitud", sitio.getResumen().getLatitud())
+                        .add("longitud", sitio.getResumen().getLongitud())
+                        .add("urlArticulo", sitio.getResumen().getUrlArticulo());
+                builder.add("resumen", resumenBuilder);
 
         JsonArrayBuilder categoriasBuilder = Json.createArrayBuilder(sitio.getCategorias());//Json.createArrayBuilder();
 //        if (sitio.getCategorias() != null) {
@@ -148,11 +155,23 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
     protected SitioTuristico deserializar(JsonObject jsonObject) {
         String id = jsonObject.getString("id");
         String nombre = jsonObject.getString("nombre");
-        String descripcion = jsonObject.getString("resumen");
-        double latitud = jsonObject.getJsonNumber("latitud").doubleValue();
-        double longitud = jsonObject.getJsonNumber("longitud").doubleValue();
-        String urlWikipedia = jsonObject.getString("urlArticulo");
+        
+     // Deserializa el resumen del sitio
+        JsonObject resumenObject = jsonObject.getJsonObject("resumen");
+        String resumenNombre = resumenObject.getString("nombre");
+        String resumenDescripcion = resumenObject.getString("descripcion");
+        double resumenLatitud = resumenObject.getJsonNumber("latitud").doubleValue();
+        double resumenLongitud = resumenObject.getJsonNumber("longitud").doubleValue();
+        String resumenUrlArticulo = resumenObject.getString("urlArticulo");
 
+        
+        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
+        resumen.setNombre(resumenNombre);
+        resumen.setDescripcion(resumenDescripcion);
+        resumen.setLatitud(resumenLatitud);
+        resumen.setLongitud(resumenLongitud);
+        resumen.setUrlArticulo(resumenUrlArticulo);
+        
         JsonArray categoriasArray = jsonObject.getJsonArray("categorias");
         List<String> categorias = new ArrayList<>();
         if (categoriasArray != null) {
@@ -169,7 +188,7 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
             }
         }
 
-        SitioTuristico sitio = new SitioTuristico(nombre, descripcion, latitud, longitud, urlWikipedia);
+        SitioTuristico sitio = new SitioTuristico(nombre, resumen);
         sitio.setId(id);
         sitio.addCategorias(categorias);
         sitio.addEnlaces(enlaces);
