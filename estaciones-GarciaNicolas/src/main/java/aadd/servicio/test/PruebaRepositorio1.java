@@ -14,24 +14,25 @@ public class PruebaRepositorio1 {
         RepositorioSitiosTuristicosJSON repositorio = new RepositorioSitiosTuristicosJSON();
 
         // Crear un nuevo SitioTuristico
-        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
-        resumen.setNombre("Ejemplooooo");
-        resumen.setDescripcion("Descripción de ejemplo");
-        resumen.setLatitud(40.0);
-        resumen.setLongitud(-74.0);
-        resumen.setUrlArticulo("https://ejemplo.com");
+//        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
+//        resumen.setNombre("Ejemplooooo");
+//        resumen.setDescripcion("Descripción de ejemplo");
+//        resumen.setLatitud(40.0);
+//        resumen.setLongitud(-74.0);
+//        resumen.setUrlArticulo("https://ejemplo.com");
 
-        SitioTuristico sitioTuristico = new SitioTuristico("1", resumen);
+        SitioTuristico sitioTuristico = new SitioTuristico("1", "Descripción de ejemplo.", "https://ejemplo.com");
 
         List<String> categ = new ArrayList<>();
-        categ.add("Naturaleza");
+        String a = "Naturaleza";
+        categ.add(a);
         categ.add("Cultura");
-        sitioTuristico.addCategorias(categ);
+        sitioTuristico.setCategorias(categ);
 
         List<String> enl = new ArrayList<>();
         enl.add("https://enlace1.com");
         enl.add("https://enlace2.com");
-        sitioTuristico.addEnlaces(enl);
+        sitioTuristico.setEnlaces(enl);
 
         try {
             // Agregar el sitio turístico al repositorio

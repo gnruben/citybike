@@ -1,7 +1,5 @@
-
 package aadd.repositorio;
 
-import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import repositorio.EntidadNoEncontrada;
 import repositorio.Repositorio;
@@ -105,7 +103,7 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
     private void guardarEnJSON() {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         for (SitioTuristico sitio : sitios) {
-            JsonObject jsonObject = serializar(sitio);
+            JsonObject jsonObject = serializar(sitio); //TODO serializar me devuelve las barras invertidas. Corregir !!!
             arrayBuilder.add(jsonObject);
         }
 
@@ -119,22 +117,23 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
     protected JsonObject serializar(SitioTuristico sitio) {
         JsonObjectBuilder builder = Json.createObjectBuilder()
         		.add("id", sitio.getId())
-                .add("nombre", sitio.getNombre());
+                .add("nombre", sitio.getNombre())
+        		.add("resumen", sitio.getResumen())
+        		.add("urlArticulo",sitio.getUrlArticulo());
                 
-                // Serializa el resumen del sitio
-                JsonObjectBuilder resumenBuilder = Json.createObjectBuilder()
-                        .add("nombre", sitio.getResumen().getNombre())
-                        .add("descripcion", sitio.getResumen().getDescripcion())
-                        .add("latitud", sitio.getResumen().getLatitud())
-                        .add("longitud", sitio.getResumen().getLongitud())
-                        .add("urlArticulo", sitio.getResumen().getUrlArticulo());
-                builder.add("resumen", resumenBuilder);
+//                // Serializa el resumen del sitio
+//                JsonObjectBuilder resumenBuilder = Json.createObjectBuilder()
+//                        .add("nombre", sitio.getResumen().getNombre())
+//                        .add("descripcion", sitio.getResumen().getDescripcion())
+//                        .add("latitud", sitio.getResumen().getLatitud())
+//                        .add("longitud", sitio.getResumen().getLongitud())
+//                        .add("urlArticulo", sitio.getResumen().getUrlArticulo());
+//                builder.add("resumen", resumenBuilder);
 
-        JsonArrayBuilder categoriasBuilder = Json.createArrayBuilder(sitio.getCategorias());
-        builder.add("categorias", categoriasBuilder);
 
-        JsonArrayBuilder enlacesBuilder = Json.createArrayBuilder(sitio.getEnlaces()); //Json.createArrayBuilder();
-        builder.add("enlaces", enlacesBuilder);
+        builder.add("categorias", Json.createArrayBuilder(sitio.getCategorias()).build())
+        		.add("enlaces", Json.createArrayBuilder(sitio.getEnlaces()).build());
+        		
 
         return builder.build();
     }
@@ -143,22 +142,24 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
     protected SitioTuristico deserializar(JsonObject jsonObject) {
         String id = jsonObject.getString("id");
         String nombre = jsonObject.getString("nombre");
+        String resumen = jsonObject.getString("resumen");
+        String urlArticulo = jsonObject.getString("urlArticulo");
         
-     // Deserializa el resumen del sitio
-        JsonObject resumenObject = jsonObject.getJsonObject("resumen");
-        String resumenNombre = resumenObject.getString("nombre");
-        String resumenDescripcion = resumenObject.getString("descripcion");
-        double resumenLatitud = resumenObject.getJsonNumber("latitud").doubleValue();
-        double resumenLongitud = resumenObject.getJsonNumber("longitud").doubleValue();
-        String resumenUrlArticulo = resumenObject.getString("urlArticulo");
-
-        
-        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
-        resumen.setNombre(resumenNombre);
-        resumen.setDescripcion(resumenDescripcion);
-        resumen.setLatitud(resumenLatitud);
-        resumen.setLongitud(resumenLongitud);
-        resumen.setUrlArticulo(resumenUrlArticulo);
+//     // Deserializa el resumen del sitio
+//        JsonObject resumenObject = jsonObject.getJsonObject("resumen");
+//        String resumenNombre = resumenObject.getString("nombre");
+//        String resumenDescripcion = resumenObject.getString("descripcion");
+//        double resumenLatitud = resumenObject.getJsonNumber("latitud").doubleValue();
+//        double resumenLongitud = resumenObject.getJsonNumber("longitud").doubleValue();
+//        String resumenUrlArticulo = resumenObject.getString("urlArticulo");
+//
+//        
+//        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
+//        resumen.setNombre(resumenNombre);
+//        resumen.setDescripcion(resumenDescripcion);
+//        resumen.setLatitud(resumenLatitud);
+//        resumen.setLongitud(resumenLongitud);
+//        resumen.setUrlArticulo(resumenUrlArticulo);
         
         JsonArray categoriasArray = jsonObject.getJsonArray("categorias");
         List<String> categorias = new ArrayList<>();
@@ -176,10 +177,10 @@ public class RepositorioSitiosTuristicosJSON extends RepositorioJSON<SitioTurist
             }
         }
 
-        SitioTuristico sitio = new SitioTuristico(nombre, resumen);
+        SitioTuristico sitio = new SitioTuristico(nombre, resumen, urlArticulo);
         sitio.setId(id);
-        sitio.addCategorias(categorias);
-        sitio.addEnlaces(enlaces);
+        sitio.setCategorias(categorias);
+        sitio.setEnlaces(enlaces);
 
         return sitio;
     }

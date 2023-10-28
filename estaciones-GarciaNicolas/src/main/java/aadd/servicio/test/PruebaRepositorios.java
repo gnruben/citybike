@@ -36,14 +36,14 @@ public class PruebaRepositorios {
         System.out.println("\n");
 
         RepositorioSitiosTuristicosJSON repositorioSitiosTuristicos = new RepositorioSitiosTuristicosJSON();
-        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
-        resumen.setNombre("Resumen 1");
-        resumen.setDescripcion("Descripción 1");
-        resumen.setLatitud(40.123);
-        resumen.setLongitud(-3.456);
-        resumen.setUrlArticulo("URL 1");
+//        ResumenSitioTuristico resumen = new ResumenSitioTuristico();
+//        resumen.setNombre("Resumen 1");
+//        resumen.setDescripcion("Descripción 1");
+//        resumen.setLatitud(40.123);
+//        resumen.setLongitud(-3.456);
+//        resumen.setUrlArticulo("URL 1");
         
-        SitioTuristico sitio1 = new SitioTuristico("Sitio 1", resumen);
+        SitioTuristico sitio1 = new SitioTuristico("Sitio 1", "Descripción 1", "URL 1");
         
         System.out.println("1. Lo que hay en el repositorio de Sitios Turisticos (antes de añadir sitio 1):\n");
         for(SitioTuristico sss : repositorioSitiosTuristicos.getAll()) {
@@ -61,14 +61,14 @@ public class PruebaRepositorios {
         SitioTuristico sitioRecuperado = repositorioSitiosTuristicos.getById(sitioId);
         System.out.println("\n4. Sitio Turístico recuperado (por getById):\n" +sitioRecuperado);
         
-        ResumenSitioTuristico resumen2 = new ResumenSitioTuristico();
-        resumen2.setNombre("Resumen 2");
-        resumen2.setDescripcion("Descripción 2");
-        resumen2.setLatitud(40.123);
-        resumen2.setLongitud(-2.456);
-        resumen2.setUrlArticulo("URL 2");
+//        ResumenSitioTuristico resumen2 = new ResumenSitioTuristico();
+//        resumen2.setNombre("Resumen 2");
+//        resumen2.setDescripcion("Descripción 2");
+//        resumen2.setLatitud(40.123);
+//        resumen2.setLongitud(-2.456);
+//        resumen2.setUrlArticulo("URL 2");
         
-        SitioTuristico sitio2 = new SitioTuristico("\nSitio 2", resumen2);
+        SitioTuristico sitio2 = new SitioTuristico("\nSitio 2", "Descripción 2", "URL 2");
         sitio2.setId(sitioId);
         
         repositorioSitiosTuristicos.update(sitio2);
