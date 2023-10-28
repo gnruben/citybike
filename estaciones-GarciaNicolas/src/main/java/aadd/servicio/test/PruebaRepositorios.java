@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import aadd.modelo.Estacion;
-import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import aadd.repositorio.RepositorioEstacionesMemoria;
 import aadd.repositorio.RepositorioSitiosTuristicosJSON;
@@ -25,11 +24,11 @@ public class PruebaRepositorios {
         estacion1.setLatitud(-3.456);
 
         String estacionId = repositorioEstaciones.add(estacion1);
-        Estacion estacionRecuperada = repositorioEstaciones.getEstacion(estacionId);
+        Estacion estacionRecuperada = repositorioEstaciones.getById(estacionId);
         
         System.out.println("Estación Recuperada:\n" + estacionRecuperada);
         System.out.println("\nLas lista de Estación que hay en el repositorio\n");
-        for(Estacion e: repositorioEstaciones.getEstaciones())
+        for(Estacion e: repositorioEstaciones.getAll())
         	System.out.println(e);
         
         // Prueba del repositorio de Sitios Turísticos

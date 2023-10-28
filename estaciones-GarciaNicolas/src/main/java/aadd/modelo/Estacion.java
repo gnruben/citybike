@@ -18,16 +18,22 @@ public class Estacion implements Identificable {
 	private LocalDateTime fechaAlta;
 	private List<SitioTuristico> sitiosTuristicos=new LinkedList<SitioTuristico>();
 	
-//	public Estacion(String nombre, int numeroPuestos, String direccionPostal, double latitud, double longitud) {
-//        this.id = UUID.randomUUID().toString(); // Generar un ID único
-//        this.nombre = nombre;
-//        this.numeroPuestos = numeroPuestos;
-//        this.direccionPostal = direccionPostal;
-//        this.latitud = latitud;
-//        this.longitud = longitud;
-//        this.fechaAlta = LocalDateTime.now();
-//        this.sitiosTuristicos = new ArrayList<>();
-//    }
+	public Estacion() {
+		this.id = UUID.randomUUID().toString();
+		this.fechaAlta = LocalDateTime.now();
+		
+	}
+	
+	public Estacion(String nombre, int numeroPuestos, String direccionPostal, double latitud, double longitud) {
+        this.id = UUID.randomUUID().toString(); // Generar un ID único
+        this.nombre = nombre;
+        this.numeroPuestos = numeroPuestos;
+        this.direccionPostal = direccionPostal;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.fechaAlta = LocalDateTime.now();
+        this.sitiosTuristicos = new ArrayList<>();
+    }
 	
 	public String getId() {
 		return id;
@@ -80,20 +86,44 @@ public class Estacion implements Identificable {
 	
 	
 	public void asociarSitioTuristico(SitioTuristico sitioTuristico) {
-        sitiosTuristicos.add(sitioTuristico);
+        this.sitiosTuristicos.add(sitioTuristico);
     }
 	
 
 	
+//	@Override
+//	public String toString() {
+//		String s= "Estacion: { "+"id:"+id+", fecha de alta:"+fechaAlta+", latitud:"+latitud+", longitud:"+longitud+", sitiosTuristicos: [";
+//			for(SitioTuristico t: sitiosTuristicos) {
+//				s.concat("nombre:"+t.getNombre());
+//			}
+//		
+//		s.concat("] }");
+//		return s;
+//		}
+	
 	@Override
 	public String toString() {
-		String s= "Estacion: { "+"id:"+id+", fecha de alta:"+fechaAlta+", latitud:"+latitud+", longitud:"+longitud+", sitiosTuristicos: [";
-		for(SitioTuristico t: sitiosTuristicos) {
-			s.concat("nombre:"+t.getNombre());
-		}
-		
-		s.concat("]");
-		return s;
-		}
+	    StringBuilder s = new StringBuilder("Estacion: { ");
+	    s.append("id: ").append(id)
+	        .append(", fecha de alta: ").append(fechaAlta)
+	        .append(", latitud: ").append(latitud)
+	        .append(", longitud: ").append(longitud)
+	        .append(", sitiosTuristicos: [");
+	    
+	    for (SitioTuristico t : sitiosTuristicos) {
+	        s.append("nombre: ").append(t.getNombre()).append(", ");
+	    }
+	    
+	    // Elimina la última coma y espacio si hay sitios turísticos
+	    if (!sitiosTuristicos.isEmpty()) {
+	        s.delete(s.length() - 2, s.length());
+	    }
+	    
+	    s.append("] }");
+	    
+	    return s.toString();
+	}
+
 	
 }

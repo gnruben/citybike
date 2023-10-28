@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aadd.modelo.SitioTuristico;
-import aadd.modelo.ResumenSitioTuristico;
 import aadd.repositorio.RepositorioSitiosTuristicosJSON;
 import repositorio.RepositorioException;
 
@@ -34,13 +33,9 @@ public class PruebaRepositorio1 {
         enl.add("https://enlace2.com");
         sitioTuristico.setEnlaces(enl);
 
-        try {
-            // Agregar el sitio turístico al repositorio
-            repositorio.add(sitioTuristico);
-            System.out.println("Sitio turístico agregado al repositorio.");
-        } catch (RepositorioException e) {
-            e.printStackTrace();
-        }
+        // Agregar el sitio turístico al repositorio
+		repositorio.add(sitioTuristico);
+		System.out.println("Sitio turístico agregado al repositorio.");
 
         // Comprobar el contenido del archivo JSON después de agregar el sitio turístico
         System.out.println("Contenido del archivo JSON:");

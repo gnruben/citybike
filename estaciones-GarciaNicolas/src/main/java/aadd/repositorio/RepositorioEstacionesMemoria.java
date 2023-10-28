@@ -18,22 +18,22 @@ public class RepositorioEstacionesMemoria extends RepositorioMemoria<Estacion> {
     public RepositorioEstacionesMemoria() {
         estaciones = new HashMap<>();
         // Datos iniciales para pruebas
-        Estacion estacion = new Estacion();
-        String id = add(estacion);
+        //Estacion estacion = new Estacion();
+        //String id = add(estacion);
     }
 
     public String add(Estacion estacion) {
-        String id = UUID.randomUUID().toString();
-        estacion.setId(id);
-        estaciones.put(id, estacion);
-        return id;
+       // String id = UUID.randomUUID().toString();
+        //estacion.setId(id);
+        estaciones.put(estacion.getId(), estacion);
+        return estacion.getId();
     }
 
-    public Estacion getEstacion(String id) {
+    public Estacion getById(String id) {
         return estaciones.get(id);
     }
 
-    public List<Estacion> getEstaciones() {
+    public List<Estacion> getAll() {
         return new ArrayList<>(estaciones.values());
     }
 }

@@ -19,6 +19,7 @@ public abstract class RepositorioJSON<T extends Identificable> {
         cargarDesdeJSON();
     }
 
+    
     public void agregar(T elemento) {
         elementos.add(elemento);
         guardarEnJSON();
