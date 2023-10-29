@@ -19,7 +19,7 @@ public class SitioTuristico implements Identificable{
 	public SitioTuristico() {}
 	
 	public SitioTuristico( String nombre, String resumen, String url) { 
-		this.id = UUID.randomUUID().toString();
+		
 		this.nombre = nombre;
 		this.resumen = resumen;
 		this.urlArticulo = url;
