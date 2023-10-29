@@ -127,7 +127,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
         Jsonb contexto = JsonbProvider.provider().create().withConfig(config).build();
         
         try (Reader entrada = new FileReader(ruta)) {
-            T fromJson = contexto.fromJson(entrada, new Object() {}.getClass().getGenericSuperclass());
+            T fromJson = (T) contexto.fromJson(entrada, getClase());
             return fromJson;
         }
     }
