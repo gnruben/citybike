@@ -35,7 +35,7 @@ import javax.xml.parsers.ParserConfigurationException;
 		            IServicioEstaciones servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 
 		            // Creación de un servicio de sitios turísticos
-		            ISitiosTuristicos sitiosTuristicos = new SitiosTuristicosGeoNames();
+		            ISitiosTuristicos sitiosTuristicos = FactoriaServicios.getServicio(SitiosTuristicosGeoNames.class);
 
 		            // Obtener resúmenes de sitios turísticos cercanos a una ubicación
 		            double latitud = 40.0;

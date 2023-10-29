@@ -1,79 +1,135 @@
 package aadd.repositorio;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.*;
+import javax.json.stream.JsonGenerator;
 
+import repositorio.EntidadNoEncontrada;
 import repositorio.Identificable;
+import repositorio.RepositorioException;
+import repositorio.RepositorioString;
 
-public abstract class RepositorioJSON<T extends Identificable> {
-    private List<T> elementos;
-    private String rutaArchivo;
+public abstract class RepositorioJSON<T extends Identificable> implements RepositorioString<T>{
+   // private List<T> elementos;
+    private final static String raiz = "./json/";
 
-    public RepositorioJSON(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
-        this.elementos = new ArrayList<>();
-        cargarDesdeJSON();
+    public RepositorioJSON() {
     }
 
     
-    public void agregar(T elemento) {
-        elementos.add(elemento);
-        guardarEnJSON();
+    @Override
+	public String add (T entity) throws RepositorioException {
+       // elementos.add(entity);
+        String ruta = raiz+entity.getId()+".json";
+        try {
+			guardarEnJSON(ruta, entity);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+	        throw new RepositorioException("Error de repositorio add: " + entity.getId());
+
+		}
+		return entity.getId();
     }
 
-    public T obtenerPorId(String id) {
-    	for (T elemento : elementos)
-    		if (elemento.getId().equals(id))
-    			return elemento;
+    @Override
+	public T getById(String id) throws RepositorioException, EntidadNoEncontrada {
+    	String ruta = raiz+id+".json";
+    	T elemento = null;
+    	try {
+    		 elemento = cargarDesdeJSON(ruta);
+		} catch (FileNotFoundException e) {
+	        throw new EntidadNoEncontrada("Elemento no encontrado con el siguiente id : " + id);
+
+		}
     	
-    	return null;
+    	return elemento;
+	
     }
 
-    public List<T> obtenerTodos() {
-        return new ArrayList<>(elementos);
+    @Override
+	public List<T> getAll() throws RepositorioException {
+    	List<T> listaElementos = new ArrayList<T>();
+    	File carpeta = new File("./json/") ;
+    	T t;
+    	try {
+    		for( File f : carpeta.listFiles()) {
+        		
+        		t = cargarDesdeJSON(f.getPath());
+        		listaElementos.add(t);
+        	}
+		} catch (FileNotFoundException e) {
+	        throw new RepositorioException("Fichero no encontrado: " + carpeta);
+		}
+    	
+        
+    	return new ArrayList<>(listaElementos);
     }
+
+    @Override
+	public void update(T entity) throws RepositorioException, EntidadNoEncontrada {
+		T t = getById(entity.getId());
+		delete(t);
+		add(entity);
+		
+	}
+
+
+	@Override
+	public void delete(T entity) throws RepositorioException, EntidadNoEncontrada {
+		//T t = getById(entity.getId());
+		String ruta = raiz+entity.getId()+".json";
+    	File fichero = new File(ruta) ;
+    	if(fichero.exists())
+    		fichero.delete();
+    	else
+            throw new EntidadNoEncontrada("Entidad no encontrado: " + entity.getId());
 
     
-    private void cargarDesdeJSON() {
-        try (JsonReader reader = Json.createReader(new FileReader(rutaArchivo))) {
-            JsonArray jsonArray = reader.readArray();
-            for (JsonValue jsonValue : jsonArray) {                
-                JsonObject jsonObject = (JsonObject) jsonValue;
-                T elemento = deserializar(jsonObject);
-                elementos.add(elemento);
-            }
-        } catch (IOException e) {
-            elementos = new ArrayList<>();
-        }
+	}
+	
+    @Override
+	public List<String> getIds() throws RepositorioException {
+    	List<String> listaIdElementos = new ArrayList<String>();
+    	File carpeta = new File("./json/") ;
+    	
+    	for( File f : carpeta.listFiles()) {
+			String i = f.getName().replace(".json", "");
+			listaIdElementos.add(i);
+		}
+        
+    	return listaIdElementos;
+	}
+
+    
+    private T cargarDesdeJSON(String ruta) throws FileNotFoundException {
+        JsonReader reader = Json.createReader(new FileReader(ruta));
+        JsonObject jsonObject = reader.readObject();
+        T elemento = deserializar(jsonObject);
+        return elemento;
+            
     }
 
 
 
-	private void guardarEnJSON() {
+	private void guardarEnJSON(String ruta, T entity) throws IOException {
 
-    	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        for (T elemento : elementos) {
-            // Implementa la lógica para serializar el elemento en JsonObject
-            JsonObject jsonObject = serializar(elemento);
-            arrayBuilder.add(jsonObject);
-        }
-
-        JsonArray jsonArray = arrayBuilder.build();
+        JsonObject jsonObject = serializar(entity);
      
-        try (JsonWriter writer = Json.createWriter(new FileWriter(rutaArchivo))) {
-            writer.writeArray(jsonArray);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+    	OutputStreamWriter writer = new FileWriter(ruta) ;
+    	JsonGenerator generador=Json.createGenerator(writer); 
+        generador.write(jsonObject);
+        generador.close();
+       
     }
     
-	// Métodos abstractos para serializar y deserializar elementos
     protected abstract JsonObject serializar(T elemento);
     protected abstract T deserializar(JsonObject jsonObject);
-
 	
 }
