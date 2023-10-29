@@ -54,6 +54,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public Estacion getEstacion(String id) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
 		Estacion estacion=repositorio.getById(id);
+		
 		return estacion;
 	}
 
@@ -67,7 +68,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		lat=estacion.getLatitud();
 		lng=estacion.getLongitud();
 		
-		List<ResumenSitioTuristico> resumenes=serviciosTuristicos.getResumenesCercanos(lat, lng, radius);
+		List<ResumenSitioTuristico> resumenes=serviciosTuristicos.getResumenesCercanos(lat, lng);
 		List<SitioTuristico> stList=new LinkedList<SitioTuristico>();
 		
 		for(ResumenSitioTuristico r:resumenes) {

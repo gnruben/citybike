@@ -1,22 +1,16 @@
 package aadd.repositorio;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.*;
 import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
 import javax.json.bind.config.PropertyNamingStrategy;
 import javax.json.bind.config.PropertyOrderStrategy;
 import javax.json.bind.spi.JsonbProvider;
-import javax.json.stream.JsonGenerator;
 
 import repositorio.EntidadNoEncontrada;
 import repositorio.Identificable;
@@ -24,17 +18,14 @@ import repositorio.RepositorioException;
 import repositorio.RepositorioString;
 
 public abstract class RepositorioJSON<T extends Identificable> implements RepositorioString<T>{
-   // private List<T> elementos;
     private final static String raiz = "./json/";
-    private Jsonb jsonb = JsonbBuilder.create();
+    //private Jsonb jsonb = JsonbBuilder.create();
 
-    public RepositorioJSON() {
-    }
+    public RepositorioJSON() {}
 
     
     @Override
 	public String add (T entity) throws RepositorioException {
-       // elementos.add(entity);
         String ruta = raiz+entity.getId()+".json";
         try {
 			guardarEnJSON(ruta, entity);
@@ -92,7 +83,6 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 
 	@Override
 	public void delete(T entity) throws RepositorioException, EntidadNoEncontrada {
-		//T t = getById(entity.getId());
 		String ruta = raiz+entity.getId()+".json";
     	File fichero = new File(ruta) ;
     	if(fichero.exists())
@@ -118,54 +108,41 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 
     
     private T cargarDesdeJSON(String ruta) throws IOException {
-        JsonbConfig config = new JsonbConfig()
-            .withNullValues(true)
-            .withFormatting(true)
-            .withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES)
-            .withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL);
+       
+    	JsonbConfig config = new JsonbConfig()
+	            .withNullValues(true)
+	            .withFormatting(true)
+	            .withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES)
+	            .withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL);
 
-        Jsonb contexto = JsonbProvider.provider().create().withConfig(config).build();
-        
-        try (Reader entrada = new FileReader(ruta)) {
-            T fromJson = (T) contexto.fromJson(entrada, getClase());
-            return fromJson;
-        }
+	    Jsonb contexto = JsonbProvider.provider()
+	    		.create()
+	    		.withConfig(config)
+	    		.build();
+	        
+	     
+	     T elemento =  (T) contexto.fromJson(new FileReader(ruta), getClase()); //TODO
+	    
+	    return elemento;	   
     }
 
-
-
-
 	private void guardarEnJSON(String ruta, T entity) throws IOException, RepositorioException {
-
 	
 		JsonbConfig config = new JsonbConfig()
-
 				.withNullValues (true)
-
 				.withFormatting (true)
-
 				.withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES)
+				.withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL);
+		
+		Jsonb contexto = JsonbProvider.provider().create()
+				.withConfig(config)
+				.build();
+	
+		FileWriter writer = new FileWriter(ruta);
 
-				.withPropertyOrderStrategy (PropertyOrderStrategy.LEXICOGRAPHICAL);
-
-				Jsonb contexto = JsonbProvider.provider().create().withConfig(config).build();
-
-				try (FileWriter writer = new FileWriter(ruta);) {
-
-					contexto.toJson(entity, writer);
-
-				} catch (IOException e) {
-
-				throw new RepositorioException("Error al guardar la entidad con id: " + entity.getId(), e);
-
-				}
-        
+		contexto.toJson(entity, writer);
        
     }
 	
-
-
     protected abstract Class<?> getClase();
-    
-	
 }

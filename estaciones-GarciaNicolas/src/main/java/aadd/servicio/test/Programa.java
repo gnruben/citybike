@@ -40,11 +40,13 @@ import javax.xml.parsers.ParserConfigurationException;
 		            // Obtener resúmenes de sitios turísticos cercanos a una ubicación
 		            double latitud = 37.98404;	
 		            double longitud = -1.12865 ;
-		            double radio = 10.0;
-		            List<ResumenSitioTuristico> resumenesCercanos = sitiosTuristicos.getResumenesCercanos(latitud, longitud, radio);
+		            
+		            List<ResumenSitioTuristico> resumenesCercanos = sitiosTuristicos.getResumenesCercanos(latitud, longitud);
+		            
+		            
    
 		            // Imprimir resúmenes de sitios turísticos cercanos
-		            System.out.println("Resúmenes de sitios turísticos cercanos:");
+		            System.out.println("Resúmenes de sitios turísticos cercanos a la latitud: "+latitud+" y la longitud: "+longitud+"\n");
 		            for (ResumenSitioTuristico resumen : resumenesCercanos) {
 		                System.out.println(resumen);
 		                
@@ -64,46 +66,26 @@ import javax.xml.parsers.ParserConfigurationException;
 		            }
 		             
 		            Estacion es = new Estacion("es1", 10, "2008", latitud, longitud);
-		            String n= rep.add(es);
-		           // System.out.println(rep.getAll());
+		           rep.add(es);
 		            
 		            String id = servicioEstaciones.crear(es.getNombre(), es.getNumeroPuestos(), es.getDireccionPostal(), es.getLatitud(), es.getLongitud());
 		            servicioEstaciones.setSitiosTuristicos(id, sitioss);
 		            Estacion es2 = rep.getById(es.getId());
 		            
+		            servicioEstaciones.eliminar(id);
 		            
-		            for(SitioTuristico s: es2.getSitiosTuristicos()) {
-		            	System.out.println(s.getNombre());
-		            }
+		            
 		          
-
-		            
+ 
 		            String estacionId = servicioEstaciones.crear("Otra Estación", 30, "456 Elm St", 41.0, -74.0);
 		            Estacion estacionn = new Estacion("Otra Estación", 30, "456 Elm St", 41.0, -74.0);
 		            estacionn.setId(estacionId);
 		            rep.add(estacionn);
+		            estacion.setId(estacionId);
 		          
-		            System.out.println("Estaciones que hay en el repositorio de estaciones de memoria \n"+rep.getAll());
-		            System.out.println("Estación con id específico en el repositorio de memoria \n"+rep.getById(estacionId));
-		            System.out.println("valor estacionid y estacionn: "+estacionId+ ", "+estacionn.getId());
-		            
-		            Estacion estacionObtenida = servicioEstaciones.getEstacion(estacionn.getId());
+		     		   
+		            Estacion estacionObtenida = servicioEstaciones.getEstacion(estacionId);
 
-		            // Imprimir detalles de la estación
-//		            System.out.println("Detalles de la estación obtenida:");
-//		            System.out.println("Nombre: " + estacionObtenida.getNombre());
-//		            System.out.println("Número de Puestos: " + estacionObtenida.getNumeroPuestos());
-//		            System.out.println("Dirección Postal: " + estacionObtenida.getDireccionPostal());
-//		            System.out.println("Latitud: " + estacionObtenida.getLatitud());
-//		            System.out.println("Longitud: " + estacionObtenida.getLongitud());
-//		            System.out.println("Fecha de Alta: " + estacionObtenida.getFechaAlta());
-
-		            // Obtener sitios turísticos asociados a la estación
-		           // List<SitioTuristico> sitiosAsociados = servicioEstaciones.getSitiosTuristicos(estacionId);
-		           // System.out.println("Sitios turísticos asociados a la estación:");
-		           // for (SitioTuristico sitio : sitiosAsociados) {
-		              //  System.out.println("Nombre: " + sitio.getNombre());
-		            //}
 		        } catch (RepositorioException | EntidadNoEncontrada e) {
 		            e.printStackTrace();
 		        }

@@ -84,18 +84,6 @@ public class Estacion implements Identificable {
 	}
 	
 
-	
-//	@Override
-//	public String toString() {
-//		String s= "Estacion: { "+"id:"+id+", fecha de alta:"+fechaAlta+", latitud:"+latitud+", longitud:"+longitud+", sitiosTuristicos: [";
-//			for(SitioTuristico t: sitiosTuristicos) {
-//				s.concat("nombre:"+t.getNombre());
-//			}
-//		
-//		s.concat("] }");
-//		return s;
-//		}
-	
 	@Override
 	public String toString() {
 	    StringBuilder s = new StringBuilder("Estacion: { ");

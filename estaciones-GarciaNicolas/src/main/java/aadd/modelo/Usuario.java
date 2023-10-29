@@ -51,20 +51,4 @@ public class Usuario {
 		return esAdministrador;
 	}
 	
-
-
-		
-	
-	//Si es administrador puede:
-		// Crear nuebos puntos de préstamo (estaciones)
-		//dar alta las bicis
-		//dar baja las bicis
-	
-	
-	
-	//Usuarios pueden:
-		//crear incidencia -> para indicar un desperfecto en una bicileta
-		//
-	
-
 }

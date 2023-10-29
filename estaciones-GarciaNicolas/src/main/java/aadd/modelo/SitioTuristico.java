@@ -2,26 +2,26 @@ package aadd.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
+import javax.json.bind.annotation.JsonbNillable;
 import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTypeAdapter;
 
 import repositorio.Identificable;
 
+@JsonbNillable
 public class SitioTuristico implements Identificable{
 	@JsonbProperty("id")
 	private String id;
 	@JsonbProperty("nombre")
 	private String nombre;
+	
 	@JsonbProperty( nillable = true)
 	private String resumen;
-	@JsonbProperty("categorias")
+	@JsonbProperty( nillable = true)
 	private List<String> categorias;
-	@JsonbProperty("enlaces")
+	@JsonbProperty( nillable = true)
 	private List<String> enlaces;
 	
-	@JsonbProperty("imagen")
+	@JsonbProperty( nillable = true)
 	private String imagen;
 	@JsonbProperty("urlArticulo")
 	private String urlArticulo;
@@ -58,7 +58,7 @@ public class SitioTuristico implements Identificable{
 		this.resumen = resumen;
 	}
 	public List<String> getCategorias() {
-		return new ArrayList<>(categorias);
+		return categorias;
 	}
 	
 	public void setCategorias(List<String> categorias) {
@@ -66,7 +66,7 @@ public class SitioTuristico implements Identificable{
 		
 	}
 	public List<String> getEnlaces() {
-		return new ArrayList<>(enlaces);
+		return enlaces;
 	}
 
 	public void setEnlaces(List<String> enlaces) {

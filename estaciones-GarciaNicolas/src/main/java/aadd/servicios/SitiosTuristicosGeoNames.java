@@ -53,11 +53,11 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 	}
 	
 	@Override
-	public List<ResumenSitioTuristico> getResumenesCercanos(double lat, double lon,double radius) {
+	public List<ResumenSitioTuristico> getResumenesCercanos(double lat, double lon) {
 		// TODO Auto-generated method stub
 		List<ResumenSitioTuristico> lista=new LinkedList<ResumenSitioTuristico>();
 		try {
-			String ruta = raizUrlgeonames+"&lat="+lat+"&lng="+lon+"&radius="+radius;
+			String ruta = raizUrlgeonames+"&lat="+lat+"&lng="+lon;
 			Document documento = analizador.parse(ruta);
 			//TODO: lista de resumenes 
 			ResumenSitioTuristico r;
@@ -117,7 +117,7 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 
 	private SitioTuristico getSitioTuristicoDBPedia(String id) {
 		SitioTuristico sitio=new SitioTuristico();
-		//TODO:
+		
 		String urlString=raizUrlDBPedia+id+".json";
 		try {
 			URL url=new URL(urlString);
@@ -136,7 +136,7 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 			sitio.setResumen(getResumen(propiedades));
 			sitio.setId(id);
 			sitio.setImagen(getImagen(propiedades));
-			sitio.setUrlArticulo("hzttps://es.wikipedia.org/wiki/"+id);
+			sitio.setUrlArticulo("https://es.wikipedia.org/wiki/"+id);
 			
 			
 		} catch (MalformedURLException e) {
