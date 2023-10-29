@@ -19,19 +19,18 @@ public class Estacion implements Identificable {
 	private List<SitioTuristico> sitiosTuristicos=new LinkedList<SitioTuristico>();
 	
 	public Estacion() {
-		this.id = UUID.randomUUID().toString();
-		this.fechaAlta = LocalDateTime.now();
+		//this.id = UUID.randomUUID().toString();
+		
 		
 	}
 	
 	public Estacion(String nombre, int numeroPuestos, String direccionPostal, double latitud, double longitud) {
-        this.id = UUID.randomUUID().toString(); // Generar un ID único
+      //  this.id = UUID.randomUUID().toString(); // Generar un ID único
         this.nombre = nombre;
         this.numeroPuestos = numeroPuestos;
         this.direccionPostal = direccionPostal;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.fechaAlta = LocalDateTime.now();
         this.sitiosTuristicos = new ArrayList<>();
     }
 	
@@ -84,11 +83,6 @@ public class Estacion implements Identificable {
 		this.sitiosTuristicos = sitiosTuristicos;
 	}
 	
-	
-	public void asociarSitioTuristico(SitioTuristico sitioTuristico) {
-        this.sitiosTuristicos.add(sitioTuristico);
-    }
-	
 
 	
 //	@Override
@@ -105,7 +99,9 @@ public class Estacion implements Identificable {
 	@Override
 	public String toString() {
 	    StringBuilder s = new StringBuilder("Estacion: { ");
-	    s.append("id: ").append(id)
+	    	s.append("id: ").append(id)
+	    	.append(", nombre:").append(nombre)
+			.append(", numero puesto:").append(numeroPuestos)
 	        .append(", fecha de alta: ").append(fechaAlta)
 	        .append(", latitud: ").append(latitud)
 	        .append(", longitud: ").append(longitud)
@@ -124,6 +120,7 @@ public class Estacion implements Identificable {
 	    
 	    return s.toString();
 	}
+	
 
 	
 }

@@ -6,9 +6,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.*;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbConfig;
+import javax.json.bind.config.PropertyNamingStrategy;
+import javax.json.bind.config.PropertyOrderStrategy;
+import javax.json.bind.spi.JsonbProvider;
 import javax.json.stream.JsonGenerator;
 
 import repositorio.EntidadNoEncontrada;
@@ -19,6 +26,7 @@ import repositorio.RepositorioString;
 public abstract class RepositorioJSON<T extends Identificable> implements RepositorioString<T>{
    // private List<T> elementos;
     private final static String raiz = "./json/";
+    private Jsonb jsonb = JsonbBuilder.create();
 
     public RepositorioJSON() {
     }
@@ -43,8 +51,9 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
     	String ruta = raiz+id+".json";
     	T elemento = null;
     	try {
+    		
     		 elemento = cargarDesdeJSON(ruta);
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 	        throw new EntidadNoEncontrada("Elemento no encontrado con el siguiente id : " + id);
 
 		}
@@ -64,7 +73,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
         		t = cargarDesdeJSON(f.getPath());
         		listaElementos.add(t);
         	}
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 	        throw new RepositorioException("Fichero no encontrado: " + carpeta);
 		}
     	
@@ -108,28 +117,55 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 	}
 
     
-    private T cargarDesdeJSON(String ruta) throws FileNotFoundException {
-        JsonReader reader = Json.createReader(new FileReader(ruta));
-        JsonObject jsonObject = reader.readObject();
-        T elemento = deserializar(jsonObject);
-        return elemento;
-            
+    private T cargarDesdeJSON(String ruta) throws IOException {
+        JsonbConfig config = new JsonbConfig()
+            .withNullValues(true)
+            .withFormatting(true)
+            .withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES)
+            .withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL);
+
+        Jsonb contexto = JsonbProvider.provider().create().withConfig(config).build();
+        
+        try (Reader entrada = new FileReader(ruta)) {
+            T fromJson = contexto.fromJson(entrada, new Object() {}.getClass().getGenericSuperclass());
+            return fromJson;
+        }
     }
 
 
 
-	private void guardarEnJSON(String ruta, T entity) throws IOException {
 
-        JsonObject jsonObject = serializar(entity);
-     
-    	OutputStreamWriter writer = new FileWriter(ruta) ;
-    	JsonGenerator generador=Json.createGenerator(writer); 
-        generador.write(jsonObject);
-        generador.close();
+	private void guardarEnJSON(String ruta, T entity) throws IOException, RepositorioException {
+
+	
+		JsonbConfig config = new JsonbConfig()
+
+				.withNullValues (true)
+
+				.withFormatting (true)
+
+				.withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES)
+
+				.withPropertyOrderStrategy (PropertyOrderStrategy.LEXICOGRAPHICAL);
+
+				Jsonb contexto = JsonbProvider.provider().create().withConfig(config).build();
+
+				try (FileWriter writer = new FileWriter(ruta);) {
+
+					contexto.toJson(entity, writer);
+
+				} catch (IOException e) {
+
+				throw new RepositorioException("Error al guardar la entidad con id: " + entity.getId(), e);
+
+				}
+        
        
     }
+	
+
+
+    protected abstract Class<?> getClase();
     
-    protected abstract JsonObject serializar(T elemento);
-    protected abstract T deserializar(JsonObject jsonObject);
 	
 }

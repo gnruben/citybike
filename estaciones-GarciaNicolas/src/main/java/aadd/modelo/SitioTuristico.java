@@ -4,16 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTypeAdapter;
+
 import repositorio.Identificable;
 
 public class SitioTuristico implements Identificable{
-	
+	@JsonbProperty("id")
 	private String id;
+	@JsonbProperty("nombre")
 	private String nombre;
+	@JsonbProperty( nillable = true)
 	private String resumen;
+	@JsonbProperty("categorias")
 	private List<String> categorias;
+	@JsonbProperty("enlaces")
 	private List<String> enlaces;
-	private String imagen;	
+	
+	@JsonbProperty("imagen")
+	private String imagen;
+	@JsonbProperty("urlArticulo")
 	private String urlArticulo;
 	
 	public SitioTuristico() {}
@@ -23,8 +33,9 @@ public class SitioTuristico implements Identificable{
 		this.nombre = nombre;
 		this.resumen = resumen;
 		this.urlArticulo = url;
-		this.categorias = new ArrayList<>();
-		this.enlaces = new ArrayList<>();
+		
+		this.categorias = new ArrayList<String>();
+		this.enlaces = new ArrayList<String>();
 
 	}
 	

@@ -25,7 +25,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		if (nombre == null || nombre.isEmpty())
 			throw new IllegalArgumentException("El nombre no puede ser nulo ni vacío");
 		if (numeroPuestos < 1)
-			throw new IllegalArgumentException("El número dee puestos no puede ser menor que 1");
+			throw new IllegalArgumentException("El número de puestos no puede ser menor que 1");
 
 		Estacion estacion=new Estacion();
 		estacion.setNombre(nombre);
@@ -38,7 +38,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		String id = repositorio.add(estacion);
 		return id;
 	}
-
 
 
 	@Override
@@ -83,9 +82,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void setSitiosTuristicos(String id, List<SitioTuristico> sitios)
 			throws RepositorioException, EntidadNoEncontrada {
+		System.out.println(repositorio.getIds());
+
 		Estacion estacion=repositorio.getById(id);
+		System.out.println(estacion.getId());
 		estacion.setSitiosTuristicos(sitios);
-		
+		repositorio.update(estacion);
 	}
 
 	

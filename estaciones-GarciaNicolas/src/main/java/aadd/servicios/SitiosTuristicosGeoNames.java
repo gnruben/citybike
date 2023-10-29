@@ -35,7 +35,7 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 	private final String raizUrlgeonames = "http://api.geonames.org/findNearbyWikipedia?username=ruben.garcia3&lang=es&country=ES";
 	private final String raizUrlDBPedia="https://es.dbpedia.org/data/";
 	
-	private final String propiedadNombre = "http://xmlns.com/foaf/0.1/name";
+	private final String propiedadNombre = "http://www.w3.org/2000/01/rdf-schema#label";
 	private final String propiedadResumen = "http://dbpedia.org/ontology/abstract";
 	private final String propiedadEnlaces = "http://dbpedia.org/ontology/wikiPageExternalLink";
 	private final String propiedadImagenes = "http://es.dbpedia.org/property/imagen";
@@ -57,7 +57,8 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 		// TODO Auto-generated method stub
 		List<ResumenSitioTuristico> lista=new LinkedList<ResumenSitioTuristico>();
 		try {
-			Document documento = analizador.parse(raizUrlgeonames+"&lat="+lat+"&lng="+lon+"radius="+radius);
+			String ruta = raizUrlgeonames+"&lat="+lat+"&lng="+lon+"&radius="+radius;
+			Document documento = analizador.parse(ruta);
 			//TODO: lista de resumenes 
 			ResumenSitioTuristico r;
 			Element e;
@@ -79,8 +80,9 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 				
 				lista.add(r);
 				
+				
 			}
-			
+			return lista;
 			
 			
 		} catch (SAXException e) {
@@ -125,11 +127,12 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 			JsonObject obj=reader.readObject();
 			String decoded=URLDecoder.decode(id,StandardCharsets.UTF_8.toString());
 			
-			JsonObject propiedades=obj.getJsonObject("http://es.dbpedia.org/resource"+decoded);
+			JsonObject propiedades=obj.getJsonObject("http://es.dbpedia.org/resource/"+decoded);
 			
 			//TODO: construir el sitio turístico a partir de las funciones
 			sitio.setNombre(getNombre(propiedades));
 			sitio.setCategorias(getCategorias(propiedades));
+			sitio.setEnlaces(getEnlacesExternos(propiedades));
 			sitio.setResumen(getResumen(propiedades));
 			sitio.setId(id);
 			sitio.setImagen(getImagen(propiedades));

@@ -1,0 +1,23 @@
+
+{
+    "categorias": [
+        "http://dbpedia.org/ontology/Event",
+        "http://dbpedia.org/ontology/SocietalEvent",
+        "http://schema.org/SportsEvent",
+        "http://dbpedia.org/ontology/Tournament",
+        "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Event",
+        "http://www.w3.org/2002/07/owl#Thing",
+        "http://www.wikidata.org/entity/Q1656682",
+        "http://dbpedia.org/ontology/SoccerTournament",
+        "http://dbpedia.org/ontology/SportsEvent",
+        "http://www.wikidata.org/entity/Q500834",
+        "http://schema.org/Event"
+    ],
+    "enlaces": [
+        "http://www.fifa.com/futsalworldcup/archive/spain1996/index.html"
+    ],
+    "id": "Copa_Mundial_de_f%C3%BAtbol_sala_de_la_FIFA_1996",
+    "nombre": "Copa Mundial de fútbol sala de la FIFA 1996",
+    "resumen": "La III Copa Mundial de fútbol sala de la FIFA de 1996 tuvo lugar en España. Fue la tercera edición de este campeonato mundial. La sedes escogidas fueron Murcia, Segovia, Castellón de la Plana y Barcelona, disputándose la final en el Palau Sant Jordi de la Ciudad Condal. Brasil ganó su tercera corona consecutiva del torneo derrotando a la anfitriona España en la final.",
+    "urlArticulo": "hzttps://es.wikipedia.org/wiki/Copa_Mundial_de_f%C3%BAtbol_sala_de_la_FIFA_1996"
+}
