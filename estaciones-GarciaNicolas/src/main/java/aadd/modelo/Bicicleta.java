@@ -1,23 +1,56 @@
 package aadd.modelo;
-
 import java.time.LocalDate;
 import java.util.List;
 
-public class Bicicleta {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-	private String codigo;
+import repositorio.Identificable;
+
+@Entity
+@Table(name="bicicleta")
+public class Bicicleta implements Identificable {
+
+	@Id
+	@Column(name="id")
+	private String id;
+	
+	@Column(name="modelo")
     private String modelo;
+    
+    @Column(name ="fecha_Alta", columnDefinition = "DATE")
     private LocalDate fechaAlta;
+    
+    @Column(name ="fecha_Baja", columnDefinition = "DATE")
     private LocalDate fechaBaja;
+    
+	@Column(name="motivo")
     private String motivo;
+    
+    @OneToMany(mappedBy = "bicicleta",
+    fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Alquiler> historial;
     
+    @Enumerated
+    private EstadoBicicleta estado;
+    
+    
     // Getters and setters
-	public String getCodigo() {
-		return codigo;
+    @Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	@Override
+	public void setId(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 	public String getModelo() {
 		return modelo;
@@ -49,6 +82,16 @@ public class Bicicleta {
 	public void setHistorial(List<Alquiler> historial) {
 		this.historial = historial;
 	}
-    
-    
+    public EstadoBicicleta getEstado() {
+		return estado;
+	}
+	public void setEstado(EstadoBicicleta estado) {
+		this.estado = estado;
+	}
+	@Override
+	public String toString() {
+		return "Bicicleta [id=" + id + ", modelo=" + modelo + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja
+				+ ", motivo=" + motivo + ", historial=" + historial + ", estado=" + estado + "]";
+	}
+	
 }

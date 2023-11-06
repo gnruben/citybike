@@ -32,14 +32,14 @@ import repositorio.RepositorioException;
 
 public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 
-	private final String raizUrlgeonames = "http://api.geonames.org/findNearbyWikipedia?username=ruben.garcia3&lang=es&country=ES";
-	private final String raizUrlDBPedia="https://es.dbpedia.org/data/";
+	private static final String raizUrlgeonames = "http://api.geonames.org/findNearbyWikipedia?username=ruben.garcia3&lang=es&country=ES";
+	private static final String raizUrlDBPedia="https://es.dbpedia.org/data/";
 	
-	private final String propiedadNombre = "http://www.w3.org/2000/01/rdf-schema#label";
-	private final String propiedadResumen = "http://dbpedia.org/ontology/abstract";
-	private final String propiedadEnlaces = "http://dbpedia.org/ontology/wikiPageExternalLink";
-	private final String propiedadImagenes = "http://es.dbpedia.org/property/imagen";
-	private final String propiedadCategorias = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+	private static final String propiedadNombre = "http://www.w3.org/2000/01/rdf-schema#label";
+	private static final String propiedadResumen = "http://dbpedia.org/ontology/abstract";
+	private static final String propiedadEnlaces = "http://dbpedia.org/ontology/wikiPageExternalLink";
+	private static final String propiedadImagenes = "http://es.dbpedia.org/property/imagen";
+	private static final String propiedadCategorias = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 	private DocumentBuilder analizador;
 	private Repositorio<SitioTuristico,String> repositorio=FactoriaRepositorios.getRepositorio(SitioTuristico.class);
 	

@@ -17,7 +17,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	private Repositorio<Estacion, String> repositorio = FactoriaRepositorios.getRepositorio(Estacion.class);
 	private ISitiosTuristicos serviciosTuristicos=FactoriaServicios.getServicio(ISitiosTuristicos.class);
-	private final double radius=5;
 
 	@Override
 	public String crear(String nombre, int numeroPuestos,String postalcode, double lat, double lng) throws RepositorioException {

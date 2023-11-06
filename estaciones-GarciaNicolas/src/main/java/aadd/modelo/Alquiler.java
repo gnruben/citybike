@@ -2,6 +2,9 @@ package aadd.modelo;
 
 import java.time.LocalDate;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 public class Alquiler {
 
 	private Usuario usuario; 
@@ -9,6 +12,9 @@ public class Alquiler {
     private LocalDate horaInicio; 
     private Estacion estacionFin; 
     private LocalDate horaFin;
+    @ManyToOne
+	@JoinColumn(name="bicicleta_fk")
+    private Bicicleta bicicleta;
     
     
 	public Usuario getUsuario() {
@@ -41,8 +47,12 @@ public class Alquiler {
 	public void setHoraFin(LocalDate horaFin) {
 		this.horaFin = horaFin;
 	} 
-    
-     
+     public Bicicleta getBicicleta() {
+		return bicicleta;
+	}
+     public void setBicicleta(Bicicleta bicicleta) {
+		this.bicicleta = bicicleta;
+	}
     
     
 

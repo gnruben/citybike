@@ -2,12 +2,29 @@ package aadd.modelo;
 
 import java.time.LocalDate;
 
-public class Incidencia {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="incidencia")
+public class Incidencia {
+	@Id
+	@Column(name="id")
 	private String id;
+	
+	@Column(name="fecha_incidencia", columnDefinition = "DATE")
 	private LocalDate fecha;
+	
+	@Column(name="descripcion")
 	private String descripcion;
+	
+	@Enumerated
 	private EstadoIncidencia estado;
+	
+	@Column(name="operarioAsignado")
 	private String operarioAsignado;
 	
 	public String getId() {
