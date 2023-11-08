@@ -37,19 +37,17 @@ public class Bicicleta implements Identificable {
     fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Alquiler> historial;
     
-    @Enumerated
-    private EstadoBicicleta estado;
+    private boolean isDisponible;
     
     
     // Getters and setters
     @Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 	@Override
 	public void setId(String id) {
-		// TODO Auto-generated method stub
+		this.id = id;
 		
 	}
 	public String getModelo() {
@@ -82,16 +80,17 @@ public class Bicicleta implements Identificable {
 	public void setHistorial(List<Alquiler> historial) {
 		this.historial = historial;
 	}
-    public EstadoBicicleta getEstado() {
-		return estado;
+    public boolean isDisponible() {
+		return isDisponible;
 	}
-	public void setEstado(EstadoBicicleta estado) {
-		this.estado = estado;
+    public void setDisponible(boolean isDisponible) {
+		this.isDisponible = isDisponible;
 	}
+    
 	@Override
 	public String toString() {
 		return "Bicicleta [id=" + id + ", modelo=" + modelo + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja
-				+ ", motivo=" + motivo + ", historial=" + historial + ", estado=" + estado + "]";
+				+ ", motivo=" + motivo + ", historial=" + historial + ", isDisponible=" + isDisponible + "]";
 	}
 	
 }

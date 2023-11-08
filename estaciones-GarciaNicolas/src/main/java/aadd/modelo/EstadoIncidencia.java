@@ -1,5 +1,5 @@
 package aadd.modelo;
 
 public enum EstadoIncidencia {
-	PENDIENTE,ASIGNADA, RESUELTA
+	PENDIENTE,ASIGNADA, RESUELTA, CANCELADA
 }

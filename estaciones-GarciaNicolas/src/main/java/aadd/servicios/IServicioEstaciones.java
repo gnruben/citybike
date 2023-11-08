@@ -15,4 +15,8 @@ public interface IServicioEstaciones {
 	List<SitioTuristico> getSitiosTuristicos(String id) throws RepositorioException, EntidadNoEncontrada;
 	void setSitiosTuristicos(String id, List<SitioTuristico> sitios)throws RepositorioException, EntidadNoEncontrada;
 	
+	void altaBicicleta(String modelo, Estacion estacion);
+	void estacionarBicicleta(String idBicicleta, String idEstacion);
+	void retirarBicicleta(String idBicicleta);
+	void darBajaBicicleta(String idBicicleta, String motivoBaja);
 }

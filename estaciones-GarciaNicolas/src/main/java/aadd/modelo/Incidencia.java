@@ -6,17 +6,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import repositorio.Identificable;
 
 @Entity
 @Table(name="incidencia")
-public class Incidencia {
+public class Incidencia implements Identificable{
 	@Id
 	@Column(name="id")
 	private String id;
 	
-	@Column(name="fecha_incidencia", columnDefinition = "DATE")
-	private LocalDate fecha;
+	@Column(name="fecha_inicio", columnDefinition = "DATE")
+	private LocalDate fechaInicio;
+	
+	@Column(name="fecha_fin", columnDefinition = "DATE")
+	private LocalDate fechaFin;
 	
 	@Column(name="descripcion")
 	private String descripcion;
@@ -27,18 +33,30 @@ public class Incidencia {
 	@Column(name="operarioAsignado")
 	private String operarioAsignado;
 	
+	@ManyToOne
+	@Column(name="bicicleta")
+	private Bicicleta bicicleta;
+	
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public LocalDate getFecha() {
-		return fecha;
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
 	}
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
+	
+	public LocalDate getFechaFin() {
+		return fechaFin;
+	}
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+	
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -50,7 +68,7 @@ public class Incidencia {
 	}
 	public void setEstado(EstadoIncidencia estado) {
 		this.estado = estado;
-	};
+	}
 	
 	public String getOperarioAsignado() {
 		return operarioAsignado;
@@ -59,5 +77,12 @@ public class Incidencia {
 		this.operarioAsignado = operarioAsignado;
 	}
 	
+	public Bicicleta getBicicleta() {
+		return bicicleta;
+	}
+	
+	public void setBicicleta(Bicicleta bicicleta) {
+		this.bicicleta = bicicleta;
+	}
 	
 }

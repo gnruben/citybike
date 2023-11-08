@@ -90,5 +90,35 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		repositorio.update(estacion);
 	}
 
+
+	//TODO Implementar
+	
+	@Override
+	public void altaBicicleta(String modelo, Estacion estacion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void estacionarBicicleta(String idBicicleta, String idEstacion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void retirarBicicleta(String idBicicleta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void darBajaBicicleta(String idBicicleta, String motivoBaja) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
