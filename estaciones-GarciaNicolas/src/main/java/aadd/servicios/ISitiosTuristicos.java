@@ -8,8 +8,8 @@ import repositorio.RepositorioException;
 
 public interface ISitiosTuristicos {
 	
-	public List<ResumenSitioTuristico> getResumenesCercanos(double lat, double lon);
-	public SitioTuristico getSitioTuristico(String id) throws RepositorioException;
+	public List<ResumenSitioTuristico> getResumenesCercanos(double lat, double lon) throws ServicioSitiosTuristicosException;
+	public SitioTuristico getSitioTuristico(String id) throws ServicioSitiosTuristicosException;
 
 
 }

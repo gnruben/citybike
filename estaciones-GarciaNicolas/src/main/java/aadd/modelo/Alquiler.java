@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class Alquiler {
+import repositorio.Identificable;
 
+public class Alquiler implements Identificable{
+
+	private String id;
 	private Usuario usuario; 
     private Estacion estacionInicio; 
     private LocalDate horaInicio; 
@@ -52,6 +55,16 @@ public class Alquiler {
 	}
      public void setBicicleta(Bicicleta bicicleta) {
 		this.bicicleta = bicicleta;
+	}
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+	@Override
+	public void setId(String id) {
+		// TODO Auto-generated method stub
+		this.id=id;
 	}
     
     
