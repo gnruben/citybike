@@ -32,74 +32,69 @@ public class ServicioIncidencias implements IServicioIncidencias {
 				incidencia.setEstado(EstadoIncidencia.PENDIENTE);
 				bicicleta.setDisponible(false);
 				
-				repositorioIncidencia.add(incidencia); //Guardar la incidencia en la BD
+				repositorioIncidencia.add(incidencia); 
 			}
 		
 		} catch (EntidadNoEncontrada | RepositorioException e ) {
 			e.printStackTrace();
 		} 
 	}
-
-	@Override
-	public List<Incidencia> getIncidenciasAbiertas() {
-		List<Incidencia> incidencias = new ArrayList<Incidencia>();
 	
-		try {
-			for (Incidencia i: repositorioIncidencia.getAll()) {
-				if (i.getEstado() == EstadoIncidencia.PENDIENTE) {
-					incidencias.add(i);
-				}
-			}
-		} catch (RepositorioException e) {
-			e.printStackTrace();
-		}
-		
-		return incidencias;
-	}
+    private void cancelarIncidencia(Incidencia incidencia, String motivoCierre) {
+        incidencia.setEstado(EstadoIncidencia.CANCELADA);
+        incidencia.setFechaFin(LocalDate.now());
+        incidencia.getBicicleta().setDisponible(true);
+        incidencia.getBicicleta().setMotivo(motivoCierre);
+    }
+
+    private void asignarIncidencia(Incidencia incidencia, String operarioAsignado) {
+    	incidencia.setEstado(EstadoIncidencia.ASIGNADA);
+		incidencia.setOperarioAsignado(operarioAsignado);
+		incidencia.getBicicleta().setDisponible(false);
+		servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId()); 
+	
+     }
+
+    private void resolverIncidencia(Incidencia incidencia, String motivoCierre, boolean isReparada) {
+    	incidencia.setEstado(EstadoIncidencia.RESUELTA);
+		incidencia.getBicicleta().setMotivo(motivoCierre);
+		incidencia.setFechaFin(LocalDate.now());
+		if (isReparada) {
+			servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId(), null); 
+			incidencia.getBicicleta().setDisponible(true);								
+		}else 
+			servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(), motivoCierre);
+    }
 	
 	@Override
 	public void gestionIncidencias(Usuario usuario, String motivoCierre, String operarioAsignado, boolean isReparada) {
-		try {
-			if (usuario.esAdministrador()) {  //sólo el administrador es el que puede gestionar las incidencias
-				for (Incidencia i : repositorioIncidencia.getAll()) {
-					switch (i.getEstado()) {
-						case PENDIENTE:
-							if(motivoCierre!=null) {
-								i.setEstado(EstadoIncidencia.CANCELADA);
-								i.setFechaFin(LocalDate.now());
-								i.getBicicleta().setDisponible(true);
-								i.getBicicleta().setMotivo(motivoCierre);
-								
-							}else {
-								i.setEstado(EstadoIncidencia.ASIGNADA);
-								i.setOperarioAsignado(operarioAsignado);
-								i.getBicicleta().setDisponible(false);
-								servicioEstaciones.retirarBicicleta(i.getBicicleta().getId()); //TODO
-							}
-							break;
-						case ASIGNADA:
-								i.setEstado(EstadoIncidencia.RESUELTA);
-								i.getBicicleta().setMotivo(motivoCierre);
-								if (isReparada) {
-									servicioEstaciones.estacionarBicicleta(i.getBicicleta().getId(), null); //TODO 
-									i.getBicicleta().setDisponible(true);								
-								}else 
-									servicioEstaciones.darBajaBicicleta(i.getBicicleta().getId(), motivoCierre); //TODO
-											
-							break;
-					default:
-						break;		
+		
+			try {
+				if (usuario.esAdministrador()) {  
+					for (Incidencia i : repositorioIncidencia.getAll()) {
+						
+						if(i.getEstado()== EstadoIncidencia.PENDIENTE) {
+
+								if(motivoCierre!=null) 
+									cancelarIncidencia(i, motivoCierre);
+								else 
+									asignarIncidencia(i, operarioAsignado);
+
+						}
+						else if (i.getEstado()== EstadoIncidencia.ASIGNADA)
+							resolverIncidencia(i, motivoCierre, isReparada);
 					}
 				}
+			} catch (RepositorioException e) {
+					e.printStackTrace();
 			}
-		} catch (RepositorioException e) {
-			e.printStackTrace();
-		}
-		
-		
 	}
 
-
-
-
+	@Override
+	public List<Incidencia> getIncidenciasAbiertas() {
+		
+		
+		return repositorioIncidencia.getIncidenciasAbiertas();
+	}
+	
 }

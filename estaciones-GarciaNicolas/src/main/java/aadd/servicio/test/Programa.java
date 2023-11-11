@@ -6,6 +6,8 @@ import aadd.modelo.ResumenSitioTuristico;
 import aadd.repositorio.RepositorioEstacionesMemoria;
 import aadd.servicios.IServicioEstaciones;
 import aadd.servicios.ISitiosTuristicos;
+import aadd.servicios.ServicioEstacionesException;
+import aadd.servicios.ServicioSitiosTuristicosException;
 import aadd.servicios.SitiosTuristicosGeoNames;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
@@ -17,7 +19,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 		public class Programa {
-		    public static void main(String[] args) throws ParserConfigurationException {
+		    public static void main(String[] args) throws ServicioSitiosTuristicosException, ServicioEstacionesException {
 		        try {
 		            RepositorioEstacionesMemoria rep = new RepositorioEstacionesMemoria();
 

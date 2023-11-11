@@ -37,6 +37,10 @@ public class Bicicleta implements Identificable {
     fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Alquiler> historial;
     
+    @OneToMany(mappedBy = "bicicleta",
+    fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Incidencia> incidencias;
+    
     private boolean isDisponible;
     
     
@@ -79,6 +83,12 @@ public class Bicicleta implements Identificable {
 	}
 	public void setHistorial(List<Alquiler> historial) {
 		this.historial = historial;
+	}
+	public List<Incidencia> getIncidencias() {
+		return incidencias;
+	}
+	public void setIncidencias(List<Incidencia> incidencias) {
+		this.incidencias = incidencias;
 	}
     public boolean isDisponible() {
 		return isDisponible;
