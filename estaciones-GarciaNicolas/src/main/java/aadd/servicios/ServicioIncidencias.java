@@ -11,14 +11,17 @@ import aadd.modelo.Usuario;
 import aadd.repositorio.RepositorioBicicletasJPA;
 import aadd.repositorio.RepositorioIncidenciasJPA;
 import repositorio.EntidadNoEncontrada;
+import repositorio.FactoriaRepositorios;
+import repositorio.Repositorio;
 import repositorio.RepositorioException;
 import servicio.FactoriaServicios;
 
 public class ServicioIncidencias implements IServicioIncidencias {
 	
-	private RepositorioBicicletasJPA repositorioBicicleta;   //TODO private Repositorio<Bicicleta, String> repositorioBicicleta = FactoriaRepositorios.getRepositorio(Bicicleta.class); 	
-	private RepositorioIncidenciasJPA repositorioIncidencia; //TODO private Repositorio<Incidencia, String> repositorioIncidencia = FactoriaRepositorios.getRepositorio(Incidencia.class); 
+	Repositorio<Bicicleta, String> repositorioBicicleta = FactoriaRepositorios.getRepositorio(Bicicleta.class); 	
 	private IServicioEstaciones servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+	private RepositorioIncidenciasJPA repositorioIncidencia; //TODO private Repositorio<Incidencia, String> repositorioIncidencia = FactoriaRepositorios.getRepositorio(Incidencia.class); 
+	
 	@Override
 	public void crearIncidencia(String idbicicleta, String descripcion) {
 		Bicicleta bicicleta;
@@ -92,8 +95,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 	@Override
 	public List<Incidencia> getIncidenciasAbiertas() {
-		
-		
 		return repositorioIncidencia.getIncidenciasAbiertas();
 	}
 	
