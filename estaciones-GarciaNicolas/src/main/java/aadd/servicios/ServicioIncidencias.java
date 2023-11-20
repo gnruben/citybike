@@ -1,47 +1,54 @@
 package aadd.servicios;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import aadd.modelo.Bicicleta;
 import aadd.modelo.EstadoIncidencia;
 import aadd.modelo.Incidencia;
 import aadd.modelo.Usuario;
-import aadd.repositorio.RepositorioBicicletasJPA;
-import aadd.repositorio.RepositorioIncidenciasJPA;
+import aadd.repositorio.IRepositorioBicicletasAdHoc;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio;
 import repositorio.RepositorioException;
 import servicio.FactoriaServicios;
 
 public class ServicioIncidencias implements IServicioIncidencias {
 	
-	Repositorio<Bicicleta, String> repositorioBicicleta = FactoriaRepositorios.getRepositorio(Bicicleta.class); 	
+	private IRepositorioBicicletasAdHoc repositorioBicicleta = FactoriaRepositorios.getRepositorio(Bicicleta.class); 	
 	private IServicioEstaciones servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
-	private RepositorioIncidenciasJPA repositorioIncidencia; //TODO private Repositorio<Incidencia, String> repositorioIncidencia = FactoriaRepositorios.getRepositorio(Incidencia.class); 
+
 	
+	/**
+	 * Crear una incidencia en una bicicleta. Esta operación recibe el identificador de la bicicleta y 
+	 * una descripción de la incidencia. La incidencia se crea con estado pendiente y la aplicación 
+	 * establece su fecha de creación y un código identificador. La bici se considera no disponible.
+	 *  
+	 *  @param idBicicleta: Identificador de la Bicicleta.
+	 *  @param descripcion: Descripción de la Incidencia.
+	 */
 	@Override
-	public void crearIncidencia(String idbicicleta, String descripcion) {
+	public void crearIncidencia(String idBicicleta, String descripcion) {
 		Bicicleta bicicleta;
 		try {
-			bicicleta = repositorioBicicleta.getById(idbicicleta);
+			bicicleta = repositorioBicicleta.getById(idBicicleta);
 			if(bicicleta != null){
 				Incidencia incidencia = new Incidencia();
 				incidencia.setBicicleta(bicicleta);
 				incidencia.setDescripcion(descripcion);
 				incidencia.setFechaInicio(LocalDate.now());
 				incidencia.setEstado(EstadoIncidencia.PENDIENTE);
+				bicicleta.addIncidencia(incidencia); //TODO
 				bicicleta.setDisponible(false);
 				
-				repositorioIncidencia.add(incidencia); 
+				//repositorioIncidencia.add(incidencia); 
 			}
 		
 		} catch (EntidadNoEncontrada | RepositorioException e ) {
 			e.printStackTrace();
 		} 
 	}
+	
 	
     private void cancelarIncidencia(Incidencia incidencia, String motivoCierre) {
         incidencia.setEstado(EstadoIncidencia.CANCELADA);
@@ -52,7 +59,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
     private void asignarIncidencia(Incidencia incidencia, String operarioAsignado) {
     	incidencia.setEstado(EstadoIncidencia.ASIGNADA);
-		incidencia.setOperarioAsignado(operarioAsignado);
+		incidencia.setIdOperarioAsignado(operarioAsignado);
 		incidencia.getBicicleta().setDisponible(false);
 		servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId()); 
 	
@@ -69,23 +76,32 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(), motivoCierre);
     }
 	
+    /**
+	 * Gestión de incidencias. Esta funcionalidad permite cambiar el estado de las incidencias y 
+	 * gestionarlas. La gestión dependerá del estado de la incidencia.
+
+	 *  @param usuario: Usuario que hace la gestión. Debe ser el Administrador.
+	 *  @param movitoCierre: En caso de que se cancela o para resolver la incidencia, se indica el motivo del cierre de la incidencia.
+	 *  @param operarioAsignado: En caso de que la incidencia será asignada, se indica el identificador del operario al que le fue asignada.
+	 *  @param isReparada: En caso de que la incidencia será resultada, se necesita saber si se ha reparado o no la bicicleta.
+	 */
 	@Override
-	public void gestionIncidencias(Usuario usuario, String motivoCierre, String operarioAsignado, boolean isReparada) {
+	public void gestionIncidencias(Usuario usuario, String motivoCierre, String idOperarioAsignado, boolean isReparada) {
 		
 			try {
 				if (usuario.esAdministrador()) {  
-					for (Incidencia i : repositorioIncidencia.getAll()) {
-						
-						if(i.getEstado()== EstadoIncidencia.PENDIENTE) {
-
+					for (Bicicleta b: repositorioBicicleta.getAll())
+						for (Incidencia i : b.getIncidencias()){ // repositorioBicicleta.getIncidenciaByBicicleta(b.getId())) {
+							
+							if(i.getEstado() == EstadoIncidencia.PENDIENTE) {
+								
 								if(motivoCierre!=null) 
 									cancelarIncidencia(i, motivoCierre);
 								else 
-									asignarIncidencia(i, operarioAsignado);
-
-						}
-						else if (i.getEstado()== EstadoIncidencia.ASIGNADA)
-							resolverIncidencia(i, motivoCierre, isReparada);
+									asignarIncidencia(i, idOperarioAsignado);
+							}
+							else if (i.getEstado() == EstadoIncidencia.ASIGNADA)
+								resolverIncidencia(i, motivoCierre, isReparada);
 					}
 				}
 			} catch (RepositorioException e) {
@@ -93,9 +109,13 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			}
 	}
 
+	/**
+	 * Recuperar incidencias abiertas. Esta operación devolverá un listado de incidencias que no 
+	 * hayan sido cerradas.
+	 */
 	@Override
 	public List<Incidencia> getIncidenciasAbiertas() {
-		return repositorioIncidencia.getIncidenciasAbiertas();
+		return repositorioBicicleta.getIncidenciasPendientes();
 	}
 	
 }

@@ -41,10 +41,12 @@ public class Bicicleta implements Identificable {
     fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Incidencia> incidencias;
     
+    @Column(name="isDisponible")
     private boolean isDisponible;
     
     
     // Getters and setters
+    
     @Override
 	public String getId() {
 		return id;
@@ -97,10 +99,27 @@ public class Bicicleta implements Identificable {
 		this.isDisponible = isDisponible;
 	}
     
+    public void addIncidencia(Incidencia incidencia) { //TODO para no tener incidencias con mismo id acumuladas
+    	
+    	for(Incidencia i: this.incidencias) {
+    		if (i.getId() == (incidencia.getId()))
+    			return;
+    	}
+    	this.incidencias.add(incidencia);
+    }
+    
+    public void removeIncidencia(Incidencia incidencia) { //TODO
+    	for(Incidencia i: this.incidencias) {
+    		if(i.getId() == incidencia.getId())
+    			this.incidencias.remove(i);
+    	}
+    }
+    
+    
 	@Override
 	public String toString() {
 		return "Bicicleta [id=" + id + ", modelo=" + modelo + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja
-				+ ", motivo=" + motivo + ", historial=" + historial + ", isDisponible=" + isDisponible + "]";
+				+ ", motivo=" + motivo + ", historial=" + historial + ", isDisponible=" + isDisponible + ", incidencias=" + incidencias + "]";
 	}
 	
 }

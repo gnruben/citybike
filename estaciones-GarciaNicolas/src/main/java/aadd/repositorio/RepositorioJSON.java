@@ -19,7 +19,6 @@ import repositorio.RepositorioString;
 
 public abstract class RepositorioJSON<T extends Identificable> implements RepositorioString<T>{
     private final static String raiz = "./json/";
-    //private Jsonb jsonb = JsonbBuilder.create();
 
     public RepositorioJSON() {}
 
@@ -30,9 +29,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
         try {
 			guardarEnJSON(ruta, entity);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 	        throw new RepositorioException("Error de repositorio add: " + entity.getId());
-
 		}
 		return entity.getId();
     }
@@ -42,15 +39,12 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
     	String ruta = raiz+id+".json";
     	T elemento = null;
     	try {
-    		
     		 elemento = cargarDesdeJSON(ruta);
 		} catch (IOException e) {
 	        throw new EntidadNoEncontrada("Elemento no encontrado con el siguiente id : " + id);
-
 		}
     	
     	return elemento;
-	
     }
 
     @Override
@@ -59,8 +53,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
     	File carpeta = new File("./json/") ;
     	T t;
     	try {
-    		for( File f : carpeta.listFiles()) {
-        		
+    		for( File f : carpeta.listFiles()) {        		
         		t = cargarDesdeJSON(f.getPath());
         		listaElementos.add(t);
         	}
@@ -68,7 +61,6 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 	        throw new RepositorioException("Fichero no encontrado: " + carpeta);
 		}
     	
-        
     	return new ArrayList<>(listaElementos);
     }
 
@@ -89,8 +81,6 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
     		fichero.delete();
     	else
             throw new EntidadNoEncontrada("Entidad no encontrado: " + entity.getId());
-
-    
 	}
 	
     @Override
@@ -101,8 +91,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
     	for( File f : carpeta.listFiles()) {
 			String i = f.getName().replace(".json", "");
 			listaIdElementos.add(i);
-		}
-        
+		} 
     	return listaIdElementos;
 	}
 
@@ -119,10 +108,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 	    		.create()
 	    		.withConfig(config)
 	    		.build();
-	        
-	     
-	     T elemento =  (T) contexto.fromJson(new FileReader(ruta), getClase()); //TODO
-	    
+	    T elemento =  (T) contexto.fromJson(new FileReader(ruta), getClase()); //TODO	    
 	    return elemento;	   
     }
 
@@ -139,9 +125,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 				.build();
 	
 		FileWriter writer = new FileWriter(ruta);
-
-		contexto.toJson(entity, writer);
-       
+		contexto.toJson(entity, writer);     
     }
 	
     protected abstract Class<?> getClase();

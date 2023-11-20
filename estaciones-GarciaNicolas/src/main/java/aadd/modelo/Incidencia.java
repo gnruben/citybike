@@ -28,10 +28,11 @@ public class Incidencia implements Identificable{
 	private String descripcion;
 	
 	@Enumerated
+	@Column(name="estado")
 	private EstadoIncidencia estado;
 	
-	@Column(name="operarioAsignado")
-	private String operarioAsignado;
+	@Column(name="idOperarioAsignado")
+	private String idOperarioAsignado;
 	
 	@ManyToOne
 	@Column(name="bicicleta")
@@ -70,11 +71,11 @@ public class Incidencia implements Identificable{
 		this.estado = estado;
 	}
 	
-	public String getOperarioAsignado() {
-		return operarioAsignado;
+	public String getIdOperarioAsignado() {
+		return idOperarioAsignado;
 	}
-	public void setOperarioAsignado(String operarioAsignado) {
-		this.operarioAsignado = operarioAsignado;
+	public void setIdOperarioAsignado(String idOperarioAsignado) {
+		this.idOperarioAsignado = idOperarioAsignado;
 	}
 	
 	public Bicicleta getBicicleta() {
