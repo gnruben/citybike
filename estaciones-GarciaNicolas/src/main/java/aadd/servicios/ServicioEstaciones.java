@@ -10,6 +10,7 @@ import aadd.modelo.Bicicleta;
 import aadd.modelo.Estacion;
 import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
+import aadd.repositorio.IRepositorioEstacionesAdHoc;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
@@ -135,6 +136,13 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	}
 //############################################  BICICLETAS  ###################################
 
+	/**
+	 * con la información de modelo de la bicicleta y estación en la que se
+aparca. La aplicación proporcionará un identificador único a la bici (código) y
+ establecerá automáticamente la fecha de alta. La operación retorna el identificador de
+  la bici creada. Esta bici se considera disponible (para creación de incidencias,
+   alquiler, etc.) y ocupa sitio en la estación (se estaciona).
+	 * */
 	@Override
 	public String altaBicicleta(String modelo, Estacion e) throws ServicioEstacionesException {
 
@@ -156,13 +164,23 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		return id;
 	}
 
-
+	/**
+	 * Esta operación recibe como parámetro el identificador de la bici y
+	opcionalmente el identificador de una estación. Establece la estación para la bici y
+	 crea un nuevo registro en el histórico de estacionamiento para
+	  esa bici en esa estación, estableciendo en dicho histórico automáticamente 
+	  la fecha de inicio.
+	 Si el método no recibe ninguna estación, se realiza la misma funcionalidad 
+	 realizando previamente la búsqueda de una estación con puestos libres para
+	  estacionar la bicicleta.
+	 * */
 	@Override
 	public void estacionarBicicleta(String idBicicleta) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
 
 	@Override
 	public void estacionarBicicleta(String idBicicleta, String idEstacion) {
@@ -170,7 +188,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		
 	}
 
-
+/**
+ * Esta operación recibe como parámetro el identificador de una bici que
+está estacionada y procede a quitarla de la estación. Además,
+ actualiza el registro histórico para esa bici y 
+ estación estableciendo automáticamente la fecha de fin.
+ * */
 	@Override
 	public void retirarBicicleta(String idBicicleta) {
 		// TODO Auto-generated method stub
@@ -178,24 +201,41 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	}
 
 
+	/**
+	 * Esta operación recibe como parámetro el identificador de la bici y
+el motivo de baja. Establece automáticamente la fecha de baja. 
+Esta bici se considera no disponible y ya no ocupa sitio en la estación 
+(se retira de la estación).
+	 * */
 	@Override
 	public void darBajaBicicleta(String idBicicleta, String motivoBaja) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
+/**
+ * Esta operación recibirá unas coordenadas y devolverá las bicicletas aparcadas y 
+ * disponibles en las tres estaciones más cercanas a dichas coordenadas.
+ * */
 	@Override
 	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Bicicleta> list=new LinkedList<Bicicleta>();
+		//TODO 
+		//((IRepositorioEstacionesAdHoc)repositorio).getEstacionesCercanasA(lat, lng);
+		
+		
+		return list;
 	}
 
+	/**
+	 * Esta operación devuelve un listado de las estaciones ordenado de mayor a 
+	 * menor número de sitios turísticos que tengan cerca.
+	 * */
 
 	@Override
 	public List<Estacion> getEstacionesTuristicas() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Estacion> list=new LinkedList<Estacion>();
+		return list*;
 	}
 
 	
