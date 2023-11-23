@@ -1,11 +1,9 @@
 package aadd.modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
-
 import repositorio.Identificable;
 
 public class Estacion implements Identificable {
@@ -16,12 +14,11 @@ public class Estacion implements Identificable {
 	private double latitud;
 	private double longitud;
 	private LocalDateTime fechaAlta;
-	private List<SitioTuristico> sitiosTuristicos=new LinkedList<SitioTuristico>();
+	private List<SitioTuristico> sitiosTuristicos; //= new LinkedList<SitioTuristico>();
 	
 	public Estacion() {
 		//this.id = UUID.randomUUID().toString();
-		
-		
+	
 	}
 	
 	public Estacion(String nombre, int numeroPuestos, String direccionPostal, double latitud, double longitud) {
@@ -31,7 +28,8 @@ public class Estacion implements Identificable {
         this.direccionPostal = direccionPostal;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.sitiosTuristicos = new ArrayList<>();
+        this.fechaAlta = LocalDateTime.now();
+        this.sitiosTuristicos = new ArrayList<SitioTuristico>();
     }
 	
 	public String getId() {

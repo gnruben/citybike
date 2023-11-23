@@ -61,9 +61,9 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		
 		String queryString = "SELECT DISTINCT i "
-				+ " FROM Bicicleta b "
-				+ " INNER JOIN b.incidencias i "
-				+ " WHERE i.estado = :estadoPendiente";
+							+ " FROM Bicicleta b "
+							+ " INNER JOIN b.incidencias i "
+							+ " WHERE i.estado = :estadoPendiente";
 		
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
         query.setParameter("estadoPendiente", EstadoIncidencia.PENDIENTE);

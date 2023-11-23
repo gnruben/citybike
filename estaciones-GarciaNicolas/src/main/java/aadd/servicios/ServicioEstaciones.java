@@ -33,28 +33,25 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		if (numeroPuestos < 1)
 			throw new IllegalArgumentException("El número de puestos no puede ser menor que 1");
 
-		Estacion estacion=new Estacion();
-		estacion.setNombre(nombre);
-		estacion.setNumeroPuestos(numeroPuestos);
-		estacion.setLatitud(lat);
-		estacion.setLongitud(lng);
-		estacion.setFechaAlta(LocalDateTime.now());
+		Estacion estacion= new Estacion(nombre, numeroPuestos, postalcode, lat, lng);
+//		estacion.setNombre(nombre);
+//		estacion.setNumeroPuestos(numeroPuestos);
+//		estacion.setLatitud(lat);
+//		estacion.setLongitud(lng);
+//		estacion.setFechaAlta(LocalDateTime.now());
 
 		
 		String id;
 		try {
 			id = repositorio.add(estacion);
 		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
 			throw new ServicioEstacionesException("No se pudo crear la estación");
 		}
 		return id;
 	}
 
-
 	@Override
 	public void eliminar(String id) throws ServicioEstacionesException{
-		// TODO Auto-generated method stub
 		Estacion estacion;
 		try {
 			estacion = repositorio.getById(id);
@@ -70,11 +67,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	}
 
-
-
 	@Override
 	public Estacion getEstacion(String id)  throws ServicioEstacionesException{
-		// TODO Auto-generated method stub
 		Estacion estacion=null;
 		try {
 			estacion = repositorio.getById(id);
@@ -88,8 +82,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		
 		return estacion;
 	}
-
-
 
 	@Override
 	public List<SitioTuristico> getSitiosTuristicos(String id) throws ServicioEstacionesException{
@@ -112,17 +104,13 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 			throw new ServicioEstacionesException("Un error en el repositorio no permitió obtener los sitios turísticos");
 		} catch (EntidadNoEncontrada e) {
-
 			throw new ServicioEstacionesException("Error: No se encontro la estación");
 		} catch (ServicioSitiosTuristicosException e) {
 			throw new ServicioEstacionesException("Error en el servicio de sitios turísticos");
 		}
 
 		return stList;
-		
 	}
-
-
 
 	@Override
 	public void setSitiosTuristicos(String id, List<SitioTuristico> sitios)
@@ -134,20 +122,24 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		estacion.setSitiosTuristicos(sitios);
 		repositorio.update(estacion);
 	}
+	
 //############################################  BICICLETAS  ###################################
 
 	/**
-	 * con la información de modelo de la bicicleta y estación en la que se
-aparca. La aplicación proporcionará un identificador único a la bici (código) y
- establecerá automáticamente la fecha de alta. La operación retorna el identificador de
-  la bici creada. Esta bici se considera disponible (para creación de incidencias,
-   alquiler, etc.) y ocupa sitio en la estación (se estaciona).
-	 * */
+	 * con la información de modelo de la bicicleta y estación en la que se 
+	 * aparca. La aplicación proporcionará un identificador único a la bici (código) y 
+	 * establecerá automáticamente la fecha de alta. La operación retorna el identificador de 
+	 * la bici creada. Esta bici se considera disponible (para creación de incidencias,
+	 * alquiler, etc.) y ocupa sitio en la estación (se estaciona).
+	 * 
+	 * @param modelo, el modelo de la bicicleta que se quiere dar de alta.
+	 * @param e , Estación en la que se quiere dar de alta la bicicleta.
+	 */
 	@Override
 	public String altaBicicleta(String modelo, Estacion e) throws ServicioEstacionesException {
 
 
-		Bicicleta b=new Bicicleta();
+		Bicicleta b= new Bicicleta();
 		b.setModelo(modelo);
 		b.setFechaAlta(LocalDate.now());
 		
@@ -157,7 +149,6 @@ aparca. La aplicación proporcionará un identificador único a la bici (código
 			id = repositorioBicicletas.add(b);
 			estacionarBicicleta(id, e.getId());
 		} catch (RepositorioException e1) {
-			// TODO Auto-generated catch block
 			throw new ServicioEstacionesException("No se pudo dar de alta a la bicicleta");
 		}
 		
@@ -177,6 +168,7 @@ aparca. La aplicación proporcionará un identificador único a la bici (código
 	@Override
 	public void estacionarBicicleta(String idBicicleta) {
 		// TODO Auto-generated method stub
+		
 		
 	}
 

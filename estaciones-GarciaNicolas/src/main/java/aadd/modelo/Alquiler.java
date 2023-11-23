@@ -10,15 +10,23 @@ import repositorio.Identificable;
 public class Alquiler implements Identificable{
 
 	private String id;
-	private Usuario usuario; 
+	private Usuario usuario; // TODO
     private Estacion estacionInicio; 
-    private LocalDate horaInicio; 
-    private Estacion estacionFin; 
-    private LocalDate horaFin;
+    private LocalDate fechaInicio; 
+    private Estacion estacionFin;  // TODO
+    private LocalDate fechaFin;
+    
     @ManyToOne
 	@JoinColumn(name="bicicleta_fk")
     private Bicicleta bicicleta;
     
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id=id;
+	}
     
 	public Usuario getUsuario() {
 		return usuario;
@@ -32,11 +40,11 @@ public class Alquiler implements Identificable{
 	public void setEstacionInicio(Estacion estacionInicio) {
 		this.estacionInicio = estacionInicio;
 	}
-	public LocalDate getHoraInicio() {
-		return horaInicio;
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
 	}
-	public void setHoraInicio(LocalDate horaInicio) {
-		this.horaInicio = horaInicio;
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
 	public Estacion getEstacionFin() {
 		return estacionFin;
@@ -44,11 +52,11 @@ public class Alquiler implements Identificable{
 	public void setEstacionFin(Estacion estacionFin) {
 		this.estacionFin = estacionFin;
 	}
-	public LocalDate getHoraFin() {
-		return horaFin;
+	public LocalDate getFechaFin() {
+		return fechaFin;
 	}
-	public void setHoraFin(LocalDate horaFin) {
-		this.horaFin = horaFin;
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
 	} 
      public Bicicleta getBicicleta() {
 		return bicicleta;
@@ -56,17 +64,7 @@ public class Alquiler implements Identificable{
      public void setBicicleta(Bicicleta bicicleta) {
 		this.bicicleta = bicicleta;
 	}
-	@Override
-	public String getId() {
-		// TODO Auto-generated method stub
-		return id;
-	}
-	@Override
-	public void setId(String id) {
-		// TODO Auto-generated method stub
-		this.id=id;
-	}
-    
+
     
 
 	

@@ -2,6 +2,7 @@ package aadd.servicios;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import aadd.modelo.Bicicleta;
 import aadd.modelo.EstadoIncidencia;
@@ -28,52 +29,64 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	 *  @param descripcion: Descripción de la Incidencia.
 	 */
 	@Override
-	public void crearIncidencia(String idBicicleta, String descripcion) {
-		Bicicleta bicicleta;
+	public String crearIncidencia(String idBicicleta, String descripcion) throws BicicletaNotFoundException{
+		if (idBicicleta == null || idBicicleta.isEmpty())
+			throw new IllegalArgumentException("El id de la bicicleta, que se quiere asignarle una incidencia, no puede ser nulo ni vacío");
+		if (descripcion == null || descripcion.isEmpty())
+			throw new IllegalArgumentException("Tiene que haber una descripción de la incidencia que se ha detectado en la bicicleta");
+	
+		String id = null;
 		try {
-			bicicleta = repositorioBicicleta.getById(idBicicleta);
+			Bicicleta bicicleta = repositorioBicicleta.getById(idBicicleta);
 			if(bicicleta != null){
 				Incidencia incidencia = new Incidencia();
+				incidencia.setId(UUID.randomUUID().toString());  //ID
 				incidencia.setBicicleta(bicicleta);
 				incidencia.setDescripcion(descripcion);
 				incidencia.setFechaInicio(LocalDate.now());
 				incidencia.setEstado(EstadoIncidencia.PENDIENTE);
 				bicicleta.addIncidencia(incidencia); //TODO
+				
+				repositorioBicicleta.update(bicicleta); //TODO
 				bicicleta.setDisponible(false);
 				
 				//repositorioIncidencia.add(incidencia); 
+				
+				id = incidencia.getId();
 			}
 		
 		} catch (EntidadNoEncontrada | RepositorioException e ) {
-			e.printStackTrace();
-		} 
+			throw new BicicletaNotFoundException("Bicicleta no encontrada con ID: " + idBicicleta);
+		}
+		
+		return id;
 	}
 	
 	
-    private void cancelarIncidencia(Incidencia incidencia, String motivoCierre) {
+    private void cancelarIncidencia(Incidencia incidencia) {
         incidencia.setEstado(EstadoIncidencia.CANCELADA);
         incidencia.setFechaFin(LocalDate.now());
         incidencia.getBicicleta().setDisponible(true);
-        incidencia.getBicicleta().setMotivo(motivoCierre);
+        incidencia.getBicicleta().setMotivo(incidencia.getDescripcion());
     }
 
-    private void asignarIncidencia(Incidencia incidencia, String operarioAsignado) {
+    private void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado) {
     	incidencia.setEstado(EstadoIncidencia.ASIGNADA);
-		incidencia.setIdOperarioAsignado(operarioAsignado);
+		incidencia.setIdOperarioAsignado(idOperarioAsignado);
 		incidencia.getBicicleta().setDisponible(false);
 		servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId()); 
 	
      }
 
-    private void resolverIncidencia(Incidencia incidencia, String motivoCierre, boolean isReparada) {
+    private void resolverIncidencia(Incidencia incidencia, boolean isReparada) {
     	incidencia.setEstado(EstadoIncidencia.RESUELTA);
-		incidencia.getBicicleta().setMotivo(motivoCierre);
+		incidencia.getBicicleta().setMotivo(incidencia.getDescripcion());
 		incidencia.setFechaFin(LocalDate.now());
 		if (isReparada) {
-			servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId(), null); 
+			servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId()); 
 			incidencia.getBicicleta().setDisponible(true);								
 		}else 
-			servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(), motivoCierre);
+			servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(), incidencia.getDescripcion());
     }
 	
     /**
@@ -96,12 +109,12 @@ public class ServicioIncidencias implements IServicioIncidencias {
 							if(i.getEstado() == EstadoIncidencia.PENDIENTE) {
 								
 								if(motivoCierre!=null) 
-									cancelarIncidencia(i, motivoCierre);
+									cancelarIncidencia(i);
 								else 
 									asignarIncidencia(i, idOperarioAsignado);
 							}
 							else if (i.getEstado() == EstadoIncidencia.ASIGNADA)
-								resolverIncidencia(i, motivoCierre, isReparada);
+								resolverIncidencia(i, isReparada);
 					}
 				}
 			} catch (RepositorioException e) {
