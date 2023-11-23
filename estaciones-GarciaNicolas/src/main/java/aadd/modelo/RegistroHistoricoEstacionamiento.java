@@ -2,14 +2,21 @@ package aadd.modelo;
 
 import java.time.LocalDate;
 
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
 import repositorio.Identificable;
 
 public class RegistroHistoricoEstacionamiento implements Identificable{
+	@BsonId
+	@BsonRepresentation(BsonType.OBJECT_ID)
 	private String id;
 	private String idBici;
 	private String idEstacion;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
+	
 	@Override
 	public String getId() {
 		// TODO Auto-generated method stub

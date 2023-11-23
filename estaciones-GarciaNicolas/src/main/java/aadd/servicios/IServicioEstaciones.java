@@ -18,10 +18,10 @@ public interface IServicioEstaciones {
 	
 //##################### Bicicletas ########################
 	String altaBicicleta(String modelo, Estacion e) throws ServicioEstacionesException;
-	void estacionarBicicleta(String idBicicleta);
-	void estacionarBicicleta(String idBicicleta, String idEstacion);
-	void retirarBicicleta(String idBicicleta);
-	void darBajaBicicleta(String idBicicleta, String motivoBaja);
+	void estacionarBicicleta(String idBicicleta) throws ServicioEstacionesException;
+	void estacionarBicicleta(String idBicicleta, String idEstacion) throws ServicioEstacionesException;
+	void retirarBicicleta(String idBicicleta) throws ServicioEstacionesException;
+	void darBajaBicicleta(String idBicicleta, String motivoBaja) throws ServicioEstacionesException;
 
 	List<Bicicleta> getBicisEstacionadasCerca(double lat,double lng);
 	List<Estacion> getEstacionesTuristicas();

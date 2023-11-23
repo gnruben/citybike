@@ -1,19 +1,22 @@
 package aadd.repositorio;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import com.mongodb.MongoClientSettings;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
-import aadd.modelo.Alquiler;
 import aadd.modelo.RegistroHistoricoEstacionamiento;
 import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
@@ -63,14 +66,39 @@ implements IRepositorioHistorialEstacionamientoAdHoc{
 		return null;
 	}
 	@Override
+	public RegistroHistoricoEstacionamiento getUltimoRegistroByIdBici(String idBici) throws RepositorioException {
+		Document query=Document.parse("{idBici:"+idBici+",fechaFin:{$exists:false}}");
+		FindIterable<RegistroHistoricoEstacionamiento> resultados =getCollection().find(query);
+		MongoCursor<RegistroHistoricoEstacionamiento> it=resultados.iterator();
+		RegistroHistoricoEstacionamiento rh;
+		if(it.hasNext()) {
+			 rh=it.next();
+			 return rh;
+		}else {
+			throw new RepositorioException("Error del repositorio");
+		}
+
+
+		
+		
+	}
+	@Override
 	public List<String> getIdBicisByIdEstacion(String idEstacion) {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> listaIds=new LinkedList<String>();
+		Document query=Document.parse("{idEstacion:"+idEstacion+",fechaFin:{$exists:false}}");
+		FindIterable<RegistroHistoricoEstacionamiento> resultados =getCollection().find(query);
+		MongoCursor<RegistroHistoricoEstacionamiento> it=resultados.iterator();
+		while( it.hasNext()) {
+			listaIds.add(it.next().getIdBici());
+		}
+		return listaIds;
 	}
 	@Override
 	public int getNumeroBicisEnEstacion(String idEstacion) {
 		// TODO Auto-generated method stub
-		return 0;
+		
+		return getIdBicisByIdEstacion(idEstacion).size();
 	}
 
+	
 }

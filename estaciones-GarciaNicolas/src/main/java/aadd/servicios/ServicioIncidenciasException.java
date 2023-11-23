@@ -6,13 +6,13 @@ package aadd.servicios;
  */
 
 @SuppressWarnings("serial")
-public class BicicletaNotFoundException extends Exception {
+public class ServicioIncidenciasException extends Exception {
 
-	public BicicletaNotFoundException(String msg, Throwable causa) {		
+	public ServicioIncidenciasException(String msg, Throwable causa) {		
 		super(msg, causa);
 	}
 	
-	public BicicletaNotFoundException(String msg) {
+	public ServicioIncidenciasException(String msg) {
 		super(msg);		
 	}
 	

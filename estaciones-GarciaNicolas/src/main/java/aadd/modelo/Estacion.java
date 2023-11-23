@@ -36,7 +36,7 @@ public class Estacion implements Identificable {
         this.direccionPostal = direccionPostal;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.fechaAlta = LocalDateTime.now();
+        
         this.sitiosTuristicos = new ArrayList<SitioTuristico>();
     }
 	

@@ -79,6 +79,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		
 		getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
 		Bson filter=Aggregates.geoNear(new Point(new Position(lng, lat)) ,null);
+		
 		//TODO
 		
 		return null;
