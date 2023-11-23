@@ -4,9 +4,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
+
 import repositorio.Identificable;
 
 public class Estacion implements Identificable {
+	@BsonId
+	@BsonRepresentation(BsonType.OBJECT_ID)
 	private String id;
 	private String nombre;
 	private int numeroPuestos;

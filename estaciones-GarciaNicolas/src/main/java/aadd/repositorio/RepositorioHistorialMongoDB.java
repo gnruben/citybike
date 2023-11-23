@@ -1,6 +1,7 @@
 package aadd.repositorio;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -13,17 +14,18 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import aadd.modelo.Alquiler;
-
+import aadd.modelo.RegistroHistoricoEstacionamiento;
 import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
 import utils.PropertiesReader;
 
-public class RepositorioHistorialMongoDB extends RepositorioMongoDB<Alquiler> {
+public class RepositorioHistorialMongoDB extends RepositorioMongoDB<RegistroHistoricoEstacionamiento> 
+implements IRepositorioHistorialEstacionamientoAdHoc{
 
 	
 	protected MongoClient mongoClient;
 	protected MongoDatabase database;
-	protected MongoCollection<Alquiler> coleccion;
+	protected MongoCollection<RegistroHistoricoEstacionamiento> coleccion;
 
 	public RepositorioHistorialMongoDB() throws RepositorioException {
 		PropertiesReader properties;
@@ -43,7 +45,7 @@ public class RepositorioHistorialMongoDB extends RepositorioMongoDB<Alquiler> {
 					MongoClientSettings.getDefaultCodecRegistry(),
 					CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
-			coleccion = database.getCollection("historial", Alquiler.class).withCodecRegistry(defaultCodecRegistry);
+			coleccion = database.getCollection("historial", RegistroHistoricoEstacionamiento.class).withCodecRegistry(defaultCodecRegistry);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -51,9 +53,24 @@ public class RepositorioHistorialMongoDB extends RepositorioMongoDB<Alquiler> {
 		}
 	}
 	@Override
-	public MongoCollection<Alquiler> getCollection() {
+	public MongoCollection<RegistroHistoricoEstacionamiento> getCollection() {
 		// TODO Auto-generated method stub
 		return coleccion;
+	}
+	@Override
+	public List<RegistroHistoricoEstacionamiento> getHistorialByIdBici(String idBici) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<String> getIdBicisByIdEstacion(String idEstacion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public int getNumeroBicisEnEstacion(String idEstacion) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

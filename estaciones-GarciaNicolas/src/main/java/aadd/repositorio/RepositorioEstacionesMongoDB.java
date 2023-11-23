@@ -65,13 +65,13 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	@Override
 	public List<Estacion> getEstacionesTuristicas() {
 		List<Estacion> list = new LinkedList<Estacion>();
-		Bson project=Aggregates.project(new Document("estacion",1));
-		Bson unwind=Aggregates.unwind("$estacion");
-		Bson group=Aggregates.group("$estacion", );
-		Bson sort;
-		AggregateIterable<Estacion> resultado=getCollection().aggregate(   Arrays.asList(unwind,group,sort));
+		//Bson project=Aggregates.project(new Document("estacion",1));
+		//Bson unwind=Aggregates.unwind("$estacion");
+		//Bson group=Aggregates.group("$estacion", );
+		//Bson sort;
+		//AggregateIterable<Estacion> resultado=getCollection().aggregate(   Arrays.asList(unwind,group,sort));
 		
-		return list*;//TODO: hacer la consulta en mongoDB
+		return list;//TODO: hacer la consulta en mongoDB
 	}
 	@Override
 	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
@@ -79,8 +79,8 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		
 		getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
 		Bson filter=Aggregates.geoNear(new Point(new Position(lng, lat)) ,null);
-		//
-		*
+		//TODO
+		
 		return null;
 	}	
 

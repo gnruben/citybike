@@ -33,7 +33,7 @@ public abstract class RepositorioMongoDB<T extends Identificable> implements Rep
 		if (resultado.getMatchedCount() == 0) {
 			throw new EntidadNoEncontrada("El documento a actualizar no existe");
 		}
-		if (resultado.wasAcknowledged()) {
+		if (!resultado.wasAcknowledged()) {
 			throw new RepositorioException("El documento no se ha podido actualizar");
 		}
 	}
@@ -44,7 +44,7 @@ public abstract class RepositorioMongoDB<T extends Identificable> implements Rep
 		if (resultado.getDeletedCount() == 0) {
 			throw new EntidadNoEncontrada("El documento a actualizar no existe");
 		}
-		if (resultado.wasAcknowledged()) {
+		if (!resultado.wasAcknowledged()) {
 			throw new RepositorioException("El documento no se ha podido eliminar");
 		}
 	}

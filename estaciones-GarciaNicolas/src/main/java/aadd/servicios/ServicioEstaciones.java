@@ -8,6 +8,7 @@ import java.util.List;
 import aadd.modelo.Alquiler;
 import aadd.modelo.Bicicleta;
 import aadd.modelo.Estacion;
+import aadd.modelo.RegistroHistoricoEstacionamiento;
 import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import aadd.repositorio.IRepositorioEstacionesAdHoc;
@@ -20,7 +21,7 @@ import servicio.FactoriaServicios;
 public class ServicioEstaciones implements IServicioEstaciones {
 
 	private Repositorio<Estacion, String> repositorio = FactoriaRepositorios.getRepositorio(Estacion.class);
-	private Repositorio<Alquiler,String> repositorioHistorial=FactoriaRepositorios.getRepositorio(Alquiler.class);
+	private Repositorio<Alquiler,String> repositorioHistorial=FactoriaRepositorios.getRepositorio(RegistroHistoricoEstacionamiento.class);
 	private Repositorio<Bicicleta,String> repositorioBicicletas=FactoriaRepositorios.getRepositorio(Bicicleta.class);
 	private ISitiosTuristicos serviciosTuristicos=FactoriaServicios.getServicio(ISitiosTuristicos.class);
 	
@@ -213,7 +214,10 @@ Esta bici se considera no disponible y ya no ocupa sitio en la estación
 	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) {
 		List<Bicicleta> list=new LinkedList<Bicicleta>();
 		//TODO 
-		//((IRepositorioEstacionesAdHoc)repositorio).getEstacionesCercanasA(lat, lng);
+		List<Estacion> estaciones=((IRepositorioEstacionesAdHoc)repositorio).getEstacionesCercanasA(lat, lng);
+		
+		//TODO: obtener las bicicletas disponibles de las estaciones cercanas.
+		
 		
 		
 		return list;
@@ -227,7 +231,7 @@ Esta bici se considera no disponible y ya no ocupa sitio en la estación
 	@Override
 	public List<Estacion> getEstacionesTuristicas() {
 		List<Estacion> list=new LinkedList<Estacion>();
-		return list*;
+		return list;
 	}
 
 	
