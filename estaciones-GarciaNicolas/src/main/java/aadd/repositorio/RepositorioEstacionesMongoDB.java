@@ -33,6 +33,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	protected MongoClient mongoClient;
 	protected MongoDatabase database;
 	protected MongoCollection<Estacion> coleccion;
+	protected MongoCollection<Document> coleccionSinCodificar;
 
 	public RepositorioEstacionesMongoDB() throws RepositorioException {
 		PropertiesReader properties;
@@ -53,7 +54,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 					CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
 			coleccion = database.getCollection("estaciones", Estacion.class).withCodecRegistry(defaultCodecRegistry);
-
+			coleccionSinCodificar=database.getCollection("estaciones");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			throw new RepositorioException("No se pudo crear el repositorio");
@@ -69,20 +70,24 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		//Bson unwind=Aggregates.unwind("$estacion");
 		//Bson group=Aggregates.group("$estacion", );
 		//Bson sort;
-		//AggregateIterable<Estacion> resultado=getCollection().aggregate(   Arrays.asList(unwind,group,sort));
+		//TODO: aggregation
+		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(   Arrays.asList(unwind,group,sort));
 		
 		return list;//TODO: hacer la consulta en mongoDB
 	}
 	@Override
 	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
 		// TODO Auto-generated method stub
-		
+		List<Estacion>list=new LinkedList<Estacion>();
 		getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
-		Bson filter=Aggregates.geoNear(new Point(new Position(lng, lat)) ,null);
+		Point posicion=new Point(new Position(lng, lat));
+		//Bson filter=Aggregates.geoNear(new Point(new Position(lng, lat)) ,Aggregates.nearField());
+		Bson filter=Filters.near("ubicacion", posicion, null, null);
+		getCollection().find(filter).forEach(e->list.add(e));//recibimos el resultado y lo añadimos a la lista
 		
-		//TODO
+
 		
-		return null;
+		return list;
 	}	
 
 	@Override

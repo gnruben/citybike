@@ -9,6 +9,9 @@ import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
+import com.mongodb.client.model.geojson.codecs.GeoJsonCodecProvider;
 
 import repositorio.Identificable;
 
@@ -21,6 +24,7 @@ public class Estacion implements Identificable {
 	private String direccionPostal;
 	private double latitud;
 	private double longitud;
+	private Point ubicacion;
 	private LocalDateTime fechaAlta;
 	private List<SitioTuristico> sitiosTuristicos; //= new LinkedList<SitioTuristico>();
 	
@@ -36,10 +40,19 @@ public class Estacion implements Identificable {
         this.direccionPostal = direccionPostal;
         this.latitud = latitud;
         this.longitud = longitud;
+        ubicacion=new Point(new Position(longitud,latitud));
         
         this.sitiosTuristicos = new ArrayList<SitioTuristico>();
     }
 	
+	public Point getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(Point ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+
 	public String getId() {
 		return id;
 	}
