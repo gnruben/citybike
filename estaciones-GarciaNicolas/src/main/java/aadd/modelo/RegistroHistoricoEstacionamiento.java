@@ -19,12 +19,10 @@ public class RegistroHistoricoEstacionamiento implements Identificable{
 	
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 	@Override
 	public void setId(String id) {
-		// TODO Auto-generated method stub
 		this.id=id;
 	}
 	public String getIdBici() {
@@ -52,6 +50,9 @@ public class RegistroHistoricoEstacionamiento implements Identificable{
 		this.fechaFin = fechaFin;
 	}
 	
-	
-
+	@Override
+	public String toString() {
+		return "RegistroHistoricoEstacionamiento [id=" + id + ", idBici=" + idBici + ", idEstacion=" + idEstacion
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
 }

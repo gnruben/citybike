@@ -65,18 +65,14 @@ public abstract class RepositorioMongoDB<T extends Identificable> implements Rep
 		List<T> tlist = new LinkedList<T>();
 
 		getCollection().find().forEach(t -> tlist.add(t));
-		//TODO: cuándo se lanza RepositorioException?
 		return tlist;
 	}
 
 	@Override
 	public List<String> getIds() throws RepositorioException {
-		// TODO Auto-generated method stub
-
 		List<String> idList = new LinkedList<String>();
 
 		getCollection().find().forEach(t -> t.getId());
-		//TODO: cuándo se lanza RepositorioException?
 		return idList;
 	}
 

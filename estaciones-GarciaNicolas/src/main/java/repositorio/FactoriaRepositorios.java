@@ -28,8 +28,6 @@ public class FactoriaRepositorios {
 				e.printStackTrace(); // útil para depuración
 				
 				throw new RuntimeException("No se ha podido obtener el repositorio para la entidad: " + entidad.getName());
-			}
-			
+			}	
 	}
-	
 }

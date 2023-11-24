@@ -182,13 +182,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			}
 
 		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
 			throw new ServicioEstacionesException("Ocurrió un error en el prepositorio");
 		} catch (EntidadNoEncontrada e1) {
-			// TODO Auto-generated catch block
 			throw new ServicioEstacionesException("No se pudo encontrar ");
 		}
-
 	}
 
 	@Override
@@ -215,13 +212,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 						"La estación no tiene puestos libres, no se pudo estacionar " + idEstacion);
 			}
 		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
 			throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idEstacion);
 		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
 			throw new ServicioEstacionesException("No se pudo encontrar la estación " + idEstacion);
 		}
-
 	}
 
 	/**
@@ -251,7 +245,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 			throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + idBicicleta);
 		}
-
 	}
 
 	/**
@@ -274,7 +267,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			rh.setFechaFin(LocalDate.now());
 			repositorioHistorial.update(rh);
 			
-			
 		} catch (RepositorioException e) {
 
 			throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idBicicleta);
@@ -282,8 +274,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 			throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + idBicicleta);
 		}
-
-
 	}
 
 	/**

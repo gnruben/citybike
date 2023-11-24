@@ -88,11 +88,9 @@ public class SitioTuristico implements Identificable{
 		this.urlArticulo = urlArticulo;
 	}
 	
-	
 	@Override
 	public String toString() {
 		return "SitioTuristico [id=" + id + ", nombre=" + nombre + ", resumen=" + resumen + ", categorias=" + categorias
 				+ ", enlaces=" + enlaces + ", urlArticulo=" + urlArticulo + "]";
 	}
-
 }

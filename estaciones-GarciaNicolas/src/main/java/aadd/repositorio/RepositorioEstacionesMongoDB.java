@@ -40,15 +40,10 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 
 		try {
 			properties = new PropertiesReader("mongo.properties");
-
 			String connectionString = properties.getProperty("mongouri");
-
 			MongoClient mongoClient = MongoClients.create(connectionString);
-
 			String mongoDatabase = properties.getProperty("mongodatabase");
-
 			database = mongoClient.getDatabase(mongoDatabase);
-
 			CodecRegistry defaultCodecRegistry = CodecRegistries.fromRegistries(
 					MongoClientSettings.getDefaultCodecRegistry(),
 					CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
@@ -56,13 +51,12 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 			coleccion = database.getCollection("estaciones", Estacion.class).withCodecRegistry(defaultCodecRegistry);
 			coleccionSinCodificar=database.getCollection("estaciones");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			throw new RepositorioException("No se pudo crear el repositorio");
 		}
 	}
-/**
- * Devuelve las estaciones en orden descendente por el número de sitios turísticos 
- * */
+	/**
+	 * Devuelve las estaciones en orden descendente por el número de sitios turísticos 
+	 * */
 	@Override
 	public List<Estacion> getEstacionesTuristicas() {
 		List<Estacion> list = new LinkedList<Estacion>();
@@ -71,13 +65,13 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		//Bson group=Aggregates.group("$estacion", );
 		//Bson sort;
 		//TODO: aggregation
-		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(   Arrays.asList(unwind,group,sort));
+		//AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,sort));
 		
 		return list;//TODO: hacer la consulta en mongoDB
 	}
+
 	@Override
 	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
-		// TODO Auto-generated method stub
 		List<Estacion>list=new LinkedList<Estacion>();
 		getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
 		Point posicion=new Point(new Position(lng, lat));
@@ -85,16 +79,11 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		Bson filter=Filters.near("ubicacion", posicion, null, null);
 		getCollection().find(filter).forEach(e->list.add(e));//recibimos el resultado y lo añadimos a la lista
 		
-
-		
 		return list;
 	}	
 
 	@Override
 	public MongoCollection<Estacion> getCollection() {
-		// TODO Auto-generated method stub
 		return coleccion;
 	}
-
-
 }

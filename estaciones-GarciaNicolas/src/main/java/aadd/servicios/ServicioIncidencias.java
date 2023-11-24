@@ -7,8 +7,6 @@ import java.util.UUID;
 import aadd.modelo.Bicicleta;
 import aadd.modelo.EstadoIncidencia;
 import aadd.modelo.Incidencia;
-import aadd.modelo.Usuario;
-import aadd.repositorio.IRepositorioBicicletasAdHoc;
 import aadd.repositorio.RepositorioBicicletaAdHocJPA;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
@@ -54,9 +52,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 				repositorioBicicleta.update(bicicleta); // TODO
 				bicicleta.setDisponible(false);
-
-				// repositorioIncidencia.add(incidencia);
-
 				id = incidencia.getId();
 			}
 
@@ -70,31 +65,42 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 
 	@Override
-	public void cancelarIncidencia(Incidencia incidencia, String motivo) throws ServicioIncidenciasException {
+	public void cancelarIncidencia(Incidencia incidencia, String motivoCierre) throws ServicioIncidenciasException {
+		
+		if (incidencia == null  )
+			throw new IllegalArgumentException("Debe introducir incidencia que se quiere cancelar.");
+		if (motivoCierre == null || motivoCierre.isEmpty())
+			throw new IllegalArgumentException("Tiene que haber un motivo de cierre de la incidencia que se quiere cancelar.");
+		
 		if (incidencia.getEstado() != EstadoIncidencia.PENDIENTE)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es PENDIENTE no se puede cancelar");
 		
 		incidencia.setEstado(EstadoIncidencia.CANCELADA);
 		incidencia.setFechaFin(LocalDate.now());
+		incidencia.setMotivoCierre(motivoCierre);
 
 		incidencia.getBicicleta().setDisponible(true);
 		Bicicleta bici = incidencia.getBicicleta();
+		
 		try {
 			repositorioBicicleta.update(bici);
 		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
 			throw new ServicioIncidenciasException("Error en el repositorio de bicis");
 		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
 			throw new ServicioIncidenciasException("No se encontró la bici");
 		}
 	}
 
 	@Override
-	public void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado)
-			throws ServicioIncidenciasException {
+	public void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado) throws ServicioIncidenciasException {
+		if (incidencia == null  )
+			throw new IllegalArgumentException("Debe introducir incidencia que se le quiere asignar un operario.");
+		if (idOperarioAsignado == null || idOperarioAsignado.isEmpty())
+			throw new IllegalArgumentException("El id del Operario, al que le ha sido asignada esta incidencia, no puede ser nulo.");
+		
 		if (incidencia.getEstado() != EstadoIncidencia.PENDIENTE)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es PENDIENTE no se puede asignar");
+		
 		incidencia.setEstado(EstadoIncidencia.ASIGNADA);
 		incidencia.setIdOperarioAsignado(idOperarioAsignado);
 		
@@ -103,72 +109,41 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId());
 			
 		} catch (ServicioEstacionesException  e) {
-			// TODO Auto-generated catch block
 			throw new ServicioIncidenciasException("Error en el servicio de estaciones");
 		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
 			throw new ServicioIncidenciasException("Error en el repositorio");
 		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
 			throw new ServicioIncidenciasException("Error no se encontró la bici vinculada a la incidencia: "+incidencia.getBicicleta().getId());
 		}
-
 	}
 
 	@Override
-	public void resolverIncidencia(Incidencia incidencia, String motivo, boolean isReparada) throws ServicioIncidenciasException {
+	public void resolverIncidencia(Incidencia incidencia, String motivoCierre, boolean isReparada) throws ServicioIncidenciasException {
+		if (incidencia == null  )
+			throw new IllegalArgumentException("Debe introducir incidencia que se quiere resolver.");
+		if (motivoCierre == null || motivoCierre.isEmpty())
+			throw new IllegalArgumentException("Tiene que haber un motivo de cierre de la incidencia que se quiere resolver.");
+		if (isReparada != false && isReparada != true    )
+			throw new IllegalArgumentException("Debe indicar si la bicicleta ha sido reparada o no.");
+		
 		if (incidencia.getEstado() != EstadoIncidencia.ASIGNADA)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es ASIGNADA no se puede resolver");
-		incidencia.setEstado(EstadoIncidencia.RESUELTA);
 		
+		incidencia.setEstado(EstadoIncidencia.RESUELTA);
 		incidencia.setFechaFin(LocalDate.now());
+		incidencia.setMotivoCierre(motivoCierre);
+		
 		try {
-			if (isReparada) {
-
-				servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId());
-
-				
-			} else
-				servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(),motivo);
+			if (isReparada) 
+				servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId());	
+			else
+				servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(),motivoCierre);
 		} catch (ServicioEstacionesException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Gestión de incidencias. Esta funcionalidad permite cambiar el estado de las
-	 * incidencias y gestionarlas. La gestión dependerá del estado de la incidencia.
-	 * 
-	 * @param usuario:          Usuario que hace la gestión. Debe ser el
-	 *                          Administrador.
-	 * @param movitoCierre:     En caso de que se cancela o para resolver la
-	 *                          incidencia, se indica el motivo del cierre de la
-	 *                          incidencia.
-	 * @param operarioAsignado: En caso de que la incidencia será asignada, se
-	 *                          indica el identificador del operario al que le fue
-	 *                          asignada.
-	 * @param isReparada:       En caso de que la incidencia será resultada, se
-	 *                          necesita saber si se ha reparado o no la bicicleta.
-	 * @throws ServicioIncidenciasException
-	 */
-	/*
-	 * @Override public void gestionIncidencias(Usuario usuario, String
-	 * motivoCierre, String idOperarioAsignado, boolean isReparada) throws
-	 * ServicioIncidenciasException {
-	 * 
-	 * try { if (usuario.esAdministrador()) { for (Bicicleta b :
-	 * repositorioBicicleta.getAll()) for (Incidencia i : b.getIncidencias()) { //
-	 * repositorioBicicleta.getIncidenciaByBicicleta(b.getId())) // {
-	 * 
-	 * if (i.getEstado() == EstadoIncidencia.PENDIENTE) {
-	 * 
-	 * if (motivoCierre != null) cancelarIncidencia(i); else asignarIncidencia(i,
-	 * idOperarioAsignado); } else if (i.getEstado() == EstadoIncidencia.ASIGNADA)
-	 * resolverIncidencia(i, isReparada); } } } catch (RepositorioException e) {
-	 * e.printStackTrace(); } }
-	 */
-
+	
 	/**
 	 * Recuperar incidencias abiertas. Esta operación devolverá un listado de
 	 * incidencias que no hayan sido cerradas.

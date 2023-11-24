@@ -23,23 +23,6 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		return Bicicleta.class.getName().substring(Bicicleta.class.getName().lastIndexOf(".") + 1);
 	}
 	
-	/*
-	@Override
-	public List<Incidencia> getIncidenciaByBicicleta(String idBicicleta) { // TODO similar al método getIncidencias de la clase Bicicleta
-		
-		EntityManager em = EntityManagerHelper.getEntityManager();
-		
-		String queryString = "SELECT DISTINCT i "
-				+ " FROM Bicicleta b "
-				+ " INNER JOIN b.incidencias i "
-				+ " WHERE b.id = :idBicicleta";
-		
-		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
-        query.setParameter("idBicicleta", idBicicleta);
-	
-		return query.getResultList();	
-	}*/
-	
 	@Override
 	public List<Bicicleta> obtenerBicicletasPorModelo(String modelo) {
         EntityManager em = EntityManagerHelper.getEntityManager();
@@ -51,8 +34,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
         TypedQuery<Bicicleta> query = em.createQuery(queryString, Bicicleta.class);
         query.setParameter("modelo", modelo);
 
-        return query.getResultList();
-        
+        return query.getResultList();   
     }
 	
 	@Override
@@ -69,8 +51,5 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
         query.setParameter("estadoPendiente", EstadoIncidencia.PENDIENTE);
 	
 		return query.getResultList();
-		
-	}
-
-	
+	}	
 }

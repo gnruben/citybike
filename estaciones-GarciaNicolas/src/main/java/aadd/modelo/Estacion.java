@@ -1,6 +1,5 @@
 package aadd.modelo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
-import com.mongodb.client.model.geojson.codecs.GeoJsonCodecProvider;
 
 import repositorio.Identificable;
 
@@ -26,21 +24,17 @@ public class Estacion implements Identificable {
 	private double longitud;
 	private Point ubicacion;
 	private LocalDateTime fechaAlta;
-	private List<SitioTuristico> sitiosTuristicos; //= new LinkedList<SitioTuristico>();
+	private List<SitioTuristico> sitiosTuristicos; 
 	
-	public Estacion() {
-		//this.id = UUID.randomUUID().toString();
-	
-	}
+	public Estacion() {}
 	
 	public Estacion(String nombre, int numeroPuestos, String direccionPostal, double latitud, double longitud) {
-      //  this.id = UUID.randomUUID().toString(); // Generar un ID único
         this.nombre = nombre;
         this.numeroPuestos = numeroPuestos;
         this.direccionPostal = direccionPostal;
         this.latitud = latitud;
         this.longitud = longitud;
-        ubicacion=new Point(new Position(longitud,latitud));
+        this.ubicacion= new Point(new Position(longitud,latitud));
         
         this.sitiosTuristicos = new ArrayList<SitioTuristico>();
     }
@@ -127,7 +121,5 @@ public class Estacion implements Identificable {
 	    
 	    return s.toString();
 	}
-	
-
 	
 }

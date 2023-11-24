@@ -39,25 +39,21 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 	private static final String propiedadEnlaces = "http://dbpedia.org/ontology/wikiPageExternalLink";
 	private static final String propiedadImagenes = "http://es.dbpedia.org/property/imagen";
 	private static final String propiedadCategorias = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+	
 	private DocumentBuilder analizador;
 	private Repositorio<SitioTuristico, String> repositorio = FactoriaRepositorios.getRepositorio(SitioTuristico.class);
 
 	public SitiosTuristicosGeoNames() throws ParserConfigurationException {
 		DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
-		// 2. Pedir a la factoría la construcción del analizador
 		analizador = factoria.newDocumentBuilder();
-		// 3. Analizar el documento
-
 	}
 
 	@Override
 	public List<ResumenSitioTuristico> getResumenesCercanos(double lat, double lon) throws ServicioSitiosTuristicosException {
-		// TODO Auto-generated method stub
 		List<ResumenSitioTuristico> lista = new LinkedList<ResumenSitioTuristico>();
 		try {
 			String ruta = raizUrlgeonames + "&lat=" + lat + "&lng=" + lon;
 			Document documento = analizador.parse(ruta);
-			// TODO: lista de resumenes
 			ResumenSitioTuristico r;
 			Element e;
 			NodeList entries = documento.getElementsByTagName("entry");
@@ -86,15 +82,11 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 
 	@Override
 	public SitioTuristico getSitioTuristico(String id) throws ServicioSitiosTuristicosException  {
-		// TODO: getSitioTuristico
 		SitioTuristico sitio;
 		try {
 			sitio = repositorio.getById(id);
 			return sitio;
 		} catch (EntidadNoEncontrada e) {
-			// Si no se encuentra en la caché
-
-			// Obtener el sitio turístico de dbpedia
 			try {
 				sitio = getSitioTuristicoDBPedia(id);
 				repositorio.add(sitio);
@@ -129,7 +121,6 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 
 		JsonObject propiedades = obj.getJsonObject("http://es.dbpedia.org/resource/" + decoded);
 
-		// TODO: construir el sitio turístico a partir de las funciones
 		sitio.setNombre(getNombre(propiedades));
 		sitio.setCategorias(getCategorias(propiedades));
 		sitio.setEnlaces(getEnlacesExternos(propiedades));
@@ -139,11 +130,10 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 		sitio.setUrlArticulo("https://es.wikipedia.org/wiki/" + id);
 
 		return sitio;
-
 	}
 
 	private String getNombre(JsonObject object) {
-		// TODO:
+		
 		JsonArray nombre = object.getJsonArray(propiedadNombre);
 		if (nombre == null) {
 			return null;
@@ -211,7 +201,6 @@ public class SitiosTuristicosGeoNames implements ISitiosTuristicos {
 		}
 
 		return null;
-
 	}
 
 }

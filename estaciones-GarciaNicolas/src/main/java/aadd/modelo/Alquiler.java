@@ -10,10 +10,10 @@ import repositorio.Identificable;
 public class Alquiler implements Identificable{
 
 	private String id;
-	private Usuario usuario; // TODO
+	private Usuario usuario; 
     private Estacion estacionInicio; 
     private LocalDate fechaInicio; 
-    private Estacion estacionFin;  // TODO
+    private Estacion estacionFin;  
     private LocalDate fechaFin;
     
     @ManyToOne
@@ -64,8 +64,11 @@ public class Alquiler implements Identificable{
      public void setBicicleta(Bicicleta bicicleta) {
 		this.bicicleta = bicicleta;
 	}
-
-    
-
-	
+     
+	@Override
+	public String toString() {
+		return "Alquiler [id=" + id + ", usuario=" + usuario + ", estacionInicio=" + estacionInicio + ", fechaInicio="
+				+ fechaInicio + ", estacionFin=" + estacionFin + ", fechaFin=" + fechaFin + ", bicicleta=" + bicicleta
+				+ "]";
+	}
 }

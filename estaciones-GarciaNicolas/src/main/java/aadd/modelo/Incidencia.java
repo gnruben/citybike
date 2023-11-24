@@ -27,6 +27,9 @@ public class Incidencia implements Identificable{
 	@Column(name="descripcion")
 	private String descripcion;
 	
+	@Column(name="motivoCierre")
+	private String motivoCierre;
+	
 	@Enumerated
 	@Column(name="estado")
 	private EstadoIncidencia estado;
@@ -64,6 +67,14 @@ public class Incidencia implements Identificable{
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	
+	public String getMotivoCierre() {
+		return motivoCierre;
+	}
+	public void setMotivoCierre(String motivoCierre) {
+		this.motivoCierre = motivoCierre;
+	}
+	
 	public EstadoIncidencia getEstado() {
 		return estado;
 	}
@@ -86,4 +97,11 @@ public class Incidencia implements Identificable{
 		this.bicicleta = bicicleta;
 	}
 	
+	@Override
+	public String toString() {
+		return "Incidencia [id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", descripcion="
+				+ descripcion + ", motivoCierre="+ motivoCierre + ", estado=" + estado + ", idOperarioAsignado=" + idOperarioAsignado + ", bicicleta="
+				+ bicicleta + "]";
+	}
+		
 }

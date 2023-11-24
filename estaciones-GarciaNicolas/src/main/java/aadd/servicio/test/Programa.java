@@ -85,7 +85,7 @@ import javax.xml.parsers.ParserConfigurationException;
 		            rep.add(estacionn);
 		            estacion.setId(estacionId);
 		          
-		     		   
+		                   
 		            Estacion estacionObtenida = servicioEstaciones.getEstacion(estacionId);
 
 		        } catch (RepositorioException | EntidadNoEncontrada e) {

@@ -60,7 +60,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 		} catch (IOException e) {
 	        throw new RepositorioException("Fichero no encontrado: " + carpeta);
 		}
-    	
+    
     	return new ArrayList<>(listaElementos);
     }
 
@@ -69,7 +69,6 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 		T t = getById(entity.getId());
 		delete(t);
 		add(entity);
-		
 	}
 
 
@@ -92,6 +91,7 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 			String i = f.getName().replace(".json", "");
 			listaIdElementos.add(i);
 		} 
+    	
     	return listaIdElementos;
 	}
 
@@ -108,7 +108,8 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 	    		.create()
 	    		.withConfig(config)
 	    		.build();
-	    T elemento =  (T) contexto.fromJson(new FileReader(ruta), getClase()); //TODO	    
+	    @SuppressWarnings("unchecked")
+		T elemento =  (T) contexto.fromJson(new FileReader(ruta), getClase());     
 	    return elemento;	   
     }
 

@@ -43,8 +43,6 @@ public class FactoriaServicios {
 				e.printStackTrace(); // útil para depuración
 				
 				throw new RuntimeException("No se ha podido obtener la implementación del servicio: " + servicio.getName());
-			}
-			
+			}	
 	}
-	
 }

@@ -14,7 +14,5 @@ public class ServicioEstacionesException extends Exception {
 	
 	public ServicioEstacionesException(String msg) {
 		super(msg);		
-	}
-	
-		
+	}	
 }

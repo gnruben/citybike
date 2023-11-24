@@ -1,16 +1,14 @@
 package aadd.modelo;
+
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import repositorio.Identificable;
 
 @Entity
@@ -99,8 +97,7 @@ public class Bicicleta implements Identificable {
 		this.isDisponible = isDisponible;
 	}
     
-    public void addIncidencia(Incidencia incidencia) { //TODO para no tener incidencias con mismo id acumuladas
-    	
+    public void addIncidencia(Incidencia incidencia) { 
     	for(Incidencia i: this.incidencias) {
     		if (i.getId() == (incidencia.getId()))
     			return;
@@ -108,7 +105,7 @@ public class Bicicleta implements Identificable {
     	this.incidencias.add(incidencia);
     }
     
-    public void removeIncidencia(Incidencia incidencia) { //TODO
+    public void removeIncidencia(Incidencia incidencia) { 
     	for(Incidencia i: this.incidencias) {
     		if(i.getId() == incidencia.getId())
     			this.incidencias.remove(i);

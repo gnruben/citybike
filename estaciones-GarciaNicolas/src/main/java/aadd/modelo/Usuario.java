@@ -16,12 +16,10 @@ public class Usuario {
 		this.setTelef(telef);
 		this.nombre = nombre;
 		this.esAdministrador = esAdministrador;
-		
 	}
 	
     // Getters and setters
 
-	
 	public String getEmail() {
 		return email;
 	}
@@ -31,9 +29,7 @@ public class Usuario {
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-//	public void setFechaNacimiento(LocalDate fechaNacimiento) {
-//		this.fechaNacimiento = fechaNacimiento;
-//	}
+
 	public String getTelef() {
 		return telef;
 	}
@@ -42,11 +38,7 @@ public class Usuario {
 	}
 	public String getNombre() {
 		return nombre;
-	}
-//	public void setNombre(String nombre) {
-//		Nombre = nombre;
-//	}
-	
+	}	
 	public boolean esAdministrador() {
 		return esAdministrador;
 	}

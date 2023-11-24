@@ -16,7 +16,8 @@ public interface IServicioEstaciones {
 	List<SitioTuristico> getSitiosTuristicos(String id) throws ServicioEstacionesException;
 	void setSitiosTuristicos(String id, List<SitioTuristico> sitios)throws RepositorioException, EntidadNoEncontrada;
 	
-//##################### Bicicletas ########################
+	// ##################### Bicicletas ########################
+	
 	String altaBicicleta(String modelo, Estacion e) throws ServicioEstacionesException;
 	void estacionarBicicleta(String idBicicleta) throws ServicioEstacionesException;
 	void estacionarBicicleta(String idBicicleta, String idEstacion) throws ServicioEstacionesException;
@@ -25,6 +26,4 @@ public interface IServicioEstaciones {
 
 	List<Bicicleta> getBicisEstacionadasCerca(double lat,double lng);
 	List<Estacion> getEstacionesTuristicas();
-
-
 }
