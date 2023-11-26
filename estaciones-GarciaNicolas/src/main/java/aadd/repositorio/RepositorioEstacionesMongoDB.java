@@ -17,7 +17,9 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.geojson.Point;
@@ -59,17 +61,39 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	 * */
 	@Override
 	public List<Estacion> getEstacionesTuristicas() {
-		List<Estacion> list = new LinkedList<Estacion>();
+		List<Estacion> list;
 		//Bson project=Aggregates.project(new Document("estacion",1));
 		//Bson unwind=Aggregates.unwind("$estacion");
 		//Bson group=Aggregates.group("$estacion", );
 		//Bson sort;
-		//TODO: aggregation
-		//AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,sort));
+		Bson unwind=Aggregates.unwind("$sitiosTuristicos");
+		Bson group=Aggregates.group("$_id", Accumulators.sum("num_sitios", 1) );
+		Bson lookup=Aggregates.lookup("estaciones", "_id", "_id","estacion");
+		Bson sort=Aggregates.sort(new Document("num_sitios",-1));
 		
-		return list;//TODO: hacer la consulta en mongoDB
+		
+		//TODO: aggregation
+		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,lookup,sort));
+		list=convertDocumentToEstacion(resultado);
+		return list;
 	}
-
+/**
+ * Función auxiliar de getEstacionesTuristicas
+ * 
+ * */
+	private List<Estacion> convertDocumentToEstacion(AggregateIterable<Document> resultado) {
+		List<Estacion> list=new LinkedList<Estacion>();
+		
+		if(resultado==null) {
+			return null;
+		}
+		
+		for(Document doc:resultado) {
+			
+		}
+		// TODO Auto-generated method stub
+		return list;
+	}
 	@Override
 	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
 		List<Estacion>list=new LinkedList<Estacion>();
@@ -86,4 +110,5 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	public MongoCollection<Estacion> getCollection() {
 		return coleccion;
 	}
+	
 }
