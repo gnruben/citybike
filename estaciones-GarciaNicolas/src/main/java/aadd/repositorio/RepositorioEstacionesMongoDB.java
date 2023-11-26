@@ -19,17 +19,15 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
-
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
 import aadd.modelo.Estacion;
-import aadd.modelo.SitioTuristico;
+import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
-import utils.LocalDateTimeAdapter;
 import utils.PropertiesReader;
 
 public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> implements IRepositorioEstacionesAdHoc {
@@ -60,22 +58,22 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	}
 	/**
 	 * Devuelve las estaciones en orden descendente por el número de sitios turísticos 
+	 * @throws EntidadNoEncontrada 
+	 * @throws RepositorioException 
 	 * */
 	@Override
-	public List<Estacion> getEstacionesTuristicas() {
-		List<Estacion> list;
-		//Bson project=Aggregates.project(new Document("estacion",1));
-		//Bson unwind=Aggregates.unwind("$estacion");
-		//Bson group=Aggregates.group("$estacion", );
-		//Bson sort;
+	public List<Estacion> getEstacionesTuristicas() throws RepositorioException, EntidadNoEncontrada {
+		List<Estacion> list=new LinkedList<Estacion>();
+
 		Bson unwind=Aggregates.unwind("$sitiosTuristicos");
 		Bson group=Aggregates.group("$_id", Accumulators.sum("num_sitios", 1) );
-		Bson lookup=Aggregates.lookup("estaciones", "_id", "_id","estacion");
 		Bson sort=Aggregates.sort(new Document("num_sitios",-1));
+				
+		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,sort));
+		for(Document doc:resultado) {
+			list.add(getById(doc.getString("_id")));
+		}
 		
-		
-		//TODO: aggregation
-		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,lookup,sort));
 		
 		return list;
 	}
