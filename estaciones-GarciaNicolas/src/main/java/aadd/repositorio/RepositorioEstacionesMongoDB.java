@@ -19,15 +19,17 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.BsonField;
+
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
 import aadd.modelo.Estacion;
+import aadd.modelo.SitioTuristico;
 import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
+import utils.LocalDateTimeAdapter;
 import utils.PropertiesReader;
 
 public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> implements IRepositorioEstacionesAdHoc {
@@ -74,34 +76,17 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		
 		//TODO: aggregation
 		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,lookup,sort));
-		list=convertDocumentToEstacion(resultado);
+		
 		return list;
 	}
-/**
- * Función auxiliar de getEstacionesTuristicas
- * 
- * */
-	private List<Estacion> convertDocumentToEstacion(AggregateIterable<Document> resultado) {
-		List<Estacion> list=new LinkedList<Estacion>();
-		
-		if(resultado==null) {
-			return null;
-		}
-		
-		for(Document doc:resultado) {
-			
-		}
-		// TODO Auto-generated method stub
-		return list;
-	}
+
 	@Override
 	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
 		List<Estacion>list=new LinkedList<Estacion>();
 		getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
 		Point posicion=new Point(new Position(lng, lat));
-		//Bson filter=Aggregates.geoNear(new Point(new Position(lng, lat)) ,Aggregates.nearField());
 		Bson filter=Filters.near("ubicacion", posicion, null, null);
-		getCollection().find(filter).forEach(e->list.add(e));//recibimos el resultado y lo añadimos a la lista
+		getCollection().find(filter).forEach(e->list.add(e));
 		
 		return list;
 	}	

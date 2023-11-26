@@ -1,6 +1,7 @@
 package repositorio;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -20,8 +21,10 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
 			em.getTransaction().begin();
+			entity.setId(UUID.randomUUID().toString());
 			em.persist(entity);
 			em.getTransaction().commit();
+			
 		} catch (Exception e) {
 			throw new RepositorioException("Error al guardar la entidad con id "+entity.getId(),e);
 		} finally {

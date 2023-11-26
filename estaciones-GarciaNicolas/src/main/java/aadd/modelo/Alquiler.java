@@ -16,8 +16,8 @@ public class Alquiler implements Identificable{
     private Estacion estacionFin;  
     private LocalDate fechaFin;
     
-    @ManyToOne
-	@JoinColumn(name="bicicleta_fk")
+//    @ManyToOne
+//	@JoinColumn(name="bicicleta_fk")
     private Bicicleta bicicleta;
     
 	

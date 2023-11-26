@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -38,7 +39,7 @@ public class Incidencia implements Identificable{
 	private String idOperarioAsignado;
 	
 	@ManyToOne
-	@Column(name="bicicleta")
+	@JoinColumn(name="bicicleta_fk")
 	private Bicicleta bicicleta;
 	
 	public String getId() {
@@ -101,7 +102,7 @@ public class Incidencia implements Identificable{
 	public String toString() {
 		return "Incidencia [id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", descripcion="
 				+ descripcion + ", motivoCierre="+ motivoCierre + ", estado=" + estado + ", idOperarioAsignado=" + idOperarioAsignado + ", bicicleta="
-				+ bicicleta + "]";
+				+ bicicleta.getId() + "]";
 	}
 		
 }

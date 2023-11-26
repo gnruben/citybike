@@ -20,6 +20,9 @@ import repositorio.RepositorioString;
 public abstract class RepositorioJSON<T extends Identificable> implements RepositorioString<T>{
     private final static String raiz = "./json/";
 
+    protected abstract Class<?> getClase();
+
+    
     public RepositorioJSON() {}
 
     
@@ -127,7 +130,5 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 	
 		FileWriter writer = new FileWriter(ruta);
 		contexto.toJson(entity, writer);     
-    }
-	
-    protected abstract Class<?> getClase();
+    }	
 }

@@ -31,9 +31,9 @@ public class Bicicleta implements Identificable {
 	@Column(name="motivo")
     private String motivo;
     
-    @OneToMany(mappedBy = "bicicleta",
-    fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Alquiler> historial;
+//    @OneToMany(mappedBy = "bicicleta",
+//    fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private List<Alquiler> historial;
     
     @OneToMany(mappedBy = "bicicleta",
     fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -42,7 +42,7 @@ public class Bicicleta implements Identificable {
     @Column(name="isDisponible")
     private boolean isDisponible;
     
-    
+
     // Getters and setters
     
     @Override
@@ -78,12 +78,12 @@ public class Bicicleta implements Identificable {
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
 	}
-	public List<Alquiler> getHistorial() {
-		return historial;
-	}
-	public void setHistorial(List<Alquiler> historial) {
-		this.historial = historial;
-	}
+//	public List<Alquiler> getHistorial() {
+//		return historial;
+//	}
+//	public void setHistorial(List<Alquiler> historial) {
+//		this.historial = historial;
+//	}
 	public List<Incidencia> getIncidencias() {
 		return incidencias;
 	}
@@ -112,11 +112,30 @@ public class Bicicleta implements Identificable {
     	}
     }
     
-    
-	@Override
+
+    @Override
 	public String toString() {
-		return "Bicicleta [id=" + id + ", modelo=" + modelo + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja
-				+ ", motivo=" + motivo + ", historial=" + historial + ", isDisponible=" + isDisponible + ", incidencias=" + incidencias + "]";
+	    StringBuilder s = new StringBuilder("Bicicleta: { ");
+	    	s.append("id: ").append(id)
+	    	.append(", modelo:").append(modelo)
+			.append(", fecha Alta:").append(fechaAlta)
+	        .append(", fecha Baja: ").append(fechaBaja)
+	        .append(", motivo: ").append(motivo)
+	        .append(", isDispoible: ").append(isDisponible)
+	        .append(", incidencias: [");
+	    
+	    for (Incidencia i : incidencias) {
+	        s.append("nombre: ").append(i.getId()).append(", ");
+	    }
+	    
+	    // Elimina la última coma y espacio si hay sitios turísticos
+	    if (!incidencias.isEmpty()) {
+	        s.delete(s.length() - 2, s.length());
+	    }
+	    
+	    s.append("] }\n");
+	    
+	    return s.toString();
 	}
 	
 }

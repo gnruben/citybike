@@ -228,7 +228,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void retirarBicicleta(String idBicicleta) throws ServicioEstacionesException {
 		try {
-			//TODO:Tenemos que retirar la bici de la estacion
 			Bicicleta bici=repositorioBicicletas.getById(idBicicleta);
 			if(!bici.isDisponible()) {
 				throw new ServicioEstacionesException("La bicicleta no está disponible, no se puede retirar " + idBicicleta);
@@ -279,15 +278,27 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	/**
 	 * Esta operación recibirá unas coordenadas y devolverá las bicicletas aparcadas
 	 * y disponibles en las tres estaciones más cercanas a dichas coordenadas.
+	 * @throws ServicioEstacionesException 
 	 */
 	@Override
-	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) {
+	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) throws ServicioEstacionesException {
 		List<Bicicleta> list = new LinkedList<Bicicleta>();
-		// TODO
-		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat,
-				lng);
+		
+		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat, lng);
 
-		// TODO: obtener las bicicletas disponibles de las estaciones cercanas.
+		for(Estacion e: estaciones) {
+			List<String> idBicis = ((RepositorioHistorialMongoDB) repositorioHistorial).getIdBicisByIdEstacion(e.getId());
+			for(String i: idBicis) {
+				try {
+					list.add(repositorioBicicletas.getById(i));
+					
+				} catch (RepositorioException e1) {
+					throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + i);
+				} catch (EntidadNoEncontrada e1) {
+					throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + i);
+				}
+			}
+		}
 
 		return list;
 	}

@@ -157,6 +157,13 @@
 				<version>5.7.0-M1</version>
 				<scope>test</scope>
 			</dependency>
+			<!-- LogBack -->
+			<dependency>
+		        <groupId>ch.qos.logback</groupId>
+		        <artifactId>logback-classic</artifactId>
+		        <version>1.2.3</version> <!-- Utiliza la última versión disponible -->
+		    </dependency>
+		    <!-- LogBack -->
 		</dependencies>
 	</dependencyManagement>
 	<build>

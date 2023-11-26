@@ -55,12 +55,22 @@ implements IRepositorioHistorialEstacionamientoAdHoc{
 	
 	@Override
 	public List<RegistroHistoricoEstacionamiento> getHistorialByIdBici(String idBici) {
-		return null;  //TODO
+		List<RegistroHistoricoEstacionamiento> listaIds = new LinkedList<RegistroHistoricoEstacionamiento>();
+		Document query = new Document("idBici", idBici);
+		
+		FindIterable<RegistroHistoricoEstacionamiento> resultados = getCollection().find(query);
+		MongoCursor<RegistroHistoricoEstacionamiento> it= resultados.iterator();
+		while( it.hasNext()) {
+			listaIds.add(it.next());
+		}
+		return listaIds;
 	}
 	
 	@Override
 	public RegistroHistoricoEstacionamiento getUltimoRegistroByIdBici(String idBici) throws RepositorioException {
-		Document query=Document.parse("{idBici:"+idBici+",fechaFin:{$exists:false}}");
+		
+		Document query = new Document("idBici", idBici)
+	            .append("fechaFin", new Document("$exists", false));
 		FindIterable<RegistroHistoricoEstacionamiento> resultados =getCollection().find(query);
 		MongoCursor<RegistroHistoricoEstacionamiento> it=resultados.iterator();
 		RegistroHistoricoEstacionamiento rh;
@@ -69,13 +79,14 @@ implements IRepositorioHistorialEstacionamientoAdHoc{
 			 return rh;
 		}else {
 			throw new RepositorioException("Error del repositorio");
-		}		
+		}	
 	}
 	
 	@Override
 	public List<String> getIdBicisByIdEstacion(String idEstacion) {
 		List<String> listaIds=new LinkedList<String>();
-		Document query=Document.parse("{idEstacion:"+idEstacion+",fechaFin:{$exists:false}}");
+		Document query = new Document("idEstacion", idEstacion)
+	            .append("fechaFin", new Document("$exists", false));
 		FindIterable<RegistroHistoricoEstacionamiento> resultados =getCollection().find(query);
 		MongoCursor<RegistroHistoricoEstacionamiento> it=resultados.iterator();
 		while( it.hasNext()) {
