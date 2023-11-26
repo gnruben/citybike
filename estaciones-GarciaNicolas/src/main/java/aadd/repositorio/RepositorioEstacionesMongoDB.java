@@ -71,7 +71,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 				
 		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,sort));
 		for(Document doc:resultado) {
-			list.add(getById(doc.getString("_id")));
+			list.add(getById(doc.get("_id").toString()));
 		}
 		
 		

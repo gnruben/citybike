@@ -11,6 +11,7 @@ import aadd.modelo.RegistroHistoricoEstacionamiento;
 import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import aadd.repositorio.IRepositorioEstacionesAdHoc;
+import aadd.repositorio.RepositorioEstacionesMongoDB;
 import aadd.repositorio.RepositorioHistorialMongoDB;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
@@ -115,10 +116,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void setSitiosTuristicos(String id, List<SitioTuristico> sitios)
 			throws RepositorioException, EntidadNoEncontrada {
-		System.out.println(repositorioEstaciones.getIds());
 
 		Estacion estacion = repositorioEstaciones.getById(id);
-		System.out.println(estacion.getId());
 		estacion.setSitiosTuristicos(sitios);
 		repositorioEstaciones.update(estacion);
 	}
@@ -147,6 +146,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		try {
 			id = repositorioBicicletas.add(b);
 			estacionarBicicleta(id, e.getId());
+			b.setDisponible(true);
 		} catch (RepositorioException e1) {
 			throw new ServicioEstacionesException("No se pudo dar de alta a la bicicleta");
 		}
@@ -229,9 +229,11 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void retirarBicicleta(String idBicicleta) throws ServicioEstacionesException {
 		try {
 			Bicicleta bici=repositorioBicicletas.getById(idBicicleta);
+			
 			if(!bici.isDisponible()) {
 				throw new ServicioEstacionesException("La bicicleta no está disponible, no se puede retirar " + idBicicleta);
 			}
+			
 			bici.setDisponible(false);
 			repositorioBicicletas.update(bici);
 			RegistroHistoricoEstacionamiento rh=((RepositorioHistorialMongoDB)repositorioHistorial).getUltimoRegistroByIdBici(idBicicleta);
@@ -254,25 +256,20 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	 */
 	@Override
 	public void darBajaBicicleta(String idBicicleta, String motivoBaja) throws ServicioEstacionesException {
-		try {
-			Bicicleta bici=repositorioBicicletas.getById(idBicicleta);
-			bici.setFechaBaja(LocalDate.now());
-			bici.setDisponible(false);
-			bici.setMotivo(motivoBaja);
+		
+			Bicicleta bici;
+			try {
+				bici = repositorioBicicletas.getById(idBicicleta);
+				bici.setFechaBaja(LocalDate.now());
+				bici.setMotivo(motivoBaja);
+				
+				retirarBicicleta(idBicicleta);
+			} catch (RepositorioException e) {
+				throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idBicicleta);
+			} catch (EntidadNoEncontrada e) {
+				throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + idBicicleta);
+			}
 			
-
-			repositorioBicicletas.update(bici);
-			RegistroHistoricoEstacionamiento rh=((RepositorioHistorialMongoDB)repositorioHistorial).getUltimoRegistroByIdBici(idBicicleta);
-			rh.setFechaFin(LocalDate.now());
-			repositorioHistorial.update(rh);
-			
-		} catch (RepositorioException e) {
-
-			throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idBicicleta);
-		} catch (EntidadNoEncontrada e) {
-
-			throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + idBicicleta);
-		}
 	}
 
 	/**
@@ -323,12 +320,19 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	/**
 	 * Esta operación devuelve un listado de las estaciones ordenado de mayor a
 	 * menor número de sitios turísticos que tengan cerca.
+	 * @throws ServicioEstacionesException 
 	 */
 
 	@Override
-	public List<Estacion> getEstacionesTuristicas() {
-		List<Estacion> list = new LinkedList<Estacion>();
-		return list;
+	public List<Estacion> getEstacionesTuristicas() throws ServicioEstacionesException {
+		try {
+			return ((RepositorioEstacionesMongoDB) repositorioEstaciones).getEstacionesTuristicas();
+		} catch (RepositorioException e) {
+			throw new ServicioEstacionesException("Ocurrió un error en el repositorio ");
+		} catch (EntidadNoEncontrada e) {
+			throw new ServicioEstacionesException("No se encontró la Estacion en el repositorio: ");
+		}
+		
 	}
 
 }

@@ -25,5 +25,5 @@ public interface IServicioEstaciones {
 	void darBajaBicicleta(String idBicicleta, String motivoBaja) throws ServicioEstacionesException;
 
 	List<Bicicleta> getBicisEstacionadasCerca(double lat,double lng) throws ServicioEstacionesException;
-	List<Estacion> getEstacionesTuristicas();
+	List<Estacion> getEstacionesTuristicas() throws ServicioEstacionesException;
 }

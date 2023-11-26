@@ -1,50 +1,31 @@
 package aadd.servicio.test;
 
-import aadd.modelo.Bicicleta;
-import aadd.modelo.Estacion;
-import aadd.modelo.Incidencia;
-import aadd.modelo.RegistroHistoricoEstacionamiento;
-import aadd.modelo.SitioTuristico;
-import aadd.repositorio.IRepositorioBicicletasAdHoc;
-import aadd.repositorio.IRepositorioHistorialEstacionamientoAdHoc;
-import aadd.repositorio.RepositorioBicicletaAdHocJPA;
-import aadd.repositorio.RepositorioHistorialMongoDB;
-import aadd.servicios.IServicioEstaciones;
-import aadd.servicios.IServicioIncidencias;
-import aadd.servicios.ServicioEstaciones;
-import aadd.servicios.ServicioEstacionesException;
-import aadd.servicios.ServicioIncidencias;
-import aadd.servicios.ServicioIncidenciasException;
-import repositorio.EntidadNoEncontrada;
-import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio;
-import repositorio.RepositorioException;
-import servicio.FactoriaServicios;
+import aadd.modelo.*;
 
+import aadd.repositorio.IRepositorioHistorialEstacionamientoAdHoc;
+import aadd.repositorio.RepositorioSitiosTuristicosJSON;
+import aadd.servicios.*;
+import repositorio.*;
+import servicio.FactoriaServicios;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 public class Programa2 {
 
-	public static void main(String[] args) throws RepositorioException, ServicioIncidenciasException, ServicioEstacionesException, EntidadNoEncontrada {
+	public static void main(String[] args) throws RepositorioException, ServicioIncidenciasException, ServicioEstacionesException, EntidadNoEncontrada, ServicioSitiosTuristicosException {
         
 	   	Repositorio<Bicicleta, String> repositorioBicicletas = FactoriaRepositorios.getRepositorio(Bicicleta.class);
 	   	Repositorio<Estacion, String> repositorioEstaciones = FactoriaRepositorios.getRepositorio(Estacion.class);
-	   	Repositorio<RegistroHistoricoEstacionamiento, String> repositorioHistorial = FactoriaRepositorios.getRepositorio(RegistroHistoricoEstacionamiento.class);
-
-
+	   	RepositorioSitiosTuristicosJSON repositorioSitios = FactoriaRepositorios.getRepositorio(SitioTuristico.class);
+	   	
 	   	IServicioIncidencias  servicioIncidencias = FactoriaServicios.getServicio(IServicioIncidencias.class);
 	    IServicioEstaciones servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
-	    IRepositorioHistorialEstacionamientoAdHoc reposEstacionamiento = FactoriaRepositorios.getRepositorio(IRepositorioHistorialEstacionamientoAdHoc.class);
-
+	    
 	     
-	    //Estacion e = new Estacion("1546s", 10, "20154", 36.846, 0.51);
 	    String idEstacion = servicioEstaciones.crear("1546s", 10, "20154", 36.846, 0.51); //Creamos la estación
 	    
-	    
-	    
-	    								//Crear bicicletas:
+	    								           //Crear bicicletas:
      	Bicicleta b1= new Bicicleta();
      	b1.setModelo("ModeloX");
      	b1.setDisponible(false);
@@ -53,90 +34,137 @@ public class Programa2 {
      	repositorioBicicletas.add(b1);
 	          	
        String idBicicleta = servicioEstaciones.altaBicicleta("ModeloX", repositorioEstaciones.getById(idEstacion));
-       
-       RegistroHistoricoEstacionamiento rh = new RegistroHistoricoEstacionamiento();
-	    
-     	
- 
-            												//Misma bicicleta se le crea 2 incidencias
+       	        												
         // Crear incidencias:
  	
         String descripcion = "Problema con el freno";
-        String idIncidencia = servicioIncidencias.crearIncidencia(idBicicleta, descripcion);
+       servicioIncidencias.crearIncidencia(idBicicleta, descripcion);
         
         String descripcion2 = "Problema con el sillón";
-        String idIncidencia2 = servicioIncidencias.crearIncidencia(idBicicleta, descripcion2);
+        servicioIncidencias.crearIncidencia(idBicicleta, descripcion2);
         
         String descripcion3 = "Problema con la rueda";
-        String idIncidencia3 = servicioIncidencias.crearIncidencia(idBicicleta, descripcion3);
+        servicioIncidencias.crearIncidencia(idBicicleta, descripcion3);
         
 
         // Obtener incidencias abiertas
         
-        List<Incidencia> incidenciasAbiertas = servicioIncidencias.getIncidenciasAbiertas(); //Las 2 incidencias están pendientes
+        List<Incidencia> incidenciasAbiertas = servicioIncidencias.getIncidenciasAbiertas(); 
 
         // Cancelar incidencia
-        Incidencia incidenciaCancelada = incidenciasAbiertas.get(0); //Cancelamos la primera
+        Incidencia incidenciaCancelada = incidenciasAbiertas.get(0); 
         servicioIncidencias.cancelarIncidencia(incidenciaCancelada, "Problema resuelto");
-        //System.out.println("Se canceló la incidencia 1 : " + incidenciaCancelada);
-       System.out.println("El número de bicis en la estación: "+reposEstacionamiento.getNumeroBicisEnEstacion(idEstacion)+ 
-    		   " y la capacidad de la bici es: "+repositorioEstaciones.getById(idEstacion).getNumeroPuestos());
-
+        
         // Asignar incidencia
-        incidenciasAbiertas = servicioIncidencias.getIncidenciasAbiertas(); //Nos queda la segunda incidencia pendiente        
-        Incidencia incidenciaAsignada = incidenciasAbiertas.get(0);  //La 2º incidencia que quedaba (problema con el sillón)        
-                
+        incidenciasAbiertas = servicioIncidencias.getIncidenciasAbiertas();        
+        Incidencia incidenciaAsignada = incidenciasAbiertas.get(0);     
+        
         
         String idOperario = "Operario123";
         servicioIncidencias.asignarIncidencia(incidenciaAsignada, idOperario);
-        //System.out.println("Se asignó la incidencia: " + incidenciaAsignada+" a un operario: " +idOperario);
+        System.out.println("La incidencia con id: "+incidenciaAsignada.getId()+", fue asignada al operario con id: "+idOperario);
 
         // Resolver incidencia
         servicioIncidencias.resolverIncidencia(incidenciaAsignada, "Problema resuelto", true);
-       // System.out.println("Se resolvió la incidencia: " + incidenciaAsignada);
+        System.out.println("\nSe resolvió la incidencia: " + incidenciaAsignada);
 
-
-        //-----------------------------
 
         // Crear estación
-        String nombreEstacion = "Estacion1";
+        String e1 = "Estacion1";
         int numeroPuestos = 10;
-        String postalcode = "12345";
+        String postalcode = "12345";  
         double latitud = 40.0;
-        double longitud = -74.0;
+        double longitud = -73.0;
 
-        String idEstacionn = servicioEstaciones.crear(nombreEstacion, numeroPuestos, postalcode, latitud, longitud);
-        System.out.println("Se creó la estación con ID: " + idEstacion);
-
-        // Obtener estación
-        Estacion estacion = servicioEstaciones.getEstacion(idEstacion);
-        //System.out.println("Estación obtenida: " + estacion);
-
-        // Obtener sitios turísticos
-        List<SitioTuristico> sitiosTuristicos = servicioEstaciones.getSitiosTuristicos(idEstacion);
-        System.out.println("Sitios turísticos cerca de la estación: " + sitiosTuristicos);
-
+        String e2 = "Estacion2";
+        int np = 5;
+        String pc = "13245";
+        double l = 41.0;
+        double lo = -72.0;
+        
+        String e3 = "Estacion3";
+        int npp = 50;
+        String pcc = "10845";
+        double ll = 35.0;
+        double llo = -58.0;
+        
+        
+        Bicicleta b2= new Bicicleta();
+     	b2.setModelo("ModeloXMK");
+     	b2.setFechaAlta(LocalDate.now());
+     	
+     	Bicicleta b3= new Bicicleta();
+     	b3.setModelo("ModeloXXY");
+     	b3.setFechaAlta(LocalDate.now());
+     	
+     	Bicicleta b4= new Bicicleta();
+     	b4.setModelo("ModeloLMN");
+     	b4.setFechaAlta(LocalDate.now());
+     
+    	Bicicleta b5= new Bicicleta();
+     	b5.setModelo("ModeloNona");
+     	b5.setFechaAlta(LocalDate.now());
+     	     	
+        String idEs1 = servicioEstaciones.crear(e1, numeroPuestos, postalcode, latitud, longitud);
+        String idEs2 = servicioEstaciones.crear(e2, np, pc, l, lo);
+        String idEs3 = servicioEstaciones.crear(e3, npp, pcc, ll, llo);
+        
         // Estacionar bicicleta
-        String modeloBicicleta = "ModeloX";
-        String idBicicletaa = servicioEstaciones.altaBicicleta(modeloBicicleta, estacion);
-        System.out.println("Se dio de alta la bicicleta con ID: " + idBicicletaa);
+        String idB1 = servicioEstaciones.altaBicicleta("ModeloXXY", repositorioEstaciones.getById(idEs1));
+        String idB2 = servicioEstaciones.altaBicicleta("ModeloXMK", repositorioEstaciones.getById(idEs2));
+        String idB3 = servicioEstaciones.altaBicicleta("ModeloLMN", repositorioEstaciones.getById(idEs2));
+        String idB4 = servicioEstaciones.altaBicicleta("ModeloNona", repositorioEstaciones.getById(idEs3));
+            
+        servicioEstaciones.retirarBicicleta(idB2);                                 //Se retira ModeloXMK
 
-        // Estacionar bicicleta en una estación específica
-        servicioEstaciones.estacionarBicicleta(idBicicleta, idEstacion);
-        System.out.println("Se estacionó la bicicleta en la estación: " + idEstacion);
-
-        // Retirar bicicleta
-        servicioEstaciones.retirarBicicleta(idBicicleta);
-        System.out.println("Se retiró la bicicleta de la estación: " + idEstacion);
-
-        // Dar de baja bicicleta
-        String motivoBaja = "Fin de vida útil";
-        servicioEstaciones.darBajaBicicleta(idBicicleta, motivoBaja);
-        System.out.println("Se dio de baja la bicicleta con ID: " + idBicicleta);
-
+        servicioIncidencias.crearIncidencia(idB1, "Problema con las ruedas");
+       
+        servicioIncidencias.crearIncidencia(idB3, "Problemas graves");
+        
         // Obtener bicicletas estacionadas cerca de una ubicación
+        
         List<Bicicleta> bicicletasEstacionadasCerca = servicioEstaciones.getBicisEstacionadasCerca(latitud, longitud);
-        System.out.println("Bicicletas estacionadas cerca de la ubicación: " + bicicletasEstacionadasCerca);
-
+        
+        System.out.println("\nBicicletas estacionadas cerca de la ubicación: \n");
+        
+        for (Bicicleta b: bicicletasEstacionadasCerca) {
+        	System.out.println(b);
+        }
+       
+        
+        
+        SitioTuristico s1 = new SitioTuristico("s1", "kagdcibabk", "Url1");
+        SitioTuristico s2 = new SitioTuristico("s2", "aljsd", "Url2");
+        SitioTuristico s3 = new SitioTuristico("s3", "a_LShADS", "Url3");
+        SitioTuristico s4 = new SitioTuristico("s4", "ALCKHapa", "Url4");
+        
+        repositorioSitios.add(s1);
+        repositorioSitios.add(s2);
+        repositorioSitios.add(s3);
+        repositorioSitios.add(s4);
+        
+        List<SitioTuristico> si1 = new LinkedList<SitioTuristico>();
+        si1.add(s4);
+        si1.add(s3);
+        si1.add(s1);
+        
+        List<SitioTuristico> si2 = new LinkedList<SitioTuristico>();
+        si2.add(s2);
+        
+        List<SitioTuristico> si3 = new LinkedList<SitioTuristico>();
+        si3.add(s4);
+        si3.add(s1);
+        
+        servicioEstaciones.setSitiosTuristicos(idEs1, si1);
+        servicioEstaciones.setSitiosTuristicos(idEs2, si2);
+        servicioEstaciones.setSitiosTuristicos(idEs3, si3);
+        
+        List<Estacion> estacionesTuristicas = servicioEstaciones.getEstacionesTuristicas();
+        System.out.println("\n");
+        for (Estacion n: estacionesTuristicas) {
+        	String id = n.getId();
+        	System.out.println("El id de la estacion: "+id+ ", el número de sitios turísticos que tiene: "+n.getSitiosTuristicos().size());
+        
+        }
     }
 }

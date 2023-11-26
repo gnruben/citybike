@@ -2,13 +2,7 @@ package aadd.modelo;
 
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import repositorio.Identificable;
 
 @Entity
@@ -125,7 +119,7 @@ public class Bicicleta implements Identificable {
 	        .append(", incidencias: [");
 	    
 	    for (Incidencia i : incidencias) {
-	        s.append("nombre: ").append(i.getId()).append(", ");
+	        s.append("idIncidencia: ").append(i.getId()).append(", ");
 	    }
 	    
 	    // Elimina la última coma y espacio si hay sitios turísticos
@@ -133,7 +127,7 @@ public class Bicicleta implements Identificable {
 	        s.delete(s.length() - 2, s.length());
 	    }
 	    
-	    s.append("] }\n");
+	    s.append("] }");
 	    
 	    return s.toString();
 	}

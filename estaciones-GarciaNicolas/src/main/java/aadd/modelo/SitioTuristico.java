@@ -16,13 +16,16 @@ public class SitioTuristico implements Identificable{
 	
 	@JsonbProperty( nillable = true)
 	private String resumen;
+	
 	@JsonbProperty( nillable = true)
 	private List<String> categorias;
+	
 	@JsonbProperty( nillable = true)
 	private List<String> enlaces;
 	
 	@JsonbProperty( nillable = true)
 	private String imagen;
+	
 	@JsonbProperty("urlArticulo")
 	private String urlArticulo;
 	

@@ -2,8 +2,8 @@ package aadd.modelo;
 
 import java.time.LocalDate;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.ManyToOne;
 
 import repositorio.Identificable;
 
@@ -16,7 +16,7 @@ public class Alquiler implements Identificable{
     private Estacion estacionFin;  
     private LocalDate fechaFin;
     
-//    @ManyToOne
+//  @ManyToOne
 //	@JoinColumn(name="bicicleta_fk")
     private Bicicleta bicicleta;
     
