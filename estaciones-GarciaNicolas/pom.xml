@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>aadd</groupId>
 	<artifactId>estaciones-GarciaNicolas</artifactId>
@@ -12,7 +14,7 @@
 		<dep.slf4j.version>1.7.30</dep.slf4j.version>
 	</properties>
 	<dependencies>
-		<!-- JPA-->
+		<!-- JPA -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -28,15 +30,15 @@
 			<artifactId>javax.persistence-api</artifactId>
 			<version>2.2</version>
 		</dependency>
-		<!-- JPA-->
-		<!-- MongoDB-->
+		<!-- JPA -->
+		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver-sync</artifactId>
 			<version>4.11.0</version>
 		</dependency>
-		<!-- MongoDB-->
-		<!-- JAXB-->
+		<!-- MongoDB -->
+		<!-- JAXB -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
@@ -47,7 +49,7 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<!-- JAXB-->
+		<!-- JAXB -->
 		<!-- JSON-B -->
 		<dependency>
 			<groupId>javax.json.bind</groupId>
@@ -159,14 +161,84 @@
 			</dependency>
 			<!-- LogBack -->
 			<dependency>
-		        <groupId>ch.qos.logback</groupId>
-		        <artifactId>logback-classic</artifactId>
-		        <version>1.2.3</version> <!-- Utiliza la última versión disponible -->
-		    </dependency>
-		    <!-- LogBack -->
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>1.2.3</version> <!-- Utiliza la última versión disponible -->
+			</dependency>
+			<!-- LogBack -->
+			<!-- Jetty -->
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlets</artifactId>
+				<version>10.0.18</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-server</artifactId>
+				<version>10.0.18</version>
+			</dependency>
+			<!-- Jetty -->
+			<!-- JSF -->
+			<dependency>
+				<groupId>org.glassfish</groupId>
+				<artifactId>jakarta.faces</artifactId>
+				<version>2.3.16</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.enterprise</groupId>
+				<artifactId>cdi-api</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.weld.servlet</groupId>
+				<artifactId>weld-servlet-shaded</artifactId>
+				<version>3.1.8.Final</version>
+			</dependency>
+			<!-- JSF -->
+			<!-- Primefaces -->
+			<dependency>
+				<groupId>org.primefaces</groupId>
+				<artifactId>primefaces</artifactId>
+				<version>13.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>font-awesome</artifactId>
+				<version>5.12.0</version>
+			</dependency>
+			<!-- Primefaces -->
+			<!-- OmniFaces -->
+			<dependency>
+				<groupId>org.omnifaces</groupId>
+				<artifactId>omnifaces</artifactId>
+				<version>3.14</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish</groupId>
+				<artifactId>javax.json</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>2.0.1.Final</version>
+			</dependency>
+			<!-- OmniFaces -->
 		</dependencies>
 	</dependencyManagement>
 	<build>
 		<pluginManagement></pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>10.0.18</version>
+				<configuration>
+					<httpConnector>
+						<port>8081</port>
+					</httpConnector>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>

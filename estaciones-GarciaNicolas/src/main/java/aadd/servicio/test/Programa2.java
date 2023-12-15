@@ -1,8 +1,6 @@
 package aadd.servicio.test;
 
 import aadd.modelo.*;
-
-import aadd.repositorio.IRepositorioHistorialEstacionamientoAdHoc;
 import aadd.repositorio.RepositorioSitiosTuristicosJSON;
 import aadd.servicios.*;
 import repositorio.*;
