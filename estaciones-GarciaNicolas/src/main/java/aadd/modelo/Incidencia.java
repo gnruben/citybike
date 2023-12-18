@@ -19,9 +19,11 @@ public class Incidencia implements Identificable{
 	@Column(name="fecha_fin", columnDefinition = "DATE")
 	private LocalDate fechaFin;
 	
+	@Lob
 	@Column(name="descripcion")
 	private String descripcion;
 	
+	@Lob
 	@Column(name="motivoCierre")
 	private String motivoCierre;
 	

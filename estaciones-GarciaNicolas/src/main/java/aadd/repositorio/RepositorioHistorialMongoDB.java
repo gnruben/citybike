@@ -86,7 +86,7 @@ implements IRepositorioHistorialEstacionamientoAdHoc{
 	public List<String> getIdBicisByIdEstacion(String idEstacion) {
 		List<String> listaIds=new LinkedList<String>();
 		Document query = new Document("idEstacion", idEstacion)
-	            .append("fechaFin", new Document("$exists", false));
+	            .append("fechaFin", new Document("$exists", false)).append("isDisponible", true);//TODO: se debe sustituir la mecánica de históricos abiertos?
 		FindIterable<RegistroHistoricoEstacionamiento> resultados =getCollection().find(query);
 		MongoCursor<RegistroHistoricoEstacionamiento> it=resultados.iterator();
 		while( it.hasNext()) {

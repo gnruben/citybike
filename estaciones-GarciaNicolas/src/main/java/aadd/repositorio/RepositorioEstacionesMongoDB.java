@@ -52,6 +52,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 
 			coleccion = database.getCollection("estaciones", Estacion.class).withCodecRegistry(defaultCodecRegistry);
 			coleccionSinCodificar=database.getCollection("estaciones");
+			getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
 		} catch (IOException e) {
 			throw new RepositorioException("No se pudo crear el repositorio");
 		}
@@ -81,7 +82,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	@Override
 	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
 		List<Estacion>list=new LinkedList<Estacion>();
-		getCollection().createIndex(Indexes.geo2dsphere("ubicacion"));
+		
 		Point posicion=new Point(new Position(lng, lat));
 		Bson filter=Filters.near("ubicacion", posicion, null, null);
 		getCollection().find(filter).forEach(e->list.add(e));

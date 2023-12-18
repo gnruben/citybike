@@ -172,6 +172,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			
 			Boolean flag = false;
 			int i = 0;
+			if() {
+				
+			}
 			
 			while (i < list_ids.size() && !flag) {
 				

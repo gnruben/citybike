@@ -41,7 +41,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		String id = null;
 		try {
 			Bicicleta bicicleta = repositorioBicicleta.getById(idBicicleta);
-			if (bicicleta != null) {
+			//if (bicicleta != null 
+			if(bicicleta.isDisponible() ) {
 				Incidencia incidencia = new Incidencia();
 				incidencia.setId(UUID.randomUUID().toString()); // ID
 				incidencia.setBicicleta(bicicleta);
@@ -50,9 +51,12 @@ public class ServicioIncidencias implements IServicioIncidencias {
 				incidencia.setEstado(EstadoIncidencia.PENDIENTE);
 				bicicleta.addIncidencia(incidencia);
 
-				repositorioBicicleta.update(bicicleta); // TODO
+				
 				bicicleta.setDisponible(false);
+				repositorioBicicleta.update(bicicleta); 
 				id = incidencia.getId();
+			}else {
+				throw new ServicioIncidenciasException("Bicicleta no disponible: " + idBicicleta);
 			}
 
 		} catch (EntidadNoEncontrada e) {
@@ -123,22 +127,33 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			throw new IllegalArgumentException("Debe introducir incidencia que se quiere resolver.");
 		if (motivoCierre == null || motivoCierre.isEmpty())
 			throw new IllegalArgumentException("Tiene que haber un motivo de cierre de la incidencia que se quiere resolver.");
-		if (isReparada != false && isReparada != true    )
-			throw new IllegalArgumentException("Debe indicar si la bicicleta ha sido reparada o no.");
+
 		
-		if (incidencia.getEstado() != EstadoIncidencia.ASIGNADA)
+		if (incidencia.getEstado() != EstadoIncidencia.ASIGNADA)//TODO: se debería consultar el estado de la incidencia del repositorio en su lugar?
 			throw new ServicioIncidenciasException("El estado de la incidencia no es ASIGNADA no se puede resolver");
 		
-		incidencia.setEstado(EstadoIncidencia.RESUELTA);
-		incidencia.setFechaFin(LocalDate.now());
-		incidencia.setMotivoCierre(motivoCierre);
+
 		
 		try {
+			Bicicleta bici=repositorioBicicleta.getById(incidencia.getBicicleta().getId());
+			List<Incidencia> incidencias=bici.getIncidencias();
+			Incidencia inc=incidencias.stream().filter(i -> i.getId()==incidencia.getId()).findFirst().get();
+			inc.setEstado(EstadoIncidencia.RESUELTA);
+			inc.setFechaFin(LocalDate.now());
+			inc.setMotivoCierre(motivoCierre);
+			repositorioBicicleta.update(bici);
 			if (isReparada) 
 				servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId());	
 			else
 				servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(),motivoCierre);
+			
 		} catch (ServicioEstacionesException e) {
+			e.printStackTrace();
+		} catch (RepositorioException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EntidadNoEncontrada e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

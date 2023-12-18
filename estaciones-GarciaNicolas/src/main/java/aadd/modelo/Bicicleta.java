@@ -22,6 +22,7 @@ public class Bicicleta implements Identificable {
     @Column(name ="fecha_Baja", columnDefinition = "DATE")
     private LocalDate fechaBaja;
     
+    @Lob
 	@Column(name="motivo")
     private String motivo;
     
