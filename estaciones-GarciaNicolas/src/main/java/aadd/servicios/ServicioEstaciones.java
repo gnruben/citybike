@@ -11,6 +11,7 @@ import aadd.modelo.RegistroHistoricoEstacionamiento;
 import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
 import aadd.repositorio.IRepositorioEstacionesAdHoc;
+import aadd.repositorio.IRepositorioHistorialEstacionamientoAdHoc;
 import aadd.repositorio.RepositorioEstacionesMongoDB;
 import aadd.repositorio.RepositorioHistorialMongoDB;
 import repositorio.EntidadNoEncontrada;
@@ -168,13 +169,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void estacionarBicicleta(String idBicicleta) throws ServicioEstacionesException {
 		try {
+
 			List<String> list_ids = repositorioEstaciones.getIds();
 			
 			Boolean flag = false;
 			int i = 0;
-			if() {
-				
-			}
+
 			
 			while (i < list_ids.size() && !flag) {
 				
@@ -194,6 +194,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void estacionarBicicleta(String idBicicleta, String idEstacion) throws ServicioEstacionesException {
 		try {
+			if(((IRepositorioHistorialEstacionamientoAdHoc)repositorioHistorial).isEstacionada(idBicicleta)) {
+				throw new ServicioEstacionesException("La bicicleta ya está estacionada");
+			}
 
 			if (hayPuestosLibres(idEstacion)) {
 				Bicicleta bici=repositorioBicicletas.getById(idBicicleta);

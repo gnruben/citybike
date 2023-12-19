@@ -10,7 +10,7 @@
 		<servlet-name>ServletRegistro</servlet-name>
 		<url-pattern>/ServletRegistro</url-pattern>
 	</servlet-mapping>
-	<display-name>journals</display-name>
+	<display-name>AADD</display-name>
 	<welcome-file-list>
 		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>

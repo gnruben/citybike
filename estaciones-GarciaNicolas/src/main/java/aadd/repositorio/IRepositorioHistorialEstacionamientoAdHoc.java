@@ -12,4 +12,5 @@ public interface IRepositorioHistorialEstacionamientoAdHoc extends RepositorioSt
 	public List<String> getIdBicisByIdEstacion(String idEstacion);
 	public int getNumeroBicisEnEstacion(String idEstacion );
 	public RegistroHistoricoEstacionamiento getUltimoRegistroByIdBici(String idBici) throws RepositorioException;
+	public boolean isEstacionada(String idBici);
 }
