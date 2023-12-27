@@ -33,6 +33,20 @@ public class IncidenciaDTO implements Serializable {
 
 	private Bicicleta bicicleta;
 
+	
+
+	public IncidenciaDTO(String id, LocalDate fechaInicio, LocalDate fechaFin, String descripcion, String motivoCierre,
+			EstadoIncidencia estado, String idOperarioAsignado) {
+		super();
+		this.id = id;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.descripcion = descripcion;
+		this.motivoCierre = motivoCierre;
+		this.estado = estado;
+		this.idOperarioAsignado = idOperarioAsignado;
+	}
+
 
 	public String getId() {
 		return id;

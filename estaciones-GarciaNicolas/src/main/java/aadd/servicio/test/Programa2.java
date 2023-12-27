@@ -31,7 +31,7 @@ public class Programa2 {
      	
      	repositorioBicicletas.add(b1);
 	          	
-       String idBicicleta = servicioEstaciones.altaBicicleta("ModeloX", repositorioEstaciones.getById(idEstacion));
+       String idBicicleta = servicioEstaciones.altaBicicleta("ModeloX", idEstacion);
        	        												
         // Crear incidencias:
  	
@@ -108,10 +108,10 @@ public class Programa2 {
         String idEs3 = servicioEstaciones.crear(e3, npp, pcc, ll, llo);
         
         // Estacionar bicicleta
-        String idB1 = servicioEstaciones.altaBicicleta("ModeloXXY", repositorioEstaciones.getById(idEs1));
-        String idB2 = servicioEstaciones.altaBicicleta("ModeloXMK", repositorioEstaciones.getById(idEs2));
-        String idB3 = servicioEstaciones.altaBicicleta("ModeloLMN", repositorioEstaciones.getById(idEs2));
-        String idB4 = servicioEstaciones.altaBicicleta("ModeloNona", repositorioEstaciones.getById(idEs3));
+        String idB1 = servicioEstaciones.altaBicicleta("ModeloXXY", idEs1);
+        String idB2 = servicioEstaciones.altaBicicleta("ModeloXMK", idEs2);
+        String idB3 = servicioEstaciones.altaBicicleta("ModeloLMN", idEs2);
+        String idB4 = servicioEstaciones.altaBicicleta("ModeloNona", idEs3);
             
         servicioEstaciones.retirarBicicleta(idB2);                                 //Se retira ModeloXMK
 

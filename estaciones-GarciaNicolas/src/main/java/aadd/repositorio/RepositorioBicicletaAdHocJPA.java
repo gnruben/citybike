@@ -36,7 +36,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 	}
 
 	@Override
-	public List<Incidencia> getIncidenciasPendientes() {
+	public List<Incidencia> getIncidenciasAbiertas() {
 
 		EntityManager em = EntityManagerHelper.getEntityManager();
 
@@ -48,5 +48,19 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		query.setParameter("estadoAsignada", EstadoIncidencia.ASIGNADA);
 
 		return query.getResultList();
+	}
+	
+	@Override
+	public Incidencia getIncidenciaById(String idIncidencia) {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+
+		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
+				+ " WHERE i.id = :idIncidencia";
+
+		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
+		query.setParameter("idIncidencia", idIncidencia);
+		
+		
+		return query.getResultList().get(0);
 	}
 }

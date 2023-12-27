@@ -2,6 +2,7 @@ package aadd.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,20 +18,22 @@ public class BicicletaDTO implements Serializable{
 
 	
 	private String id;
-	
-	
     private String modelo;
-    
-    
     private LocalDate fechaAlta;
-    
-    
-    private LocalDate fechaBaja;
-    
-    
+    private LocalDate fechaBaja;  
     private String motivo;
+  
+    private List<IncidenciaDTO> incidencias;
+
     
-    private List<Incidencia> incidencias;
+	public BicicletaDTO(String id, String modelo, LocalDate fechaAlta, LocalDate fechaBaja, String motivo) {
+		this.id = id;
+		this.modelo = modelo;
+		this.fechaAlta = fechaAlta;
+		this.fechaBaja = fechaBaja;
+		this.motivo = motivo;
+		this.incidencias = new ArrayList<IncidenciaDTO>();
+	}
 
 	public String getId() {
 		return id;
@@ -72,14 +75,17 @@ public class BicicletaDTO implements Serializable{
 		this.motivo = motivo;
 	}
 
-	public List<Incidencia> getIncidencias() {
+	public List<IncidenciaDTO> getIncidencias() {
 		return incidencias;
 	}
 
-	public void setIncidencias(List<Incidencia> incidencias) {
+	public void setIncidencias(List<IncidenciaDTO> incidencias) {
 		this.incidencias = incidencias;
 	}
     
-    
+    public void addIncidencia(IncidenciaDTO incidenciaDTO) {
+    	
+    	this.incidencias.add(incidenciaDTO);
+    }
     
 }

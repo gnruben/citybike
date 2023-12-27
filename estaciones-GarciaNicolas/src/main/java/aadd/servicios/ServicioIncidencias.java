@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
+import aadd.dto.BicicletaDTO;
+import aadd.dto.IncidenciaDTO;
 import aadd.modelo.Bicicleta;
 import aadd.modelo.EstadoIncidencia;
 import aadd.modelo.Incidencia;
@@ -16,7 +20,7 @@ import servicio.FactoriaServicios;
 
 public class ServicioIncidencias implements IServicioIncidencias {
 
-	private Repositorio<Bicicleta, String> repositorioBicicleta = FactoriaRepositorios.getRepositorio(Bicicleta.class);
+	private Repositorio<Bicicleta, String> repositorioBicicletas = FactoriaRepositorios.getRepositorio(Bicicleta.class);
 	private IServicioEstaciones servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 
 	/**
@@ -40,7 +44,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 		String id = null;
 		try {
-			Bicicleta bicicleta = repositorioBicicleta.getById(idBicicleta);
+			Bicicleta bicicleta = repositorioBicicletas.getById(idBicicleta);
 			//if (bicicleta != null 
 			if(bicicleta.isDisponible() ) {
 				Incidencia incidencia = new Incidencia();
@@ -53,7 +57,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 				
 				bicicleta.setDisponible(false);
-				repositorioBicicleta.update(bicicleta); 
+				repositorioBicicletas.update(bicicleta); 
 				id = incidencia.getId();
 			}else {
 				throw new ServicioIncidenciasException("Bicicleta no disponible: " + idBicicleta);
@@ -87,7 +91,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		Bicicleta bici = incidencia.getBicicleta();
 		
 		try {
-			repositorioBicicleta.update(bici);
+			repositorioBicicletas.update(bici);
 		} catch (RepositorioException e) {
 			throw new ServicioIncidenciasException("Error en el repositorio de bicis");
 		} catch (EntidadNoEncontrada e) {
@@ -109,7 +113,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		incidencia.setIdOperarioAsignado(idOperarioAsignado);
 		
 		try {
-			repositorioBicicleta.update(incidencia.getBicicleta());
+			repositorioBicicletas.update(incidencia.getBicicleta());
 			servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId());
 			
 		} catch (ServicioEstacionesException  e) {
@@ -135,13 +139,13 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 		
 		try {
-			Bicicleta bici=repositorioBicicleta.getById(incidencia.getBicicleta().getId());
+			Bicicleta bici=repositorioBicicletas.getById(incidencia.getBicicleta().getId());
 			List<Incidencia> incidencias=bici.getIncidencias();
 			Incidencia inc=incidencias.stream().filter(i -> i.getId()==incidencia.getId()).findFirst().get();
 			inc.setEstado(EstadoIncidencia.RESUELTA);
 			inc.setFechaFin(LocalDate.now());
 			inc.setMotivoCierre(motivoCierre);
-			repositorioBicicleta.update(bici);
+			repositorioBicicletas.update(bici);
 			if (isReparada) 
 				servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId());	
 			else
@@ -150,10 +154,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		} catch (ServicioEstacionesException e) {
 			e.printStackTrace();
 		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -165,7 +167,29 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	 */
 	@Override
 	public List<Incidencia> getIncidenciasAbiertas() {
-		return ((RepositorioBicicletaAdHocJPA) repositorioBicicleta).getIncidenciasPendientes();
+		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciasAbiertas();
 	}
 
+	// DTO
+	
+	@Override
+	public IncidenciaDTO transformToDTO(Incidencia incidencia) {        
+        IncidenciaDTO idto = new IncidenciaDTO(incidencia.getId(), incidencia.getFechaInicio(), incidencia.getFechaFin(), incidencia.getDescripcion(), incidencia.getMotivoCierre(), incidencia.getEstado(), incidencia.getIdOperarioAsignado());
+        return idto;
+    }
+
+//	@Override
+//	public IncidenciaDTO getById(String idIncidencia) throws ServicioEstacionesException{
+//		try {
+//			Bicicleta bici = repositorioBicicletas.getById(idBicicleta);
+//			return transformToDTO(bici);
+//		} catch (RepositorioException e) {
+//			e.printStackTrace();
+//			throw new ServicioEstacionesException(e.getMessage(), e);
+//			
+//		} catch (EntidadNoEncontrada e) {
+//			e.printStackTrace();
+//			throw new ServicioEstacionesException(e.getMessage(), e);
+//		}
+//	}
 }

@@ -9,6 +9,7 @@ import repositorio.RepositorioString;
 public interface IRepositorioBicicletasAdHoc extends RepositorioString<Bicicleta>{
 
 	public List<Bicicleta> obtenerBicicletasPorModelo(String modelo);
-	public List<Incidencia> getIncidenciasPendientes();
+	public List<Incidencia> getIncidenciasAbiertas();
+	Incidencia getIncidenciaById(String idIncidencia);
 	
 }

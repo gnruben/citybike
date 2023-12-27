@@ -1,6 +1,8 @@
 package aadd.servicios;
 
 import java.util.List;
+
+import aadd.dto.IncidenciaDTO;
 import aadd.modelo.Incidencia;
 
 public interface IServicioIncidencias {
@@ -10,4 +12,5 @@ public interface IServicioIncidencias {
 	void cancelarIncidencia(Incidencia incidencia, String motivo) throws ServicioIncidenciasException;
 	void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado) throws ServicioIncidenciasException;
 	void resolverIncidencia(Incidencia incidencia, String motivo, boolean isReparada) throws ServicioIncidenciasException;
+	IncidenciaDTO transformToDTO(Incidencia incidencia);
 }

@@ -2,6 +2,7 @@ package aadd.servicios;
 
 import java.util.List;
 
+import aadd.dto.BicicletaDTO;
 import aadd.modelo.Bicicleta;
 import aadd.modelo.Estacion;
 import aadd.modelo.SitioTuristico;
@@ -18,7 +19,7 @@ public interface IServicioEstaciones {
 	
 	// ##################### Bicicletas ########################
 	
-	String altaBicicleta(String modelo, Estacion e) throws ServicioEstacionesException;
+	String altaBicicleta(String modelo, String idEstacion) throws ServicioEstacionesException;
 	void estacionarBicicleta(String idBicicleta) throws ServicioEstacionesException;
 	void estacionarBicicleta(String idBicicleta, String idEstacion) throws ServicioEstacionesException;
 	void retirarBicicleta(String idBicicleta) throws ServicioEstacionesException;
@@ -26,4 +27,6 @@ public interface IServicioEstaciones {
 
 	List<Bicicleta> getBicisEstacionadasCerca(double lat,double lng) throws ServicioEstacionesException;
 	List<Estacion> getEstacionesTuristicas() throws ServicioEstacionesException;
+	
+	BicicletaDTO getById(String idBicicleta) throws ServicioEstacionesException;
 }

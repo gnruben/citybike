@@ -5,8 +5,11 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+import aadd.dto.BicicletaDTO;
+import aadd.dto.IncidenciaDTO;
 import aadd.modelo.Bicicleta;
 import aadd.modelo.Estacion;
+import aadd.modelo.Incidencia;
 import aadd.modelo.RegistroHistoricoEstacionamiento;
 import aadd.modelo.ResumenSitioTuristico;
 import aadd.modelo.SitioTuristico;
@@ -137,7 +140,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	 * @param e       , Estación en la que se quiere dar de alta la bicicleta.
 	 */
 	@Override
-	public String altaBicicleta(String modelo, Estacion e) throws ServicioEstacionesException {
+	public String altaBicicleta(String modelo, String idEstacion) throws ServicioEstacionesException {
 
 		Bicicleta b = new Bicicleta();
 		b.setModelo(modelo);
@@ -146,7 +149,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		String id;
 		try {
 			id = repositorioBicicletas.add(b);
-			estacionarBicicleta(id, e.getId());
+			estacionarBicicleta(id, idEstacion);
 			b.setDisponible(true);
 		} catch (RepositorioException e1) {
 			throw new ServicioEstacionesException("No se pudo dar de alta a la bicicleta");
@@ -341,4 +344,31 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		
 	}
 
+	
+	// DTO
+	
+	private BicicletaDTO transformToDTO(Bicicleta bici) {        
+        BicicletaDTO bdto = new BicicletaDTO(bici.getId(), bici.getModelo(), bici.getFechaAlta(), bici.getFechaBaja(), bici.getMotivo());
+        for(Incidencia i: bici.getIncidencias()) {
+        	IncidenciaDTO inc = new IncidenciaDTO(i.getId(), i.getFechaInicio(), i.getFechaFin(), i.getDescripcion(), i.getMotivoCierre(), i.getEstado(), i.getIdOperarioAsignado());
+            bdto.addIncidencia(inc);
+        }
+        return bdto;
+    }
+
+	@Override
+	public BicicletaDTO getById(String idBicicleta) throws ServicioEstacionesException{
+		try {
+			Bicicleta bici = repositorioBicicletas.getById(idBicicleta);
+			return transformToDTO(bici);
+		} catch (RepositorioException e) {
+			e.printStackTrace();
+			throw new ServicioEstacionesException(e.getMessage(), e);
+			
+		} catch (EntidadNoEncontrada e) {
+			e.printStackTrace();
+			throw new ServicioEstacionesException(e.getMessage(), e);
+		}
+	}
+	
 }
