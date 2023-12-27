@@ -6,18 +6,22 @@ template="/WEB-INF/template/template.xhtml"
     xmlns:p="http://primefaces.org/ui"
     >
 <ui:define name="title">
-Listado de revistas
+Listado de Bicicletas
 </ui:define>
 
     <ui:define name="content">
-        <h:form id="revistas">
+        <h:form id="bicicletas">
             <div style="margin-top: 10px; margin-bottom: 10px;">
                 <h:panelGroup id="panelBuscador">
 
                     <p:fieldset legend="Buscador" collapsed="false" toggleable="true">
                         <div class="ui-g ui-fluid">
-                            <div class="ui-g-2">Palabra clave:</div>
+                            <div class="ui-g-2">Ubicación:</div>
                             <div class="ui-g-10">
+                            	<label>Latitud:</label>
+                            	<!-- TODO: cambiarlo para que haga uso de nuestras clases -->
+                                <p:inputText value="#{lazyRevistaListWeb.keyword}"/>
+                                <label>Longitud</label>
                                 <p:inputText value="#{lazyRevistaListWeb.keyword}"/>
                             </div>                         
                         </div>
