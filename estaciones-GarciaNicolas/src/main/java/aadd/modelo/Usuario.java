@@ -10,6 +10,9 @@ public class Usuario {
 	private String nombre;
 	private boolean esAdministrador; 
 	
+	public Usuario() {
+		
+	}
 	public Usuario(String email, String telef, LocalDate fechaNacimiento, String nombre, boolean esAdministrador) {
 		this.setEmail(email);
 		this.fechaNacimiento = fechaNacimiento;
@@ -19,6 +22,7 @@ public class Usuario {
 	}
 	
     // Getters and setters
+
 
 	public String getEmail() {
 		return email;
@@ -39,6 +43,9 @@ public class Usuario {
 	public String getNombre() {
 		return nombre;
 	}	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 	public boolean esAdministrador() {
 		return esAdministrador;
 	}
