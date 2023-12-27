@@ -53,7 +53,6 @@ public class IncidenciasAbiertasWeb implements Serializable {
 
 	}
 	
-	//TODO VER LO DE INCIDENCIA QUE EN CANCELARINCIDENCIA ADMITE SÓLO UNA INCIDENCIA NORMAL Y NO DTO.
 
 	public void cancelarIncidencia(IncidenciaDTO inc, String motivoCierre) {
 		try {

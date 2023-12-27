@@ -7,7 +7,7 @@
     <ui:param name="estilo2" value="current" />
 
     <ui:define name="title">
-        Alta nueva revista
+        Reportar nueva incidencia
     </ui:define>
 
     <ui:define name="content">
@@ -16,19 +16,14 @@
                 <div class="content">
                 <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputText value="ISSN"></h:outputText>
-                    <h:inputText id="issn" value="#{altaRevistaWeb.issn}" />
-                    <h:outputText value="#{text['nombre']}"></h:outputText>
-                    <h:inputText id="nombre" value="#{altaRevistaWeb.nombre}" />
+                    <h:outputText value="#{text['idBicicleta']}"></h:outputText>
+                    <h:inputText id="idBicicleta" value="#{BiciDetailWeb.idBicicleta}" />
                     <h:outputText value="#{text['descripcion']}"></h:outputText>
-                    <h:inputTextarea value="#{altaRevistaWeb.descripcion}" rows="5"></h:inputTextarea>
-                    <h:outputText value="Fecha de fundación"></h:outputText>
-                    <h:inputText value="#{altaRevistaWeb.fechaFundacion}">
-                        <f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+                    <h:inputTextarea value="#{BiciDetailWeb.descripcion}" rows="5"></h:inputTextarea>
                     </h:inputText>
                 </h:panelGrid>
-                <h:commandButton value="Alta"
-                    actionListener="#{altaRevistaWeb.altaRevista()}">
+                <h:commandButton value="Reportar"
+                    actionListener="#{BiciDetailWeb.addIncidencia()}">
                 </h:commandButton>
                 <h:messages id="errors" infoStyle="color:blue"
                     warnStyle="color:orange" errorStyle="color:red" showDetail="true" />
