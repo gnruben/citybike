@@ -1,17 +1,28 @@
 package aadd.servicio.test;
 
-import aadd.modelo.*;
-import aadd.repositorio.RepositorioSitiosTuristicosJSON;
-import aadd.servicios.*;
-import repositorio.*;
-import servicio.FactoriaServicios;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Programa2 {
+import aadd.modelo.Bicicleta;
+import aadd.modelo.Estacion;
+import aadd.modelo.Incidencia;
+import aadd.modelo.SitioTuristico;
+import aadd.repositorio.RepositorioSitiosTuristicosJSON;
+import aadd.servicios.IServicioEstaciones;
+import aadd.servicios.IServicioIncidencias;
+import aadd.servicios.ServicioEstacionesException;
+import aadd.servicios.ServicioIncidenciasException;
+import aadd.servicios.ServicioSitiosTuristicosException;
+import repositorio.EntidadNoEncontrada;
+import repositorio.FactoriaRepositorios;
+import repositorio.Repositorio;
+import repositorio.RepositorioException;
+import servicio.FactoriaServicios;
 
-	public static void main(String[] args) throws RepositorioException, ServicioIncidenciasException, ServicioEstacionesException, EntidadNoEncontrada, ServicioSitiosTuristicosException {
+public class Programa3 {
+
+public static void main(String[] args) throws RepositorioException, ServicioIncidenciasException, ServicioEstacionesException, EntidadNoEncontrada, ServicioSitiosTuristicosException {
         
 	   	Repositorio<Bicicleta, String> repositorioBicicletas = FactoriaRepositorios.getRepositorio(Bicicleta.class);
 	   	Repositorio<Estacion, String> repositorioEstaciones = FactoriaRepositorios.getRepositorio(Estacion.class);
@@ -59,8 +70,6 @@ public class Programa2 {
         Incidencia incidenciaCancelada = incidenciasAbiertas.get(0); 
         servicioIncidencias.cancelarIncidencia(incidenciaCancelada, "Problema resuelto");
         
-        String descripcion2 = "Problema con el sillón";
-        //servicioIncidencias.crearIncidencia(idBicicleta3, descripcion2);
         
         // Asignar incidencia
         incidenciasAbiertas = servicioIncidencias.getIncidenciasAbiertas();        
@@ -69,7 +78,7 @@ public class Programa2 {
         
         String idOperario = "Operario123";
         servicioIncidencias.asignarIncidencia(incidenciaAsignada, idOperario);
-        //System.out.println("La incidencia con id: "+incidenciaAsignada.getId()+", fue asignada al operario con id: "+idOperario);
+        System.out.println("La incidencia con id: "+incidenciaAsignada.getId()+", fue asignada al operario con id: "+idOperario);
 
         
         // Resolver incidencia
@@ -121,7 +130,6 @@ public class Programa2 {
         String idB1 = servicioEstaciones.altaBicicleta("ModeloXXY", idEs1);
         String idB2 = servicioEstaciones.altaBicicleta("ModeloXMK", idEs2);
         String idB3 = servicioEstaciones.altaBicicleta("ModeloLMN", idEs2);
-        String idB4 = servicioEstaciones.altaBicicleta("ModeloNona", idEs3);
             
         servicioEstaciones.retirarBicicleta(idB2);                                 //Se retira ModeloXMK
 
@@ -139,8 +147,6 @@ public class Programa2 {
         	System.out.println(b);
         }
        
-        
-        
         SitioTuristico s1 = new SitioTuristico("s1", "kagdcibabk", "Url1");
         SitioTuristico s2 = new SitioTuristico("s2", "aljsd", "Url2");
         SitioTuristico s3 = new SitioTuristico("s3", "a_LShADS", "Url3");

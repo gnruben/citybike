@@ -24,6 +24,7 @@ import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
+import aadd.modelo.Bicicleta;
 import aadd.modelo.Estacion;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
@@ -80,12 +81,12 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 	}
 
 	@Override
-	public List<Estacion> getEstacionesCercanasA(double lat, double lng) {
+	public List<Estacion> getEstacionesCercanasA(double lat, double lng, int limit) {
 		List<Estacion>list=new LinkedList<Estacion>();
 		
 		Point posicion=new Point(new Position(lng, lat));
 		Bson filter=Filters.near("ubicacion", posicion, null, null);
-		getCollection().find(filter).forEach(e->list.add(e));
+		getCollection().find(filter).limit(limit).forEach(e->list.add(e));
 		
 		return list;
 	}	
@@ -95,4 +96,5 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		return coleccion;
 	}
 	
+
 }

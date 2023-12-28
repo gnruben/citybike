@@ -29,4 +29,7 @@ public interface IServicioEstaciones {
 	List<Estacion> getEstacionesTuristicas() throws ServicioEstacionesException;
 	
 	BicicletaDTO getById(String idBicicleta) throws ServicioEstacionesException;
+	List<BicicletaDTO> bicisCercanasLazy(double lat, double lng, int start, int max) throws ServicioEstacionesException;
+	public int countBicicleta(double lat, double lng) throws ServicioEstacionesException;
+
 }

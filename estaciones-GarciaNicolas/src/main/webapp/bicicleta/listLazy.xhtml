@@ -19,16 +19,15 @@ Listado de Bicicletas
                             <div class="ui-g-2">Ubicación:</div>
                             <div class="ui-g-10">
                             	<label>Latitud:</label>
-                            	<!-- TODO: cambiarlo para que haga uso de nuestras clases -->
-                                <p:inputText value="#{lazyRevistaListWeb.keyword}"/>
+                                <p:inputText value="#{BuscarBiciWeb.latitud}"/>
                                 <label>Longitud</label>
-                                <p:inputText value="#{lazyRevistaListWeb.keyword}"/>
+                                <p:inputText value="#{BuscarBiciWeb.longitud}"/>
                             </div>                         
                         </div>
 
                         <div style="text-align: center;">
                             <p:commandButton value="Buscar"
-                                actionListener="#{lazyRevistaListWeb.buscar()}"
+                                actionListener="#{BuscarBiciWeb.buscar()}"
                                 update="tabla_header total " icon="fa fa-search" />
                         </div>
 
@@ -48,17 +47,17 @@ Listado de Bicicletas
 
             </div>
 
-           <h2><h:outputText value="Total: #{lazyRevistaListWeb.total}" id="total"/></h2>
+           <h2><h:outputText value="Total: #{BuscarBiciWeb.total}" id="total"/></h2>
 
-            <p:dataTable var="revista" style="prueba"
-                value="#{lazyRevistaListWeb}" rows="5" id="tabla_header"
+            <p:dataTable var="bicicleta" style="prueba"
+                value="#{BuscarBiciWeb}" rows="5" id="tabla_header"
                 paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                <p:column headerText="ISSN">
-                    <h:outputText value="#{revista.issn}" />
+                <p:column headerText="ID">
+                    <h:outputText value="#{bicicleta.idBicicleta}" />
                 </p:column>
-                 <p:column headerText="Nombre">
-                    <h:outputText value="#{revista.nombre}" />
+                 <p:column headerText="Modelo">
+                    <h:outputText value="#{bicicleta.modelo}" />
                 </p:column>             
             </p:dataTable>
         </h:form>

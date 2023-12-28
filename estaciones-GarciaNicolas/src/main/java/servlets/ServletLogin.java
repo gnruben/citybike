@@ -97,7 +97,7 @@ public class ServletLogin extends HttpServlet {
 		}
 
 		String usuario = request.getParameter("username");
-		String clave = request.getParameter("clave");
+		// String clave = request.getParameter("clave");
 		// Obtenemos el objeto ServletContext
 		ServletContext app = getServletConfig().getServletContext();
 		// Accedemos a la referencia de la tabla hash

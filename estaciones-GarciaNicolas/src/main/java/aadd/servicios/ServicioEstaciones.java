@@ -2,6 +2,7 @@ package aadd.servicios;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -239,8 +240,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		try {
 			Bicicleta bici=repositorioBicicletas.getById(idBicicleta);
 			
-			if(!bici.isDisponible()) {
-				throw new ServicioEstacionesException("La bicicleta no está disponible, no se puede retirar " + idBicicleta);
+			if(!((IRepositorioHistorialEstacionamientoAdHoc)repositorioHistorial).isEstacionada(idBicicleta)) {
+				throw new ServicioEstacionesException("La bicicleta no está estacionada, no se puede retirar " + idBicicleta);
 			}
 			
 			bici.setDisponible(false);
@@ -289,8 +290,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) throws ServicioEstacionesException {
 		List<Bicicleta> list = new LinkedList<Bicicleta>();
-		
-		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat, lng);
+		int limit = 3; // las tres estaciones más cercanas
+		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat, lng, limit);
 
 		for(Estacion e: estaciones) {
 			List<String> idBicis = ((RepositorioHistorialMongoDB) repositorioHistorial).getIdBicisByIdEstacion(e.getId());
@@ -308,6 +309,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 		return list;
 	}
+	
 
 	/**
 	 * Método que dado el id de una estación devuelve un true si tiene puestos
@@ -371,4 +373,41 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		}
 	}
 	
+	// Lazy
+	
+	@Override
+	public List<BicicletaDTO> bicisCercanasLazy(double lat, double lng, int start, int max) throws ServicioEstacionesException {
+		List<Bicicleta> bicicletasCercas = getBicisEstacionadasCerca(lat, lng);
+		int tam = bicicletasCercas.size();
+		
+		List<BicicletaDTO> bicicletasDTO = new ArrayList<BicicletaDTO>();
+		List<Bicicleta> bicis;
+		
+		if(tam == 0)
+			throw new ServicioEstacionesException("Error: No se han encontrado bicicletas cercanas");
+		
+		if (tam < start )
+			return new ArrayList<BicicletaDTO>();
+		
+		if (tam < (max + start + 1))
+			 bicis = bicicletasCercas.subList(start, tam);
+		else
+			bicis = bicicletasCercas.subList(start, start + max);
+		
+		for (Bicicleta b: bicis)
+			bicicletasDTO.add(transformToDTO(b));
+		
+		return bicicletasDTO;
+	}	
+	
+	@Override
+	public int countBicicleta(double lat, double lng) throws ServicioEstacionesException{
+	    try {
+	        return getBicisEstacionadasCerca(lat, lng).size();
+	        
+	    } catch (ServicioEstacionesException e) {
+	        e.printStackTrace();
+	        throw new ServicioEstacionesException(e.getMessage(), e);
+	    }
+	}
 }

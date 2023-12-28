@@ -109,10 +109,9 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		if (incidencia.getEstado() != EstadoIncidencia.PENDIENTE)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es PENDIENTE no se puede asignar");
 		
-		incidencia.setEstado(EstadoIncidencia.ASIGNADA);
-		incidencia.setIdOperarioAsignado(idOperarioAsignado);
-		
 		try {
+			incidencia.setEstado(EstadoIncidencia.ASIGNADA);
+			incidencia.setIdOperarioAsignado(idOperarioAsignado);
 			repositorioBicicletas.update(incidencia.getBicicleta());
 			servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId());
 			
@@ -140,8 +139,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		
 		try {
 			Bicicleta bici=repositorioBicicletas.getById(incidencia.getBicicleta().getId());
-			List<Incidencia> incidencias=bici.getIncidencias();
-			Incidencia inc=incidencias.stream().filter(i -> i.getId()==incidencia.getId()).findFirst().get();
+			List<Incidencia> incidencias = bici.getIncidencias();
+			Incidencia inc=incidencias.stream().filter(i -> i.getId().equals(incidencia.getId())).findFirst().get();
 			inc.setEstado(EstadoIncidencia.RESUELTA);
 			inc.setFechaFin(LocalDate.now());
 			inc.setMotivoCierre(motivoCierre);

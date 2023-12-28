@@ -13,13 +13,11 @@
 			<label>Clave:</label> <input type="password" name="clave">
 		</div>
 		<div>
-		<label>Rol:</label>
-			<p:selectOneRadio id="rol" value="#{radioView.line}"
-				layout="lineDirection">
-				<f:selectItem itemLabel="Gestor" itemValue="GESTOR" />
-				<f:selectItem itemLabel="Cliente" itemValue="CLIENTE" />
-				
-			</p:selectOneRadio>
+		<label>Rol:</label><br>
+		<input type="radio" id="cliente" name="rol" value="CLIENTE">
+  			<label for="cliente">Cliente</label><br>
+  		<input type="radio" id="gestor" name="rol" value="GESTOR">
+  			<label for="gestor">Gestor</label><br>
 		</div>
 		<input type="submit" value="Iniciar sesión">
 	</form>

@@ -15,9 +15,9 @@
 
         <f:metadata>
 
-            <f:viewParam name="id" value="#{BiciDetailWeb.idBicicleta}" />
+            <f:viewParam name="id" value="#{biciDetailWeb.idBicicleta}" />
 
-            <f:viewAction action="#{BiciDetailWeb.load()}" />
+            <f:viewAction action="#{biciDetailWeb.load()}" />
 
         </f:metadata>
     </ui:define>
@@ -27,8 +27,8 @@
             <div class="col-12">
                 <div class="content">
                     <h:form id="aadd">
-                        <p:panel header="#{BiciDetailWeb.bicicleta.id}">
-                            <h3>#{BiciDetailWeb.bicicleta.modelo}</h3>
+                        <p:panel header="#{biciDetailWeb.bicicleta.id}">
+                            <h3>#{biciDetailWeb.bicicleta.modelo}</h3>
                         </p:panel>
 
                         <p:toolbar>
@@ -43,15 +43,17 @@
 
 
                         <p:dataTable var="incidencia" style="prueba"
-                            value="#{BiciDetailWeb.bicicleta.incidencias}" rows="50"
+                            value="#{biciDetailWeb.bicicleta.incidencias}" rows="50"
                             id="tabla_header" paginator="true"
                             rowsPerPageTemplate="5,10,{ShowAll|'All'}"
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                             <p:column headerText="descripcion">
                                 <h:outputText value="#{incidencia.descripcion}" />
                             </p:column>
+                            
                             <p:column style="width: 200px;" headerText="Opciones">
                             </p:column>
+                            
                         </p:dataTable>
                         
                         <p:growl showDetail="true" id="info2" />
@@ -62,12 +64,12 @@
                                 <h:panelGrid columns="2">                        
 
                                     <h:outputText value="id" />
-                                    <p:inputNumber value="#{BiciDetailWeb.incidencia.id}"
+                                    <p:inputNumber value="#{biciDetailWeb.incidencia.id}"
                                         decimalPlaces="0" />
                                     <p:commandButton value="Cerrar"
                                         onclick="PF('nuevaIncidencia').hide();" />
                                     <p:commandButton value="Reportar incidencia" icon="fa fa-newspaper"
-                                        actionListener="#{BiciDetailWeb.addIncidencia()}"
+                                        actionListener="#{biciDetailWeb.addIncidencia()}"
                                         oncomplete="PF('nuevaIncidencia').hide();"
                                         update="tabla_header info2" />
                                 </h:panelGrid>
