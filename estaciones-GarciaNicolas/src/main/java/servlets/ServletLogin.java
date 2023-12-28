@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import aadd.modelo.RolUsuario;
 import aadd.modelo.Usuario;
 
 
@@ -52,7 +53,9 @@ public class ServletLogin extends HttpServlet {
 		    // Damos la salida en texto normal
 		    if (cookieAADD != null) {
 		    	String usuario = cookieAADD.getValue();
+		    	//cookieAADD.get
 		        request.setAttribute("usuario", usuario);
+		        //request.setAttribute("rol", rol);
 		        ServletContext app = getServletConfig().getServletContext();
 		        RequestDispatcher rd = app.getNamedDispatcher("ServletCookie");
 		        // Reenviamos la petición capturando cualquier excepción que se produzca
@@ -97,17 +100,29 @@ public class ServletLogin extends HttpServlet {
 		}
 
 		String usuario = request.getParameter("username");
+		String rol =request.getParameter("rol");//incluído por nosotros para identificar  el rol
+		
+		Usuario c = new Usuario();
+		c.setNombre(usuario);
+		if(rol.equals(RolUsuario.GESTOR.toString())) {
+			c.setRol(RolUsuario.GESTOR);
+		}else {
+			c.setRol(RolUsuario.CLIENTE);
+		}
+		
 		// String clave = request.getParameter("clave");
 		// Obtenemos el objeto ServletContext
 		ServletContext app = getServletConfig().getServletContext();
+		
 		// Accedemos a la referencia de la tabla hash
 		HashMap<String, Usuario> usuariosHash = (HashMap<String, Usuario>) app.getAttribute("usuarios");
-		Usuario c = null;
-		if (usuariosHash == null) {
+		//Usuario c = null;
+		/*if (usuariosHash == null) {
 			identificado = false;
 		} else {
 			// Obtenemos el objeto cliente por usuario
 			c = (Usuario) usuariosHash.get(usuario);
+			identificado=true;
 			if (c == null) {
 				identificado = false;
 			} /*else {
@@ -116,14 +131,15 @@ public class ServletLogin extends HttpServlet {
 				} else {
 					identificado = false;
 				}
-			}*/
-		}
+			}
+		}*/
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<html> <head> <title> Login </title> </head> <body>");
 		if (identificado) {
 			Cookie cookie = new Cookie("aadd", c.getNombre());
+			Cookie rolCookie = new Cookie("aadd.rol", rol);
 		    cookie.setMaxAge(60 * 60 * 24 * 7); // Cálculo segundos semana
 		    response.addCookie(cookie);
 			out.println("<B><P>Identificación correcta</B></P>");

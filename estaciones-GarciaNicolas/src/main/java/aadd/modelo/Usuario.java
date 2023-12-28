@@ -8,22 +8,29 @@ public class Usuario {
 	private LocalDate fechaNacimiento;
 	private String telef;
 	private String nombre;
-	private boolean esAdministrador; 
+	
+	private RolUsuario rol;
 	
 	public Usuario() {
 		
 	}
-	public Usuario(String email, String telef, LocalDate fechaNacimiento, String nombre, boolean esAdministrador) {
+	public Usuario(String email, String telef, LocalDate fechaNacimiento, String nombre, RolUsuario rol) {
 		this.setEmail(email);
 		this.fechaNacimiento = fechaNacimiento;
 		this.setTelef(telef);
 		this.nombre = nombre;
-		this.esAdministrador = esAdministrador;
+		this.rol=rol;
 	}
 	
     // Getters and setters
 
 
+	public RolUsuario getRol() {
+		return rol;
+	}
+	public void setRol(RolUsuario rol) {
+		this.rol = rol;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -46,8 +53,6 @@ public class Usuario {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public boolean esAdministrador() {
-		return esAdministrador;
-	}
+
 	
 }
