@@ -6,7 +6,7 @@ template="/WEB-INF/template/template.xhtml"
     xmlns:p="http://primefaces.org/ui"
     >
 <ui:define name="title">
-Listado de Bicicletas
+Listado de bicicletas
 </ui:define>
 
     <ui:define name="content">
@@ -19,15 +19,15 @@ Listado de Bicicletas
                             <div class="ui-g-2">Ubicación:</div>
                             <div class="ui-g-10">
                             	<label>Latitud:</label>
-                                <p:inputText value="#{BuscarBiciWeb.latitud}"/>
+                                <p:inputText value="#{buscarBiciWeb.latitud}"/>
                                 <label>Longitud</label>
-                                <p:inputText value="#{BuscarBiciWeb.longitud}"/>
+                                <p:inputText value="#{buscarBiciWeb.longitud}"/>
                             </div>                         
                         </div>
 
                         <div style="text-align: center;">
                             <p:commandButton value="Buscar"
-                                actionListener="#{BuscarBiciWeb.buscar()}"
+                                actionListener="#{buscarBiciWeb.buscar()}"
                                 update="tabla_header total " icon="fa fa-search" />
                         </div>
 
@@ -47,10 +47,10 @@ Listado de Bicicletas
 
             </div>
 
-           <h2><h:outputText value="Total: #{BuscarBiciWeb.total}" id="total"/></h2>
+           <h2><h:outputText value="Total: #{buscarBiciWeb.total}" id="total"/></h2>
 
             <p:dataTable var="bicicleta" style="prueba"
-                value="#{BuscarBiciWeb}" rows="5" id="tabla_header"
+                value="#{buscarBiciWeb}" rows="5" id="tabla_header"
                 paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                 <p:column headerText="ID">
