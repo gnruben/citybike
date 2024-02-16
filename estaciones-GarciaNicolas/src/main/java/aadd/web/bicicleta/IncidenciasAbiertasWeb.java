@@ -3,6 +3,7 @@ package aadd.web.bicicleta;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -15,6 +16,7 @@ import aadd.modelo.Incidencia;
 import aadd.repositorio.RepositorioBicicletaAdHocJPA;
 import aadd.servicios.IServicioEstaciones;
 import aadd.servicios.IServicioIncidencias;
+import aadd.servicios.ServicioEstacionesException;
 import aadd.servicios.ServicioIncidenciasException;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
@@ -24,6 +26,11 @@ import servicio.FactoriaServicios;
 @ViewScoped
 public class IncidenciasAbiertasWeb implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String idIncidencia;
 
 	private IServicioEstaciones servicioEstaciones;
@@ -31,10 +38,29 @@ public class IncidenciasAbiertasWeb implements Serializable {
 	private Repositorio<Bicicleta, String> repositorioBicicletas;  
 
 	private List<IncidenciaDTO> incidencias;
+	
+	private Integer total;
 
 	@Inject
 	protected FacesContext facesContext;
 
+	@PostConstruct
+    public void init() {
+        servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+        try {
+			findTotalResults();
+		} catch (ServicioIncidenciasException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    protected int findTotalResults() throws ServicioIncidenciasException {
+        if (total == null) {
+           total = servicioIncidencias.countIncidenciasAbiertas();      
+        }
+        return total;
+    }
+	
 	public IncidenciasAbiertasWeb() {
 
 		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
@@ -109,5 +135,16 @@ public class IncidenciasAbiertasWeb implements Serializable {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", e.getMessage()));
 			e.printStackTrace();
 		}
+	}
+	
+	public String getIdIncidencia() {
+		return idIncidencia;
+	}
+	
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
 	}
 }

@@ -2,6 +2,7 @@ package aadd.servicios;
 
 import java.util.List;
 
+import aadd.dto.BicicletaDTO;
 import aadd.dto.IncidenciaDTO;
 import aadd.modelo.Incidencia;
 
@@ -13,4 +14,6 @@ public interface IServicioIncidencias {
 	void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado) throws ServicioIncidenciasException;
 	void resolverIncidencia(Incidencia incidencia, String motivo, boolean isReparada) throws ServicioIncidenciasException;
 	IncidenciaDTO transformToDTO(Incidencia incidencia);
+	List<IncidenciaDTO> incidenciasAbiertasLazy(int start, int max) throws ServicioIncidenciasException;
+	int countIncidenciasAbiertas() throws ServicioIncidenciasException;
 }

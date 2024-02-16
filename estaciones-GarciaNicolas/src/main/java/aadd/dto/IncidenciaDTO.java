@@ -3,17 +3,14 @@ package aadd.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-
-import aadd.modelo.Bicicleta;
 import aadd.modelo.EstadoIncidencia;
 
 public class IncidenciaDTO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String id;
 	
@@ -31,7 +28,7 @@ public class IncidenciaDTO implements Serializable {
 	private String idOperarioAsignado;
 	
 
-	private Bicicleta bicicleta;
+	private BicicletaDTO bicicleta;
 
 	
 
@@ -118,12 +115,12 @@ public class IncidenciaDTO implements Serializable {
 	}
 
 
-	public Bicicleta getBicicleta() {
+	public BicicletaDTO getBicicleta() {
 		return bicicleta;
 	}
 
 
-	public void setBicicleta(Bicicleta bicicleta) {
+	public void setBicicleta(BicicletaDTO bicicleta) {
 		this.bicicleta = bicicleta;
 	}
 	

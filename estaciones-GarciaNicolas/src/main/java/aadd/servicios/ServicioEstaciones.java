@@ -34,6 +34,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	private ISitiosTuristicos serviciosTuristicos = FactoriaServicios.getServicio(ISitiosTuristicos.class);
 
 
+
 	@Override
 	public String crear(String nombre, int numeroPuestos, String postalcode, double lat, double lng)
 			throws ServicioEstacionesException {
@@ -289,15 +290,21 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	 */
 	@Override
 	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) throws ServicioEstacionesException {
+		//TODO System.out.println("Lat: "+lat+", longitud:"+ lng);
 		List<Bicicleta> list = new LinkedList<Bicicleta>();
 		int limit = 3; // las tres estaciones más cercanas
 		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat, lng, limit);
-
+		
 		for(Estacion e: estaciones) {
+			//TODO System.out.println("Estacion con ID: "+e.getId());
 			List<String> idBicis = ((RepositorioHistorialMongoDB) repositorioHistorial).getIdBicisByIdEstacion(e.getId());
+			
 			for(String i: idBicis) {
+				//TODO System.out.println("ID's de las bicicletas de esta estación: "+i);
 				try {
-					list.add(repositorioBicicletas.getById(i));
+					Bicicleta bicicleta = repositorioBicicletas.getById(i);
+					if (bicicleta.isDisponible())
+						list.add(bicicleta);
 					
 				} catch (RepositorioException e1) {
 					throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + i);
@@ -373,7 +380,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		}
 	}
 	
-	// Lazy
+	// Lazy para Buscar Bicis Cercanas
 	
 	@Override
 	public List<BicicletaDTO> bicisCercanasLazy(double lat, double lng, int start, int max) throws ServicioEstacionesException {
@@ -410,4 +417,5 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	        throw new ServicioEstacionesException(e.getMessage(), e);
 	    }
 	}
+	
 }

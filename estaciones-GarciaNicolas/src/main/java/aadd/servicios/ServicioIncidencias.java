@@ -1,6 +1,7 @@
 package aadd.servicios;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,8 +46,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		String id = null;
 		try {
 			Bicicleta bicicleta = repositorioBicicletas.getById(idBicicleta);
-			//if (bicicleta != null 
-			if(bicicleta.isDisponible() ) {
+			// if (bicicleta != null
+			if (bicicleta.isDisponible()) {
 				Incidencia incidencia = new Incidencia();
 				incidencia.setId(UUID.randomUUID().toString()); // ID
 				incidencia.setBicicleta(bicicleta);
@@ -55,11 +56,10 @@ public class ServicioIncidencias implements IServicioIncidencias {
 				incidencia.setEstado(EstadoIncidencia.PENDIENTE);
 				bicicleta.addIncidencia(incidencia);
 
-				
 				bicicleta.setDisponible(false);
-				repositorioBicicletas.update(bicicleta); 
+				repositorioBicicletas.update(bicicleta);
 				id = incidencia.getId();
-			}else {
+			} else {
 				throw new ServicioIncidenciasException("Bicicleta no disponible: " + idBicicleta);
 			}
 
@@ -74,22 +74,23 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 	@Override
 	public void cancelarIncidencia(Incidencia incidencia, String motivoCierre) throws ServicioIncidenciasException {
-		
-		if (incidencia == null  )
+
+		if (incidencia == null)
 			throw new IllegalArgumentException("Debe introducir incidencia que se quiere cancelar.");
 		if (motivoCierre == null || motivoCierre.isEmpty())
-			throw new IllegalArgumentException("Tiene que haber un motivo de cierre de la incidencia que se quiere cancelar.");
-		
+			throw new IllegalArgumentException(
+					"Tiene que haber un motivo de cierre de la incidencia que se quiere cancelar.");
+
 		if (incidencia.getEstado() != EstadoIncidencia.PENDIENTE)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es PENDIENTE no se puede cancelar");
-		
+
 		incidencia.setEstado(EstadoIncidencia.CANCELADA);
 		incidencia.setFechaFin(LocalDate.now());
 		incidencia.setMotivoCierre(motivoCierre);
 
 		incidencia.getBicicleta().setDisponible(true);
 		Bicicleta bici = incidencia.getBicicleta();
-		
+
 		try {
 			repositorioBicicletas.update(bici);
 		} catch (RepositorioException e) {
@@ -100,56 +101,59 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 
 	@Override
-	public void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado) throws ServicioIncidenciasException {
-		if (incidencia == null  )
+	public void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado)
+			throws ServicioIncidenciasException {
+		if (incidencia == null)
 			throw new IllegalArgumentException("Debe introducir incidencia que se le quiere asignar un operario.");
 		if (idOperarioAsignado == null || idOperarioAsignado.isEmpty())
-			throw new IllegalArgumentException("El id del Operario, al que le ha sido asignada esta incidencia, no puede ser nulo.");
-		
+			throw new IllegalArgumentException(
+					"El id del Operario, al que le ha sido asignada esta incidencia, no puede ser nulo.");
+
 		if (incidencia.getEstado() != EstadoIncidencia.PENDIENTE)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es PENDIENTE no se puede asignar");
-		
+
 		try {
 			incidencia.setEstado(EstadoIncidencia.ASIGNADA);
 			incidencia.setIdOperarioAsignado(idOperarioAsignado);
 			repositorioBicicletas.update(incidencia.getBicicleta());
 			servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId());
-			
-		} catch (ServicioEstacionesException  e) {
+
+		} catch (ServicioEstacionesException e) {
 			throw new ServicioIncidenciasException("Error en el servicio de estaciones");
 		} catch (RepositorioException e) {
 			throw new ServicioIncidenciasException("Error en el repositorio");
 		} catch (EntidadNoEncontrada e) {
-			throw new ServicioIncidenciasException("Error no se encontró la bici vinculada a la incidencia: "+incidencia.getBicicleta().getId());
+			throw new ServicioIncidenciasException(
+					"Error no se encontró la bici vinculada a la incidencia: " + incidencia.getBicicleta().getId());
 		}
 	}
 
 	@Override
-	public void resolverIncidencia(Incidencia incidencia, String motivoCierre, boolean isReparada) throws ServicioIncidenciasException {
-		if (incidencia == null  )
+	public void resolverIncidencia(Incidencia incidencia, String motivoCierre, boolean isReparada)
+			throws ServicioIncidenciasException {
+		if (incidencia == null)
 			throw new IllegalArgumentException("Debe introducir incidencia que se quiere resolver.");
 		if (motivoCierre == null || motivoCierre.isEmpty())
-			throw new IllegalArgumentException("Tiene que haber un motivo de cierre de la incidencia que se quiere resolver.");
+			throw new IllegalArgumentException(
+					"Tiene que haber un motivo de cierre de la incidencia que se quiere resolver.");
 
-		
-		if (incidencia.getEstado() != EstadoIncidencia.ASIGNADA)//TODO: se debería consultar el estado de la incidencia del repositorio en su lugar?
+		if (incidencia.getEstado() != EstadoIncidencia.ASIGNADA)// TODO: se debería consultar el estado de la incidencia
+																// del repositorio en su lugar?
 			throw new ServicioIncidenciasException("El estado de la incidencia no es ASIGNADA no se puede resolver");
-		
 
-		
 		try {
-			Bicicleta bici=repositorioBicicletas.getById(incidencia.getBicicleta().getId());
+			Bicicleta bici = repositorioBicicletas.getById(incidencia.getBicicleta().getId());
 			List<Incidencia> incidencias = bici.getIncidencias();
-			Incidencia inc=incidencias.stream().filter(i -> i.getId().equals(incidencia.getId())).findFirst().get();
+			Incidencia inc = incidencias.stream().filter(i -> i.getId().equals(incidencia.getId())).findFirst().get();
 			inc.setEstado(EstadoIncidencia.RESUELTA);
 			inc.setFechaFin(LocalDate.now());
 			inc.setMotivoCierre(motivoCierre);
 			repositorioBicicletas.update(bici);
-			if (isReparada) 
-				servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId());	
+			if (isReparada)
+				servicioEstaciones.estacionarBicicleta(incidencia.getBicicleta().getId());
 			else
-				servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(),motivoCierre);
-			
+				servicioEstaciones.darBajaBicicleta(incidencia.getBicicleta().getId(), motivoCierre);
+
 		} catch (ServicioEstacionesException e) {
 			e.printStackTrace();
 		} catch (RepositorioException e) {
@@ -159,7 +163,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		}
 	}
 
-	
 	/**
 	 * Recuperar incidencias abiertas. Esta operación devolverá un listado de
 	 * incidencias que no hayan sido cerradas.
@@ -170,25 +173,45 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 
 	// DTO
-	
-	@Override
-	public IncidenciaDTO transformToDTO(Incidencia incidencia) {        
-        IncidenciaDTO idto = new IncidenciaDTO(incidencia.getId(), incidencia.getFechaInicio(), incidencia.getFechaFin(), incidencia.getDescripcion(), incidencia.getMotivoCierre(), incidencia.getEstado(), incidencia.getIdOperarioAsignado());
-        return idto;
-    }
 
-//	@Override
-//	public IncidenciaDTO getById(String idIncidencia) throws ServicioEstacionesException{
-//		try {
-//			Bicicleta bici = repositorioBicicletas.getById(idBicicleta);
-//			return transformToDTO(bici);
-//		} catch (RepositorioException e) {
-//			e.printStackTrace();
-//			throw new ServicioEstacionesException(e.getMessage(), e);
-//			
-//		} catch (EntidadNoEncontrada e) {
-//			e.printStackTrace();
-//			throw new ServicioEstacionesException(e.getMessage(), e);
-//		}
-//	}
+	@Override
+	public IncidenciaDTO transformToDTO(Incidencia incidencia) {
+		IncidenciaDTO idto = new IncidenciaDTO(incidencia.getId(), incidencia.getFechaInicio(),
+				incidencia.getFechaFin(), incidencia.getDescripcion(), incidencia.getMotivoCierre(),
+				incidencia.getEstado(), incidencia.getIdOperarioAsignado());
+		return idto;
+	}
+
+	// Lazy para Incidencias Abiertas
+
+	@Override
+			public List<IncidenciaDTO> incidenciasAbiertasLazy(int start, int max) throws ServicioIncidenciasException {
+				List<Incidencia> incidenciasAbiertas = getIncidenciasAbiertas();
+				int tam = incidenciasAbiertas.size();
+				
+				List<IncidenciaDTO> incidenciasDTO= new ArrayList<IncidenciaDTO>();
+				List<Incidencia> incidencias;
+				
+				if(tam == 0)
+					throw new ServicioIncidenciasException("Error: No se han encontrado incidencias abiertas");
+				
+				if (tam < start )
+					return new ArrayList<IncidenciaDTO>();
+				
+				if (tam < (max + start + 1))
+					 incidencias = incidenciasAbiertas.subList(start, tam);
+				else
+					incidencias = incidenciasAbiertas.subList(start, start + max);
+				
+				for (Incidencia b: incidencias)
+					incidenciasDTO.add(transformToDTO(b));
+				
+				return incidenciasDTO;
+			}
+
+	@Override
+	public int countIncidenciasAbiertas() throws ServicioIncidenciasException {
+		return getIncidenciasAbiertas().size();
+	}
+
 }

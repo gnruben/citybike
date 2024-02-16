@@ -123,11 +123,11 @@ public class Programa2 {
         String idB3 = servicioEstaciones.altaBicicleta("ModeloLMN", idEs2);
         String idB4 = servicioEstaciones.altaBicicleta("ModeloNona", idEs3);
             
-        servicioEstaciones.retirarBicicleta(idB2);                                 //Se retira ModeloXMK
+        //servicioEstaciones.retirarBicicleta(idB2);                                 //Se retira ModeloXMK
 
-        servicioIncidencias.crearIncidencia(idB1, "Problema con las ruedas");
+        //servicioIncidencias.crearIncidencia(idB1, "Problema con las ruedas");
        
-        servicioIncidencias.crearIncidencia(idB3, "Problemas graves");
+        //servicioIncidencias.crearIncidencia(idB3, "Problemas graves");
         
         // Obtener bicicletas estacionadas cerca de una ubicación
         
