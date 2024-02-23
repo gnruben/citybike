@@ -2,6 +2,7 @@ package aadd.web.bicicleta;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -10,13 +11,16 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
+
 import aadd.dto.IncidenciaDTO;
 import aadd.modelo.Bicicleta;
 import aadd.modelo.Incidencia;
 import aadd.repositorio.RepositorioBicicletaAdHocJPA;
 import aadd.servicios.IServicioEstaciones;
 import aadd.servicios.IServicioIncidencias;
-import aadd.servicios.ServicioEstacionesException;
 import aadd.servicios.ServicioIncidenciasException;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
@@ -24,7 +28,7 @@ import servicio.FactoriaServicios;
 
 @Named
 @ViewScoped
-public class IncidenciasAbiertasWeb implements Serializable {
+public class IncidenciasAbiertasWeb extends LazyDataModel<IncidenciaDTO> {
 
 	/**
 	 * 
@@ -47,16 +51,18 @@ public class IncidenciasAbiertasWeb implements Serializable {
 	@PostConstruct
     public void init() {
         servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
-        try {
+
 			findTotalResults();
+
+    }
+    protected int findTotalResults(){
+        if (total == null) {
+           try {
+			total = servicioIncidencias.countIncidenciasAbiertas();
 		} catch (ServicioIncidenciasException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-    }
-    protected int findTotalResults() throws ServicioIncidenciasException {
-        if (total == null) {
-           total = servicioIncidencias.countIncidenciasAbiertas();      
+		}      
         }
         return total;
     }
@@ -68,19 +74,40 @@ public class IncidenciasAbiertasWeb implements Serializable {
 		repositorioBicicletas =  FactoriaRepositorios.getRepositorio(Bicicleta.class);
 	}
 
-	public void load() {
+	public List<IncidenciaDTO> load(int first, int pageSize, Map<String, SortMeta> sortBy,Map<String, FilterMeta> filterBy) {
 
-		List<Incidencia> inc;
-		inc = servicioIncidencias.getIncidenciasAbiertas();
 
-		for (Incidencia i : inc) {
-			incidencias.add(servicioIncidencias.transformToDTO(i));
-		}
-
+		return buscarIncidenciasAbiertas(first, pageSize);
 	}
+	public List<IncidenciaDTO> buscarIncidenciasAbiertas(int inicio, int size){
+		
+		try {
+			return servicioIncidencias.incidenciasAbiertasLazy(inicio, size);
+			
+		} catch (ServicioIncidenciasException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+		
+	}
+    @Override
+    public int count(Map<String, FilterMeta> filterBy) {
+        return findTotalResults();
+    }
+	
+    public void buscar() {
+        try {
+            total = servicioIncidencias.countIncidenciasAbiertas();
+        } catch (ServicioIncidenciasException e) {
+        	e.printStackTrace();
+        }
+    }
 	
 
-	public void cancelarIncidencia(IncidenciaDTO inc, String motivoCierre) {
+	/*public void cancelarIncidencia(IncidenciaDTO inc, String motivoCierre) {
 		try {
 			idIncidencia= inc.getId();
 			Incidencia incidencia = ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciaById(idIncidencia);
@@ -94,8 +121,8 @@ public class IncidenciasAbiertasWeb implements Serializable {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", e.getMessage()));
 			e.printStackTrace();
 		}
-	}
-	public void asignarIncidencia(IncidenciaDTO inc, String idOperarioAsignado) {
+	}*/
+	/*public void asignarIncidencia(IncidenciaDTO inc, String idOperarioAsignado) {
 		try {
 			idIncidencia= inc.getId();
 			Incidencia incidencia = ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciaById(idIncidencia);
@@ -114,9 +141,9 @@ public class IncidenciasAbiertasWeb implements Serializable {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", e.getMessage()));
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void resolverIncidencia(IncidenciaDTO inc, String motivoCierre, boolean isReparada) {
+	/*public void resolverIncidencia(IncidenciaDTO inc, String motivoCierre, boolean isReparada) {
 		try {
 			idIncidencia= inc.getId();
 			Incidencia incidencia = ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciaById(idIncidencia);
@@ -135,7 +162,7 @@ public class IncidenciasAbiertasWeb implements Serializable {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", e.getMessage()));
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public String getIdIncidencia() {
 		return idIncidencia;

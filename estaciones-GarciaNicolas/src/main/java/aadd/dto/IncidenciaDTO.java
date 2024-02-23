@@ -27,13 +27,13 @@ public class IncidenciaDTO implements Serializable {
 
 	private String idOperarioAsignado;
 	
-
-	private BicicletaDTO bicicleta;
+	private String idBicicleta;
+	//private BicicletaDTO bicicleta;
 
 	
 
 	public IncidenciaDTO(String id, LocalDate fechaInicio, LocalDate fechaFin, String descripcion, String motivoCierre,
-			EstadoIncidencia estado, String idOperarioAsignado) {
+			EstadoIncidencia estado, String idOperarioAsignado,String idBicicleta) {
 		super();
 		this.id = id;
 		this.fechaInicio = fechaInicio;
@@ -42,6 +42,7 @@ public class IncidenciaDTO implements Serializable {
 		this.motivoCierre = motivoCierre;
 		this.estado = estado;
 		this.idOperarioAsignado = idOperarioAsignado;
+		this.idBicicleta=idBicicleta;
 	}
 
 
@@ -115,13 +116,23 @@ public class IncidenciaDTO implements Serializable {
 	}
 
 
-	public BicicletaDTO getBicicleta() {
+	public String getIdBicicleta() {
+		return idBicicleta;
+	}
+
+
+	public void setIdBicicleta(String idBicicleta) {
+		this.idBicicleta = idBicicleta;
+	}
+
+
+/*	public BicicletaDTO getBicicleta() {
 		return bicicleta;
 	}
 
 
 	public void setBicicleta(BicicletaDTO bicicleta) {
 		this.bicicleta = bicicleta;
-	}
+	}*/
 	
 }

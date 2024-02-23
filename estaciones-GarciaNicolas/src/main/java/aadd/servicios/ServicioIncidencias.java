@@ -178,7 +178,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	public IncidenciaDTO transformToDTO(Incidencia incidencia) {
 		IncidenciaDTO idto = new IncidenciaDTO(incidencia.getId(), incidencia.getFechaInicio(),
 				incidencia.getFechaFin(), incidencia.getDescripcion(), incidencia.getMotivoCierre(),
-				incidencia.getEstado(), incidencia.getIdOperarioAsignado());
+				incidencia.getEstado(), incidencia.getIdOperarioAsignado(),incidencia.getBicicleta().getId());
+		
 		return idto;
 	}
 

@@ -359,7 +359,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	private BicicletaDTO transformToDTO(Bicicleta bici) {        
         BicicletaDTO bdto = new BicicletaDTO(bici.getId(), bici.getModelo(), bici.getFechaAlta(), bici.getFechaBaja(), bici.getMotivo());
         for(Incidencia i: bici.getIncidencias()) {
-        	IncidenciaDTO inc = new IncidenciaDTO(i.getId(), i.getFechaInicio(), i.getFechaFin(), i.getDescripcion(), i.getMotivoCierre(), i.getEstado(), i.getIdOperarioAsignado());
+        	IncidenciaDTO inc = new IncidenciaDTO(i.getId(), i.getFechaInicio(), i.getFechaFin(), i.getDescripcion(), i.getMotivoCierre(), i.getEstado(), i.getIdOperarioAsignado(),
+        			i.getBicicleta().getId());
             bdto.addIncidencia(inc);
         }
         return bdto;

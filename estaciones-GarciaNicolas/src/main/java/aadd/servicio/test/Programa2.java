@@ -125,9 +125,9 @@ public class Programa2 {
             
         //servicioEstaciones.retirarBicicleta(idB2);                                 //Se retira ModeloXMK
 
-        //servicioIncidencias.crearIncidencia(idB1, "Problema con las ruedas");
+        servicioIncidencias.crearIncidencia(idB1, "Problema con las ruedas");
        
-        //servicioIncidencias.crearIncidencia(idB3, "Problemas graves");
+        servicioIncidencias.crearIncidencia(idB3, "Problemas graves");
         
         // Obtener bicicletas estacionadas cerca de una ubicación
         
