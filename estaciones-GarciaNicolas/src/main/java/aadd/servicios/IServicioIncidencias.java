@@ -16,4 +16,5 @@ public interface IServicioIncidencias {
 	IncidenciaDTO transformToDTO(Incidencia incidencia);
 	List<IncidenciaDTO> incidenciasAbiertasLazy(int start, int max) throws ServicioIncidenciasException;
 	int countIncidenciasAbiertas() throws ServicioIncidenciasException;
+	Incidencia getIncidenciaByID(String idIncidencia);
 }

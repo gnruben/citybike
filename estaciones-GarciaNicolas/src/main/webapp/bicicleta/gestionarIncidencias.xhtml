@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="/WEB-INF/template/template.xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="title">
+Gestión de Incidencias
+</ui:define>
+
+	<ui:define name="content">
+		<h:form id="incidencias">
+
+			<h2>
+				<h:outputText value="Total: #{gestionarIncidenciaWeb.total}"
+					id="total" />
+			</h2>
+
+			<p:dataTable var="incidencia" style="prueba"
+				value="#{gestionarIncidenciaWeb}" rows="5" id="tabla_header"
+				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:column headerText="ID">
+					<h:outputText value="#{incidencia.id}" />
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{incidencia.estado}" />
+				</p:column>
+				<p:column headerText="Fecha">
+					<h:outputText value="#{incidencia.fechaInicio}" />
+				</p:column>
+				<p:column headerText="IdBicicleta">
+					<h:outputText value="#{incidencia.idBicicleta}" />
+				</p:column>
+				<p:column headerText="AsignarOperario">
+					<p:commandButton value="Asignar Operario"
+						  actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia)}"
+						oncomplete="PF('w_asignarOperario').show();" update=":asignarOperario" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dialog widgetVar="w_asignarOperario" id="asignarOperario">
+			<h:form>
+				<p:outputLabel value="ID"/>
+					<p:outputLabel value="#{incidencia.id}"/>
+					<p:outputLabel value="Estado" />
+					<p:outputLabel value="#{incidencia.estado}" />
+					<p:outputLabel value="Operario" />
+					<p:inputText value="idOperario" />
+					<p:commandButton value="Asignar" />
+					<p:commandButton value="Cancelar"/>
+			</h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>
