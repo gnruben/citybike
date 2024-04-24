@@ -161,8 +161,8 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	}*/
 	
     public IncidenciaDTO getIncidencia(String idIncidencia) {
-    	servicioIncidencias.getIncidenciaByID(idIncidencia);
-    	return null;
+    	return servicioIncidencias.transformToDTO(servicioIncidencias.getIncidenciaByID(idIncidencia));
+    	
     }
 	public String getIdIncidencia() {
 		return idIncidencia;

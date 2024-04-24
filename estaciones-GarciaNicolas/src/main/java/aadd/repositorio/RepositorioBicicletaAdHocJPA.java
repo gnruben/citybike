@@ -63,4 +63,66 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		
 		return query.getResultList().get(0);
 	}
+
+	@Override
+	public List<Incidencia> getIncidenciasPendientes() {
+
+		EntityManager em = EntityManagerHelper.getEntityManager();
+
+		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
+				+ " WHERE i.estado = :estadoPendiente";
+
+		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
+		query.setParameter("estadoPendiente", EstadoIncidencia.PENDIENTE);
+		
+
+		return query.getResultList();
+		
+	}
+
+	@Override
+	public List<Incidencia> getIncidenciasAsignadas() {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+
+		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
+				+ " WHERE i.estado = :estadoAsignada";
+
+		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
+		
+		query.setParameter("estadoAsignada", EstadoIncidencia.ASIGNADA);
+
+		return query.getResultList();
+		
+	}
+
+	@Override
+	public List<Incidencia> getIncidenciasResueltas() {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+
+		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
+				+ " WHERE i.estado = :estadoResuelta";
+
+		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
+		
+		query.setParameter("estadoResuelta", EstadoIncidencia.RESUELTA);
+
+		return query.getResultList();
+		
+	}
+
+	@Override
+	public List<Incidencia> getIncidenciasCanceladas() {
+
+		EntityManager em = EntityManagerHelper.getEntityManager();
+
+		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
+				+ " WHERE i.estado = :estadoCancelada";
+
+		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
+		query.setParameter("estadoCancelada", EstadoIncidencia.CANCELADA);
+		
+
+		return query.getResultList();
+		
+	}
 }
