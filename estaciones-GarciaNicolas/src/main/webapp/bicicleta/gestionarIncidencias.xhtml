@@ -45,6 +45,7 @@ Gestión de Incidencias
 					
 					<p:commandButton value="Asignar" 
 						actionListener="#{gestionarIncidenciaWeb.asignarIncidencia(idOperarioAsignado)}" 
+						update=":incidencias" 
 						oncomplete="PF('w_asignarOperario').hide();" />
 						
 					<p:commandButton value="Cancelar" immediate="true" oncomplete="PF('w_asignarOperario').hide();"/>

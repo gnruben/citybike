@@ -383,7 +383,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		List<Incidencia> incidencias;
 
 		if (tam == 0)
-			throw new ServicioIncidenciasException("Error: No se han encontrado incidencias resueltas");
+			throw new ServicioIncidenciasException("Error: No se han encontrado incidencias asignadas");
 
 		if (tam < start)
 			return new ArrayList<IncidenciaDTO>();
@@ -410,7 +410,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		List<Incidencia> incidencias;
 
 		if (tam == 0)
-			throw new ServicioIncidenciasException("Error: No se han encontrado incidencias resueltas");
+			throw new ServicioIncidenciasException("Error: No se han encontrado incidencias pendientes");
 
 		if (tam < start)
 			return new ArrayList<IncidenciaDTO>();
@@ -437,7 +437,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		List<Incidencia> incidencias;
 
 		if (tam == 0)
-			throw new ServicioIncidenciasException("Error: No se han encontrado incidencias resueltas");
+			throw new ServicioIncidenciasException("Error: No se han encontrado incidencias canceladas");
 
 		if (tam < start)
 			return new ArrayList<IncidenciaDTO>();

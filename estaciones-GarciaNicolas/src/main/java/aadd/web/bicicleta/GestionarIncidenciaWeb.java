@@ -65,7 +65,8 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	protected int findTotalResults() {
 		if (total == null) {
 			try {
-				total = servicioIncidencias.countIncidenciasAbiertas();
+				//TODO: por esto se contea mal?
+				total = servicioIncidencias.countIncidenciasPendientes(); //servicioIncidencias.countIncidenciasAbiertas();
 			} catch (ServicioIncidenciasException e) {
 				e.printStackTrace();
 			}
@@ -188,7 +189,8 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 			idOperarioAsignado = idOperario;
 			
 			servicioIncidencias.asignarIncidencia(idIncidencia, idOperarioAsignado); // TODO ver lo de idIncidencia
-			buscarAsignadas();
+			buscarPendientes();//actualiza el total
+
 		} catch (ServicioIncidenciasException e) {
 			e.printStackTrace();
 		}
