@@ -343,14 +343,12 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 	@Override
 	public Incidencia getIncidenciaByID(String idIncidencia) {
-		// TODO Auto-generated method stub
 		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciaById(idIncidencia);
 
 	}
 
 	@Override
 	public List<IncidenciaDTO> incidenciasResueltasLazy(int start, int max) throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
 		List<Incidencia> incidenciasResueltas = getIncidenciasResueltas();
 		int tam = incidenciasResueltas.size();
 
@@ -378,7 +376,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 	@Override
 	public List<IncidenciaDTO> incidenciasAsignadasLazy(int start, int max) throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
 		List<Incidencia> incidenciasAsignadas = getIncidenciasAsignadas();
 		int tam = incidenciasAsignadas.size();
 
@@ -406,7 +403,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 	@Override
 	public List<IncidenciaDTO> incidenciasPendientesLazy(int start, int max) throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
 		List<Incidencia> incidenciasPendientes = getIncidenciasPendientes();
 		int tam = incidenciasPendientes.size();
 
@@ -434,7 +430,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	
 	@Override
 	public List<IncidenciaDTO> incidenciasCanceladasLazy(int start, int max) throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
 		List<Incidencia> incidenciasCanceladas = getIncidenciasCanceladas();
 		int tam = incidenciasCanceladas.size();
 
@@ -461,26 +456,22 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 	@Override
 	public int countIncidenciasResueltas() throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getIncidenciasResueltas().size();
 	}
 
 	@Override
 	public int countIncidenciasAsignadas() throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getIncidenciasAsignadas().size();
 	}
 
 	@Override
 	public int countIncidenciasPendientes() throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getIncidenciasPendientes().size();
 	}
 
 	@Override
 	public int countIncidenciasCanceladas() throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getIncidenciasCanceladas().size();
 	}
 
 

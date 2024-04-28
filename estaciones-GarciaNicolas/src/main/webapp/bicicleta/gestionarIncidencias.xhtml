@@ -14,8 +14,7 @@ Gestión de Incidencias
 			<h2>
 				<h:outputText value="Total: #{gestionarIncidenciaWeb.total}"
 					id="total" />
-			</h2>
-
+			</h2>		
 			<p:dataTable var="incidencia" style="prueba"
 				value="#{gestionarIncidenciaWeb}" rows="5" id="tabla_header"
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
@@ -34,21 +33,21 @@ Gestión de Incidencias
 				</p:column>
 				<p:column headerText="AsignarOperario">
 					<p:commandButton value="Asignar Operario"
-						  actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia)}"
+						  actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
 						oncomplete="PF('w_asignarOperario').show();" update=":asignarOperario" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
 		<p:dialog widgetVar="w_asignarOperario" id="asignarOperario">
 			<h:form>
-				<p:outputLabel value="ID"/>
-					<p:outputLabel value="#{incidencia.id}"/>
-					<p:outputLabel value="Estado" />
-					<p:outputLabel value="#{incidencia.estado}" />
-					<p:outputLabel value="Operario" />
-					<p:inputText value="idOperario" />
-					<p:commandButton value="Asignar" />
-					<p:commandButton value="Cancelar"/>
+					<p:outputLabel value="Operario"/>
+					<p:inputText value="#{idOperarioAsignado}"/>
+					
+					<p:commandButton value="Asignar" 
+						actionListener="#{gestionarIncidenciaWeb.asignarIncidencia(idOperarioAsignado)}" 
+						oncomplete="PF('w_asignarOperario').hide();" />
+						
+					<p:commandButton value="Cancelar" immediate="true" oncomplete="PF('w_asignarOperario').hide();"/>
 			</h:form>
 		</p:dialog>
 		

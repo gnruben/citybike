@@ -131,6 +131,8 @@ public class Bicicleta implements Identificable {
 	    s.append("] }");
 	    
 	    return s.toString();
-	}
 	
+    }
+    
 }
+

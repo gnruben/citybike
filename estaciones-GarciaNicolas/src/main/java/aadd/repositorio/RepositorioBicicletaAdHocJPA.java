@@ -52,6 +52,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 	
 	@Override
 	public Incidencia getIncidenciaById(String idIncidencia) {
+		
 		EntityManager em = EntityManagerHelper.getEntityManager();
 
 		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
