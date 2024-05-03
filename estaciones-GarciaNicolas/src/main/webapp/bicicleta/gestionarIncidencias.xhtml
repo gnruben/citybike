@@ -9,12 +9,30 @@ Gestión de Incidencias
 </ui:define>
 
 	<ui:define name="content">
+		<h:form>
+		<p:outputLabel value="Estado de incidencias: " />
+			<p:selectOneMenu value="#{estadoVista}">
+				<f:selectItem itemLabel="Pendientes" itemValue="Pendientes" />
+				<f:selectItem itemLabel="Asignadas" itemValue="Asignadas" />
+				<f:selectItem itemLabel="Resueltas" itemValue="Resueltas" />
+				<f:selectItem itemLabel="Canceladas" itemValue="Canceladas" />
+				<f:selectItem itemLabel="Abiertas" itemValue="Abiertas" />
+
+			</p:selectOneMenu>
+			<p:commandButton value="Buscar"
+				actionListener="#{gestionarIncidenciaWeb.cambiarBusqueda(estadoVista)}"
+				update=":incidencias" />
+
+		</h:form>
+		
+		<!-- ########################### Tabla de contenido ########################################## -->
 		<h:form id="incidencias">
 
 			<h2>
 				<h:outputText value="Total: #{gestionarIncidenciaWeb.total}"
 					id="total" />
-			</h2>		
+
+			</h2>
 			<p:dataTable var="incidencia" style="prueba"
 				value="#{gestionarIncidenciaWeb}" rows="5" id="tabla_header"
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
@@ -31,26 +49,67 @@ Gestión de Incidencias
 				<p:column headerText="IdBicicleta">
 					<h:outputText value="#{incidencia.idBicicleta}" />
 				</p:column>
-				<p:column headerText="AsignarOperario">
+				<p:column headerText="Asignar Operario">
+					<!--  rendered="#{estado == 'Pendientes'}"> -->
+					
 					<p:commandButton value="Asignar Operario"
-						  actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
-						oncomplete="PF('w_asignarOperario').show();" update=":asignarOperario" />
+						actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
+						oncomplete="PF('w_asignarOperario').show();"
+						update=":asignarOperario" />
+				</p:column>
+				<p:column headerText="Cancelar Incidencia">
+					<!-- rendered="#{estado == 'Pendientes'}"> -->
+					
+					<p:commandButton value="Cancelar Incidencia"
+						actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
+						oncomplete="PF('w_cancelarIncidencia').show();"
+						update=":asignarOperario" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
+		
+		<!-- ################################### Dialogs ################################################# -->
 		<p:dialog widgetVar="w_asignarOperario" id="asignarOperario">
 			<h:form>
-					<p:outputLabel value="Operario"/>
-					<p:inputText value="#{idOperarioAsignado}"/>
-					
-					<p:commandButton value="Asignar" 
-						actionListener="#{gestionarIncidenciaWeb.asignarIncidencia(idOperarioAsignado)}" 
-						update=":incidencias" 
-						oncomplete="PF('w_asignarOperario').hide();" />
-						
-					<p:commandButton value="Cancelar" immediate="true" oncomplete="PF('w_asignarOperario').hide();"/>
+				<p:outputLabel value="Operario" />
+				<p:inputText value="#{idOperarioAsignado}" />
+
+				<p:commandButton value="Asignar"
+					actionListener="#{gestionarIncidenciaWeb.asignarIncidencia(idOperarioAsignado)}"
+					update=":incidencias" oncomplete="PF('w_asignarOperario').hide();" />
+
+				<p:commandButton value="Cancelar" immediate="true"
+					oncomplete="PF('w_asignarOperario').hide();" />
 			</h:form>
 		</p:dialog>
-		
+		<p:dialog widgetVar="w_cancelarIncidencia" id="cancelarIncidencia">
+			<h:form>
+				<p:outputLabel value="Motivo" />
+				<p:inputText value="#{motivo}" />
+
+				<p:commandButton value="Cancelar Incidencia"
+					actionListener="#{gestionarIncidenciaWeb.cancelarIncidencia(motivo)}"
+					update=":incidencias"
+					oncomplete="PF('w_cancelarIncidencia').hide();" />
+
+				<p:commandButton value="Cancelar" immediate="true"
+					oncomplete="PF('w_asignarOperario').hide();" />
+			</h:form>
+		</p:dialog>
+				<p:dialog widgetVar="w_resolverIncidencia" id="resolverIncidencia">
+			<h:form>
+				<p:outputLabel value="Motivo" />
+				<p:inputText value="#{motivo}" />
+				<!-- <p:outputLabel value="Disponible" />-->
+				 <p:selectBooleanCheckbox value="#{disponible}" itemLabel="Disponible" />
+				<p:commandButton value="Resolver Incidencia"
+					update=":incidencias"
+					oncomplete="PF('w_resolverIncidencia').hide();" />
+<!--  actionListener="#{gestionarIncidenciaWeb.resolverIncidencia(motivo)}"-->
+				<p:commandButton value="Cancelar" immediate="true"
+					oncomplete="PF('w_resolverIncidencia').hide();" />
+			</h:form>
+		</p:dialog>
+
 	</ui:define>
 </ui:composition>
