@@ -68,7 +68,7 @@ System.out.println("pasa por init: "+estadoVista);
 	}
 
 	protected int findTotalResults() {
-		if (total == null) {
+		//if (total == null) {
 			try {
 
 				switch (estadoVista) {
@@ -78,7 +78,7 @@ System.out.println("pasa por init: "+estadoVista);
 				}
 
 				case "Asignadas": {
-					System.out.println("pasa por findTotalResults Asignada: "+estadoVista);
+					
 					total = servicioIncidencias.countIncidenciasAsignadas();
 					break;
 				}
@@ -98,14 +98,15 @@ System.out.println("pasa por init: "+estadoVista);
 
 				default: {
 					total = servicioIncidencias.countIncidenciasPendientes();
+					System.out.println("pasa por findTotalResults default: "+estadoVista);
 					break;
 				}
 				}
 
 			} catch (ServicioIncidenciasException e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
-		}
+		//}
 		return total;
 	}
 
@@ -147,7 +148,7 @@ System.out.println("pasa por init: "+estadoVista);
 			return servicioIncidencias.incidenciasAbiertasLazy(inicio, size);
 
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 		return null;
@@ -176,7 +177,7 @@ System.out.println("pasa por init: "+estadoVista);
 			return servicioIncidencias.incidenciasAsignadasLazy(inicio, size);
 
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 		return null;
@@ -189,7 +190,7 @@ System.out.println("pasa por init: "+estadoVista);
 			return servicioIncidencias.incidenciasResueltasLazy(inicio, size);
 
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 		return null;
@@ -202,7 +203,7 @@ System.out.println("pasa por init: "+estadoVista);
 			return servicioIncidencias.incidenciasCanceladasLazy(inicio, size);
 
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 		return null;
@@ -218,7 +219,7 @@ System.out.println("pasa por init: "+estadoVista);
 		try {
 			total = servicioIncidencias.countIncidenciasAbiertas();
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -226,7 +227,7 @@ System.out.println("pasa por init: "+estadoVista);
 		try {
 			total = servicioIncidencias.countIncidenciasResueltas();
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -234,7 +235,7 @@ System.out.println("pasa por init: "+estadoVista);
 		try {
 			total = servicioIncidencias.countIncidenciasAsignadas();
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -242,7 +243,7 @@ System.out.println("pasa por init: "+estadoVista);
 		try {
 			total = servicioIncidencias.countIncidenciasPendientes();
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -250,7 +251,7 @@ System.out.println("pasa por init: "+estadoVista);
 		try {
 			total = servicioIncidencias.countIncidenciasCanceladas();
 		} catch (ServicioIncidenciasException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 

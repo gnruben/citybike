@@ -104,8 +104,9 @@ Gestión de Incidencias
 				 <p:selectBooleanCheckbox value="#{disponible}" itemLabel="Disponible" />
 				<p:commandButton value="Resolver Incidencia"
 					update=":incidencias"
+					actionListener="#{gestionarIncidenciaWeb.resolverIncidencia(motivo,disponible)}"
 					oncomplete="PF('w_resolverIncidencia').hide();" />
-<!--  actionListener="#{gestionarIncidenciaWeb.resolverIncidencia(motivo)}"-->
+
 				<p:commandButton value="Cancelar" immediate="true"
 					oncomplete="PF('w_resolverIncidencia').hide();" />
 			</h:form>
