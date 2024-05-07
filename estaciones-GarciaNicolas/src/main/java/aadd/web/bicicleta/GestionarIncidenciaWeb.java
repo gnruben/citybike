@@ -47,7 +47,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	private List<IncidenciaDTO> incidencias;
 	private IncidenciaDTO incidenciaDTO;
 
-	private String estadoVista;//="Pendientes";
+	private String estadoVista;
 	private String idIncidencia;
 	private String idOperarioAsignado;
 	private String motivo;
@@ -59,54 +59,50 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	@PostConstruct
 	public void init() {
 		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
-		if(estadoVista==null) {
-			estadoVista="Pendientes";
+		if (estadoVista == null) {
+			estadoVista = "Pendientes";
 		}
-System.out.println("pasa por init: "+estadoVista);
 		findTotalResults();
 
 	}
 
 	protected int findTotalResults() {
-		//if (total == null) {
-			try {
+		try {
 
-				switch (estadoVista) {
-				case "Pendientes": {
-					total = servicioIncidencias.countIncidenciasPendientes();
-					break;
-				}
-
-				case "Asignadas": {
-					
-					total = servicioIncidencias.countIncidenciasAsignadas();
-					break;
-				}
-
-				case "Canceladas": {
-					total = servicioIncidencias.countIncidenciasCanceladas();
-					break;
-				}
-				case "Resueltas": {
-					total = servicioIncidencias.countIncidenciasResueltas();
-					break;
-				}
-				case "Abiertas": {
-					total = servicioIncidencias.countIncidenciasAbiertas();
-					break;
-				}
-
-				default: {
-					total = servicioIncidencias.countIncidenciasPendientes();
-					System.out.println("pasa por findTotalResults default: "+estadoVista);
-					break;
-				}
-				}
-
-			} catch (ServicioIncidenciasException e) {
-				System.out.println(e.getMessage());
+			switch (estadoVista) {
+			case "Pendientes": {
+				total = servicioIncidencias.countIncidenciasPendientes();
+				break;
 			}
-		//}
+
+			case "Asignadas": {
+				total = servicioIncidencias.countIncidenciasAsignadas();
+				break;
+			}
+
+			case "Canceladas": {
+				total = servicioIncidencias.countIncidenciasCanceladas();
+				break;
+			}
+			case "Resueltas": {
+				total = servicioIncidencias.countIncidenciasResueltas();
+				break;
+			}
+			case "Abiertas": {
+				total = servicioIncidencias.countIncidenciasAbiertas();
+				break;
+			}
+
+			default: {
+				total = servicioIncidencias.countIncidenciasPendientes();
+				System.out.println("pasa por findTotalResults default: " + estadoVista);
+				break;
+			}
+			}
+
+		} catch (ServicioIncidenciasException e) {
+			System.out.println(e.getMessage());
+		}
 		return total;
 	}
 
@@ -116,7 +112,6 @@ System.out.println("pasa por init: "+estadoVista);
 		servicioIncidencias = FactoriaServicios.getServicio(IServicioIncidencias.class);
 		repositorioBicicletas = FactoriaRepositorios.getRepositorio(Bicicleta.class);
 		incidenciaDTO = null;
-		// estado = "Pendiente";
 	}
 
 	public List<IncidenciaDTO> load(int first, int pageSize, Map<String, SortMeta> sortBy,
@@ -126,20 +121,16 @@ System.out.println("pasa por init: "+estadoVista);
 		case "Pendientes":
 			return buscarIncidenciasPendientes(first, pageSize);
 		case "Asignadas":
-			System.out.println("pasa por load asignadas");
 			return buscarIncidenciasAsignadas(first, pageSize);
 		case "Resueltas":
 			return buscarIncidenciasResueltas(first, pageSize);
-
 		case "Canceladas":
 			return buscarIncidenciasCanceladas(first, pageSize);
 		case "Abiertas":
 			return buscarIncidenciasAbiertas(first, pageSize);
 		default:
 			return buscarIncidenciasPendientes(first, pageSize);
-
 		}
-		// return buscarIncidenciasPendientes(first, pageSize);
 	}
 
 	public List<IncidenciaDTO> buscarIncidenciasAbiertas(int inicio, int size) {
@@ -161,8 +152,6 @@ System.out.println("pasa por init: "+estadoVista);
 			return servicioIncidencias.incidenciasPendientesLazy(inicio, size);
 
 		} catch (ServicioIncidenciasException e) {
-			//e.printStackTrace();
-			
 			System.out.println(e.getMessage());
 		}
 
@@ -173,7 +162,6 @@ System.out.println("pasa por init: "+estadoVista);
 	public List<IncidenciaDTO> buscarIncidenciasAsignadas(int inicio, int size) {
 
 		try {
-			System.out.println("pasa por buscarIncidenciasAsignadas: "+estadoVista);
 			return servicioIncidencias.incidenciasAsignadasLazy(inicio, size);
 
 		} catch (ServicioIncidenciasException e) {
@@ -218,6 +206,7 @@ System.out.println("pasa por init: "+estadoVista);
 	public void buscarAbiertas() {
 		try {
 			total = servicioIncidencias.countIncidenciasAbiertas();
+			
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -226,6 +215,7 @@ System.out.println("pasa por init: "+estadoVista);
 	public void buscarResueltas() {
 		try {
 			total = servicioIncidencias.countIncidenciasResueltas();
+			
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -234,6 +224,7 @@ System.out.println("pasa por init: "+estadoVista);
 	public void buscarAsignadas() {
 		try {
 			total = servicioIncidencias.countIncidenciasAsignadas();
+			
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -242,6 +233,7 @@ System.out.println("pasa por init: "+estadoVista);
 	public void buscarPendientes() {
 		try {
 			total = servicioIncidencias.countIncidenciasPendientes();
+			
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -250,64 +242,48 @@ System.out.println("pasa por init: "+estadoVista);
 	public void buscarCanceladas() {
 		try {
 			total = servicioIncidencias.countIncidenciasCanceladas();
-		} catch (ServicioIncidenciasException e) {
-			System.out.println(e.getMessage());
-		}
-	}
-
-	
-	public void asignarIncidencia( String idOperario) {
-		try {
-
-			 idOperarioAsignado = idOperario;
-
-			servicioIncidencias.asignarIncidencia(idIncidencia, idOperarioAsignado); // TODO ver lo de idIncidencia
-			buscarPendientes();// actualiza el total
-
-		} catch (ServicioIncidenciasException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-	}
-
-	public void cancelarIncidencia(String motivo) {// String motivo) {
-		try {
-
 			
+		} catch (ServicioIncidenciasException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public void asignarIncidencia(String idOperario) {
+		try {
+			idOperarioAsignado = idOperario;
+			servicioIncidencias.asignarIncidencia(idIncidencia, idOperarioAsignado);
+			buscarPendientes(); // actualiza el total
+
+		} catch (ServicioIncidenciasException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public void cancelarIncidencia(String motivo) {
+		try {
 			servicioIncidencias.cancelarIncidencia(idIncidencia, motivo);
-
-			buscarPendientes();// actualiza el total
-
-		} catch (ServicioIncidenciasException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public void resolverIncidencia(String motivo,boolean disponible) {
-		try {
-
+			buscarPendientes(); // actualiza el total
 			
-			servicioIncidencias.resolverIncidencia(idIncidencia, motivo,disponible);
-
-			buscarAsignadas();// actualiza el total
-
 		} catch (ServicioIncidenciasException e) {
-			//e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 	}
 
-
+	public void resolverIncidencia(String motivo, boolean disponible) {
+		try {
+			servicioIncidencias.resolverIncidencia(idIncidencia, motivo, disponible);
+			buscarAsignadas(); // actualiza el total
+			
+		} catch (ServicioIncidenciasException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	public IncidenciaDTO getIncidencia(String idIncidencia) {
 		this.idIncidencia = idIncidencia;
-
 		Incidencia incidencia = servicioIncidencias.getIncidenciaByID(idIncidencia);
-
 		incidenciaDTO = servicioIncidencias.transformToDTO(incidencia);
 		return incidenciaDTO;
-
 	}
 
 	public String getIdIncidencia() {
@@ -322,30 +298,36 @@ System.out.println("pasa por init: "+estadoVista);
 		this.total = total;
 	}
 
-	public void cambiarBusqueda(String estado){
-		
-		estadoVista=estado;
+	public void cambiarBusqueda(String estado) {
+
+		this.estadoVista = estado;
+
 		switch (estadoVista) {
 		case "Pendientes":
-			 buscarPendientes();
+			buscarPendientes();
+			break;
 		case "Asignadas":
 			buscarAsignadas();
-			System.out.println("pasa por case 'Asignadas'");
-			
+			break;
+
 		case "Resueltas":
 			buscarResueltas();
+			break;
 
 		case "Canceladas":
 			buscarCanceladas();
+			break;
+
 		case "Abiertas":
 			buscarAbiertas();
+			break;
+
 		default:
 			buscarPendientes();
-
+			break;
 		}
-		
-		//TODO
-		System.out.println("Se ha cambiado el estado a "+estadoVista);
+
+		System.out.println("Se ha cambiado el estado a " + estadoVista);
 	}
 
 	public String getEstadoVista() {

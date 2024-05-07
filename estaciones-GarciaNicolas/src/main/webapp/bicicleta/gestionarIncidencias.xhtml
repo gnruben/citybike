@@ -63,7 +63,7 @@ Gestión de Incidencias
 					<p:commandButton value="Cancelar Incidencia"
 						actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
 						oncomplete="PF('w_cancelarIncidencia').show();"
-						update=":asignarOperario" />
+						update=":cancelarIncidencia" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
@@ -93,10 +93,10 @@ Gestión de Incidencias
 					oncomplete="PF('w_cancelarIncidencia').hide();" />
 
 				<p:commandButton value="Cancelar" immediate="true"
-					oncomplete="PF('w_asignarOperario').hide();" />
+					oncomplete="PF('w_cancelarIncidencia').hide();" />
 			</h:form>
 		</p:dialog>
-				<p:dialog widgetVar="w_resolverIncidencia" id="resolverIncidencia">
+		<p:dialog widgetVar="w_resolverIncidencia" id="resolverIncidencia">
 			<h:form>
 				<p:outputLabel value="Motivo" />
 				<p:inputText value="#{motivo}" />
