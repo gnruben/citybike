@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
-        Detalle bicicleta
+        "#{text['tituloDetalleBicicleta']}"
     </ui:define>
 
     <ui:param name="estilo2" value="current" />
@@ -33,9 +33,9 @@
 
                         <p:toolbar>
                             <p:toolbarGroup>
-                                <p:button value="Volver" href="crearIncidencia.xhtml"
+                                <p:button value="#{text['botonVolver']}" href="crearIncidencia.xhtml"
                                     style="margin-right:5px" icon="fa fa-arrow-left"></p:button>
-                                <p:commandButton value="Reportar una incidencia"
+                                <p:commandButton value= "#{text['tituloReportarIncidencia']}"
                                     icon="fa fa-newspaper" oncomplete="PF('nuevaIncidencia').show();"
                                     update="nuevo"></p:commandButton>
                             </p:toolbarGroup>
@@ -47,7 +47,7 @@
                             id="tabla_header" paginator="true"
                             rowsPerPageTemplate="5,10,{ShowAll|'All'}"
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                            <p:column headerText="descripcion">
+                            <p:column headerText="#{text['descripcion']}">
                                 <h:outputText value="#{incidencia.descripcion}" />
                             </p:column>
                             
@@ -58,17 +58,17 @@
                         
                         <p:growl showDetail="true" id="info2" />
 
-                        <p:dialog header="Reportar una incidencia" modal="true"
+                        <p:dialog header="#{text['tituloReportarIncidencia']}" modal="true"
                             widgetVar="nuevaIncidencia" width="650">
                             <p:outputPanel id="nuevo" style="margin: 10px;">
                                 <h:panelGrid columns="2">                        
 
-                                    <h:outputText value="id" />
+                                    <h:outputText value="#{text['columnaIDIncidencia']}" />
                                     <p:inputNumber value="#{biciDetailWeb.incidencia.id}"
                                         decimalPlaces="0" />
                                     <p:commandButton value="Cerrar"
                                         onclick="PF('nuevaIncidencia').hide();" />
-                                    <p:commandButton value="Reportar incidencia" icon="fa fa-newspaper"
+                                    <p:commandButton value="#{text['reportarIncidencia']}" icon="fa fa-newspaper"
                                         actionListener="#{biciDetailWeb.addIncidencia()}"
                                         oncomplete="PF('nuevaIncidencia').hide();"
                                         update="tabla_header info2" />

@@ -95,7 +95,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 			default: {
 				total = servicioIncidencias.countIncidenciasPendientes();
-				System.out.println("pasa por findTotalResults default: " + estadoVista);
+				//System.out.println("pasa por findTotalResults default: " + estadoVista);
 				break;
 			}
 			}
@@ -251,10 +251,10 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void asignarIncidencia(String idOperario) {
 		try {
 			idOperarioAsignado = idOperario;
-	        System.out.println("Estado antes de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+	        //System.out.println("Estado antes de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
 
 			servicioIncidencias.asignarIncidencia(idIncidencia, idOperarioAsignado);
-	        System.out.println("Estado después de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+	        //System.out.println("Estado después de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
 
 			buscarPendientes(); // actualiza el total
 			
@@ -266,10 +266,10 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 	public void cancelarIncidencia(String motivo) {
 		try {
-	        System.out.println("Estado antes de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+	       // System.out.println("Estado antes de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
 
 			servicioIncidencias.cancelarIncidencia(idIncidencia, motivo);
-	        System.out.println("Estado después de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+	        //System.out.println("Estado después de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
 
 			buscarPendientes(); // actualiza el total
 			
@@ -336,8 +336,8 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 			break;
 		}
 
-		findTotalResults();
-		System.out.println("Se ha cambiado el estado a " + estadoVista);
+		//findTotalResults();
+		//System.out.println("Se ha cambiado el estado a " + estadoVista);
 	}
 
 	public String getEstadoVista() {

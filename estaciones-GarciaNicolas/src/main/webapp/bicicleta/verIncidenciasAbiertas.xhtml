@@ -5,8 +5,10 @@ template="/WEB-INF/template/template.xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     >
+        <ui:param name="estilo4" value="current" />
+    
 <ui:define name="title">
-Listado de Incidencias Abiertas
+"#{text['tituloIncidenciasAbiertas']}"
 </ui:define>
 
     <ui:define name="content">
@@ -18,16 +20,16 @@ Listado de Incidencias Abiertas
                 value="#{incidenciasAbiertasWeb}" rows="5" id="tabla_header"
                 paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                <p:column headerText="ID">
+                <p:column headerText="#{text['columnaIDIncidencia']}">
                     <h:outputText value="#{incidencia.id}" />
                 </p:column>
-                 <p:column headerText="Estado">
+                 <p:column headerText="#{text['columnaEstado']}">
                     <h:outputText value="#{incidencia.estado}" />
                 </p:column> 
-                <p:column headerText="Fecha">
+                <p:column headerText="#{text['columnaFecha']}">
                     <h:outputText value="#{incidencia.fechaInicio}" />
                 </p:column>   
-                <p:column headerText="IdBicicleta">
+                <p:column headerText="#{text['columnaIdBicicleta']}">
                     <h:outputText value="#{incidencia.idBicicleta}" />
                 </p:column>    
             </p:dataTable>

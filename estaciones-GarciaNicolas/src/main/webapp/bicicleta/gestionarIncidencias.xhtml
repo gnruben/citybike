@@ -4,13 +4,16 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
+	
+	    <ui:param name="estilo5" value="current" />
+	
 	<ui:define name="title">
-Gestión de Incidencias
+"#{text['tituloGestionIncidencias']}"
 </ui:define>
 
 	<ui:define name="content">
 		<h:form>
-		<p:outputLabel value="Estado de incidencias: " />
+		<p:outputLabel value="#{text['labelEstadoIncidencias']}" />
 			<p:selectOneMenu value="#{estadoVista}">
 				<f:selectItem itemLabel="Pendientes" itemValue="Pendientes" />
 				<f:selectItem itemLabel="Asignadas" itemValue="Asignadas" />
@@ -19,7 +22,7 @@ Gestión de Incidencias
 				<f:selectItem itemLabel="Abiertas" itemValue="Abiertas" />
 
 			</p:selectOneMenu>
-			<p:commandButton value="Buscar"
+			<p:commandButton value="#{text['botonBuscar']}"
 				actionListener="#{gestionarIncidenciaWeb.cambiarBusqueda(estadoVista)}"
 				update=":incidencias" />
 
@@ -37,20 +40,20 @@ Gestión de Incidencias
 				value="#{gestionarIncidenciaWeb}" rows="5" id="tabla_header"
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-				<p:column headerText="ID">
+				<p:column headerText="#{text['columnaIDIncidencia']}">
 					<h:outputText value="#{incidencia.id}" />
 				</p:column>
-				<p:column headerText="Estado">
+				<p:column headerText="#{text['columnaEstado']}">
 					<h:outputText value="#{incidencia.getEstado()}" />
 				</p:column>
-				<p:column headerText="Fecha">
+				<p:column headerText="#{text['columnaFecha']}">
 					<h:outputText value="#{incidencia.fechaInicio}" />
 				</p:column>
-				<p:column headerText="IdBicicleta">
+				<p:column headerText="#{text['columnaIdBicicleta']}">
 					<h:outputText value="#{incidencia.idBicicleta}" />
 				</p:column>
 				<p:column headerText="Asignar Operario">
-					<!--  rendered="#{estado == 'Pendientes'}"> -->
+					<!--  rendered="#{gestionarIncidenciaWeb.estadoVista eq 'Pendientes'}"> -->
 					
 					<p:commandButton value="Asignar Operario"
 						actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"

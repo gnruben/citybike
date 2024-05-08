@@ -5,6 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
+
 import aadd.modelo.Bicicleta;
 import aadd.modelo.EstadoIncidencia;
 import aadd.modelo.Incidencia;
@@ -46,7 +49,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		query.setParameter("estadoPendiente", EstadoIncidencia.PENDIENTE);
 		query.setParameter("estadoAsignada", EstadoIncidencia.ASIGNADA);
-
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 		return query.getResultList();
 	}
 	
@@ -60,7 +63,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		query.setParameter("idIncidencia", idIncidencia);
-		
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 		
 		return query.getResultList().get(0);
 	}
@@ -75,7 +78,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		query.setParameter("estadoPendiente", EstadoIncidencia.PENDIENTE);
-		
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
 		return query.getResultList();
 		
@@ -91,7 +94,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		
 		query.setParameter("estadoAsignada", EstadoIncidencia.ASIGNADA);
-
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 		return query.getResultList();
 		
 	}
@@ -106,6 +109,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		
 		query.setParameter("estadoResuelta", EstadoIncidencia.RESUELTA);
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
 		return query.getResultList();
 		
@@ -121,6 +125,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		query.setParameter("estadoCancelada", EstadoIncidencia.CANCELADA);
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 		
 
 		return query.getResultList();

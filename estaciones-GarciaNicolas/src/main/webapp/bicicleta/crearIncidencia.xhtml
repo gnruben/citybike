@@ -7,7 +7,7 @@
     <ui:param name="estilo2" value="current" />
 
     <ui:define name="title">
-        Reportar nueva incidencia
+        "#{text['tituloReportarIncidencia']}"
     </ui:define>
 
     <ui:define name="content">
@@ -16,7 +16,7 @@
                 <div class="content">
                 <h:form>
 	                <h:panelGrid columns="2">
-	                    <h:outputText value="#{text['idBicicleta']}"></h:outputText>
+	                    <h:outputText value="#{text['columnaIdBicicleta']}"></h:outputText>
 	                    <h:inputText id="idBicicleta" value="#{biciDetailWeb.idBicicleta}" />
 	                    <h:outputText value="#{text['descripcion']}"></h:outputText>
 	                    <h:inputTextarea value="#{biciDetailWeb.descripcion}" rows="5"></h:inputTextarea>
