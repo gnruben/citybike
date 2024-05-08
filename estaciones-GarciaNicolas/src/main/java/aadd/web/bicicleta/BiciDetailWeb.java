@@ -13,7 +13,7 @@ import aadd.servicios.IServicioEstaciones;
 import aadd.servicios.IServicioIncidencias;
 import aadd.servicios.ServicioEstacionesException;
 import aadd.servicios.ServicioIncidenciasException;
-
+import aadd.web.locale.ActiveLocale;
 import servicio.FactoriaServicios;
 
 @Named
@@ -29,7 +29,8 @@ public class BiciDetailWeb implements Serializable {
 	private String descripcion;
 	
 	
-	
+	@Inject
+	private ActiveLocale localeConfig;
 
 	@Inject
 
@@ -61,7 +62,7 @@ public class BiciDetailWeb implements Serializable {
 		try {
 			servicioIncidencias.crearIncidencia(idBicicleta, descripcion);
 			facesContext.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Incidencia añadida correctamente"));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "", localeConfig.getBundle().getString("exitoReportarIncidencia")));
 
 			load();
 		} catch (ServicioIncidenciasException  e) {

@@ -16,12 +16,12 @@
                 <div class="content">
                 <h:form>
 	                <h:panelGrid columns="2">
-	                    <h:outputText value="IdBicicleta"></h:outputText>
+	                    <h:outputText value="#{text['idBicicleta']}"></h:outputText>
 	                    <h:inputText id="idBicicleta" value="#{biciDetailWeb.idBicicleta}" />
 	                    <h:outputText value="#{text['descripcion']}"></h:outputText>
 	                    <h:inputTextarea value="#{biciDetailWeb.descripcion}" rows="5"></h:inputTextarea>
 	                </h:panelGrid>
-	                <h:commandButton value="Reportar"
+	                <h:commandButton value="#{text['reportar']}"
 	                    actionListener="#{biciDetailWeb.addIncidencia()}">
 	                </h:commandButton>
 	                <h:messages id="errors" infoStyle="color:blue"
