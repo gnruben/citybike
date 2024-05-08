@@ -41,7 +41,7 @@ Gestión de Incidencias
 					<h:outputText value="#{incidencia.id}" />
 				</p:column>
 				<p:column headerText="Estado">
-					<h:outputText value="#{incidencia.estado}" />
+					<h:outputText value="#{incidencia.getEstado()}" />
 				</p:column>
 				<p:column headerText="Fecha">
 					<h:outputText value="#{incidencia.fechaInicio}" />
@@ -55,7 +55,7 @@ Gestión de Incidencias
 					<p:commandButton value="Asignar Operario"
 						actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
 						oncomplete="PF('w_asignarOperario').show();"
-						update=":asignarOperario" />
+						update=":asignarOperario :incidencias" />
 				</p:column>
 				<p:column headerText="Cancelar Incidencia">
 					<!-- rendered="#{estado == 'Pendientes'}"> -->
@@ -63,7 +63,7 @@ Gestión de Incidencias
 					<p:commandButton value="Cancelar Incidencia"
 						actionListener="#{gestionarIncidenciaWeb.getIncidencia(incidencia.id)}"
 						oncomplete="PF('w_cancelarIncidencia').show();"
-						update=":cancelarIncidencia" />
+						update=":cancelarIncidencia :incidencias" />
 				</p:column>
 			</p:dataTable>
 		</h:form>

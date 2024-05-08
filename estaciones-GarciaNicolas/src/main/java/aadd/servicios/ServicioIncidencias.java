@@ -102,7 +102,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 	@Override
 	public void cancelarIncidencia(String idIncidencia, String motivoCierre) throws ServicioIncidenciasException {
-		// TODO Auto-generated method stub
 
 		Incidencia incidencia=((IRepositorioBicicletasAdHoc)repositorioBicicletas).getIncidenciaById(idIncidencia);
 		if (motivoCierre == null || motivoCierre.isEmpty())
@@ -170,9 +169,10 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		if (incidencia.getEstado() != EstadoIncidencia.PENDIENTE)
 			throw new ServicioIncidenciasException("El estado de la incidencia no es PENDIENTE no se puede asignar");
 
-		try {
-			incidencia.setEstado(EstadoIncidencia.ASIGNADA);
-			incidencia.setIdOperarioAsignado(idOperarioAsignado);
+		incidencia.setEstado(EstadoIncidencia.ASIGNADA);
+		incidencia.setIdOperarioAsignado(idOperarioAsignado);
+		
+		try {	
 			repositorioBicicletas.update(incidencia.getBicicleta());
 			servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId());
 

@@ -251,8 +251,13 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void asignarIncidencia(String idOperario) {
 		try {
 			idOperarioAsignado = idOperario;
+	        System.out.println("Estado antes de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+
 			servicioIncidencias.asignarIncidencia(idIncidencia, idOperarioAsignado);
+	        System.out.println("Estado después de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+
 			buscarPendientes(); // actualiza el total
+			
 
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
@@ -261,7 +266,11 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 	public void cancelarIncidencia(String motivo) {
 		try {
+	        System.out.println("Estado antes de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+
 			servicioIncidencias.cancelarIncidencia(idIncidencia, motivo);
+	        System.out.println("Estado después de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+
 			buscarPendientes(); // actualiza el total
 			
 		} catch (ServicioIncidenciasException e) {
@@ -272,7 +281,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void resolverIncidencia(String motivo, boolean disponible) {
 		try {
 			servicioIncidencias.resolverIncidencia(idIncidencia, motivo, disponible);
-			buscarAsignadas(); // actualiza el total
+			buscarResueltas(); // actualiza el total
 			
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
@@ -327,6 +336,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 			break;
 		}
 
+		findTotalResults();
 		System.out.println("Se ha cambiado el estado a " + estadoVista);
 	}
 
