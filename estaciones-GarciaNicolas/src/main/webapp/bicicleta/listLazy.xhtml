@@ -18,11 +18,11 @@ template="/WEB-INF/template/template.xhtml"
 
                     <p:fieldset legend="#{text['leyendaBuscador']}" collapsed="false" toggleable="true">
                         <div class="ui-g ui-fluid">
-                            <div class="ui-g-2">"#{text['labelUbicacion']}"</div>
+                            <div class="ui-g-2">#{text['labelUbicacion']}</div>
                             <div class="ui-g-10">
-                            	<label>"#{text['labelLatitud']}"</label>
+                            	<label>#{text['labelLatitud']}</label>
                                 <p:inputText value="#{buscarBiciWeb.latitud}"/>
-                                <label>"#{text['labelLongitud']}"</label>
+                                <label>#{text['labelLongitud']}</label>
                                 <p:inputText value="#{buscarBiciWeb.longitud}"/>
                             </div>                         
                         </div>
