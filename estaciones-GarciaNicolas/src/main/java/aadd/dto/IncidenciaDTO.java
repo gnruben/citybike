@@ -125,6 +125,9 @@ public class IncidenciaDTO implements Serializable {
 		this.idBicicleta = idBicicleta;
 	}
 
+	/*public String getEstadoString() {
+		return getEstadoString().toString().toUpperCase();
+	}*/
 
 /*	public BicicletaDTO getBicicleta() {
 		return bicicleta;

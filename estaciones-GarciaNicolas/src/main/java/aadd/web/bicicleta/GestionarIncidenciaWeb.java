@@ -51,6 +51,15 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	private String idIncidencia;
 	private String idOperarioAsignado;
 	private String motivo;
+	private boolean disponible;
+	public boolean isDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
+	}
+
 	private Integer total;
 
 	@Inject
