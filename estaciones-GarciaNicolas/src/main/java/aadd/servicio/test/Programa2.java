@@ -117,6 +117,11 @@ public class Programa2 {
         String idEs2 = servicioEstaciones.crear(e2, np, pc, l, lo);
         String idEs3 = servicioEstaciones.crear(e3, npp, pcc, ll, llo);
         
+        /*System.out.println("ID'S DE LAS ESTACIONES QUE HAY EN EL REPOSITORIO DE ESTACIONES:");
+        for(String ss: repositorioEstaciones.getIds())
+        	System.out.println(ss);
+        */
+        
         // Estacionar bicicleta
         String idB1 = servicioEstaciones.altaBicicleta("ModeloXXY", idEs1);
         String idB2 = servicioEstaciones.altaBicicleta("ModeloXMK", idEs2);
@@ -174,5 +179,7 @@ public class Programa2 {
         	System.out.println("El id de la estacion: "+id+ ", el número de sitios turísticos que tiene: "+n.getSitiosTuristicos().size());
         
         }
+        
+        
     }
 }

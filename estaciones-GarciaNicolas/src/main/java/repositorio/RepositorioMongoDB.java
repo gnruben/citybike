@@ -48,16 +48,16 @@ public abstract class RepositorioMongoDB<T extends Identificable> implements Rep
 			throw new RepositorioException("El documento no se ha podido eliminar");
 		}
 	}
-
+	
 	@Override
 	public T getById(String id) throws RepositorioException, EntidadNoEncontrada {
-		T result;
-		FindIterable<T> t = getCollection().find(new Document("_id", new ObjectId(id)));
-		if (t == null) {
-			throw new EntidadNoEncontrada("El documento a actualizar no existe");
-		}
-		result = t.first();
-		return result;
+	    T result;
+	    FindIterable<T> t = getCollection().find(new Document("_id", new ObjectId(id)));
+	    result = t.first();
+	    if (result == null) {
+	        throw new EntidadNoEncontrada("El documento con ID " + id + " no existe");
+	    }
+	    return result;
 	}
 
 	@Override
@@ -70,9 +70,9 @@ public abstract class RepositorioMongoDB<T extends Identificable> implements Rep
 
 	@Override
 	public List<String> getIds() throws RepositorioException {
-		List<String> idList = new LinkedList<String>();
-
-		getCollection().find().forEach(t -> t.getId());
+		 List<String> idList = new LinkedList<String>();
+		 getCollection().find().forEach(t -> idList.add(t.getId()));
+		 
 		return idList;
 	}
 

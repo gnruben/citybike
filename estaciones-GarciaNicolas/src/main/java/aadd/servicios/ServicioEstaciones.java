@@ -175,7 +175,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void estacionarBicicleta(String idBicicleta) throws ServicioEstacionesException {
 		try {
 
-			List<String> list_ids = repositorioEstaciones.getIds();
+			List<String> list_ids = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getIds();
 			
 			Boolean flag = false;
 			int i = 0;
@@ -273,8 +273,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 				bici = repositorioBicicletas.getById(idBicicleta);
 				bici.setFechaBaja(LocalDate.now());
 				bici.setMotivo(motivoBaja);
-				
-				retirarBicicleta(idBicicleta);
+				repositorioBicicletas.update(bici);
 			} catch (RepositorioException e) {
 				throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idBicicleta);
 			} catch (EntidadNoEncontrada e) {

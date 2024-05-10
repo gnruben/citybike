@@ -8,7 +8,7 @@
 	    <ui:param name="estilo5" value="current" />
 	
 	<ui:define name="title">
-"#{text['tituloGestionIncidencias']}"
+#{text['tituloGestionIncidencias']}
 </ui:define>
 
 	<ui:define name="content">
@@ -118,7 +118,7 @@
 				<p:inputText value="#{motivo}" />
 				
 				<p:outputLabel for="checkbox" value="Disponible:" />
-            	<p:selectBooleanCheckbox id="checkbox" value="#{gestionarIncidencia.disponible}" />
+            	<p:selectBooleanCheckbox id="checkbox" value="#{disponible}" />
 				 
 				<p:commandButton value="Resolver Incidencia"
 					update=":incidencias"
