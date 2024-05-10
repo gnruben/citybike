@@ -20,76 +20,75 @@ import servicio.FactoriaServicios;
 @ViewScoped
 public class BuscarBiciWeb extends LazyDataModel<BicicletaDTO> {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	private Integer total;
-
 	private double latitud;
 	private double longitud;
-    private IServicioEstaciones servicioEstaciones;
-    
-    @PostConstruct
-    public void init() {
-        servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
-        findTotalResults();
-    }
-    protected int findTotalResults() {
-        if (total == null) {
-            try {
-                total = servicioEstaciones.countBicicleta(latitud, longitud);
-            } catch (ServicioEstacionesException e) {             
-            	e.printStackTrace();
-            }
-        }
-        return total;
-    }
+	private IServicioEstaciones servicioEstaciones;
 
-    public void buscar() {
-        try {
-            total = servicioEstaciones.countBicicleta(latitud, longitud);
-        } catch (ServicioEstacionesException e) {
-        	e.printStackTrace();
-        }
-    }
+	@PostConstruct
+	public void init() {
+		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+		findTotalResults();
+	}
 
-    public List<BicicletaDTO> buscarBicicleta(int inicio, int size) {
-        try {
-            return servicioEstaciones.bicisCercanasLazy(latitud, longitud, inicio, size);
-        } catch (ServicioEstacionesException e) {
-        	e.printStackTrace();
+	protected int findTotalResults() {
+		if (total == null) {
+			try {
+				total = servicioEstaciones.countBicicleta(latitud, longitud);
+			} catch (ServicioEstacionesException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return total;
+	}
 
-        }
-        
-        return null;
-    }
+	public void buscar() {
+		try {
+			total = servicioEstaciones.countBicicleta(latitud, longitud);
+		} catch (ServicioEstacionesException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
-    @Override
-    public int count(Map<String, FilterMeta> filterBy) {
-        return findTotalResults();
-    }
+	public List<BicicletaDTO> buscarBicicleta(int inicio, int size) {
+		try {
+			return servicioEstaciones.bicisCercanasLazy(latitud, longitud, inicio, size);
+		} catch (ServicioEstacionesException e) {
+			System.out.println(e.getMessage());
 
-    @Override
-    public List<BicicletaDTO> load(int first, int pageSize, Map<String, SortMeta> sortBy,Map<String, FilterMeta> filterBy) {
-        return buscarBicicleta(first, pageSize);
-    }
+		}
 
-    public Integer getTotal() {
-        return total;
-    }
-    
+		return null;
+	}
+
+	@Override
+	public int count(Map<String, FilterMeta> filterBy) {
+		return findTotalResults();
+	}
+
+	@Override
+	public List<BicicletaDTO> load(int first, int pageSize, Map<String, SortMeta> sortBy,
+			Map<String, FilterMeta> filterBy) {
+		return buscarBicicleta(first, pageSize);
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
 	public double getLatitud() {
 		return latitud;
 	}
+
 	public void setLatitud(double latitud) {
 		this.latitud = latitud;
 	}
-	
+
 	public double getLongitud() {
 		return longitud;
 	}
+
 	public void setLongitud(double longitud) {
 		this.longitud = longitud;
 	}

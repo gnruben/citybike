@@ -5,27 +5,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+public class BicicletaDTO implements Serializable {
 
-import aadd.modelo.Incidencia;
-
-public class BicicletaDTO implements Serializable{
-
-	
+	private static final long serialVersionUID = 1L;
 	private String id;
-    private String modelo;
-    private LocalDate fechaAlta;
-    private LocalDate fechaBaja;  
-    private String motivo;
-  
-    private List<IncidenciaDTO> incidencias;
+	private String modelo;
+	private LocalDate fechaAlta;
+	private LocalDate fechaBaja;
+	private String motivo;
 
-    
+	private List<IncidenciaDTO> incidencias;
+
 	public BicicletaDTO(String id, String modelo, LocalDate fechaAlta, LocalDate fechaBaja, String motivo) {
 		this.id = id;
 		this.modelo = modelo;
@@ -82,10 +72,10 @@ public class BicicletaDTO implements Serializable{
 	public void setIncidencias(List<IncidenciaDTO> incidencias) {
 		this.incidencias = incidencias;
 	}
-    
-    public void addIncidencia(IncidenciaDTO incidenciaDTO) {
-    	
-    	this.incidencias.add(incidenciaDTO);
-    }
-    
+
+	public void addIncidencia(IncidenciaDTO incidenciaDTO) {
+
+		this.incidencias.add(incidenciaDTO);
+	}
+
 }

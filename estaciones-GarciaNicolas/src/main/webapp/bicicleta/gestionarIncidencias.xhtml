@@ -52,7 +52,7 @@
 				<p:column headerText="#{text['columnaIdBicicleta']}">
 					<h:outputText value="#{incidencia.idBicicleta}" />
 				</p:column>
-				<p:column headerText="Operación 1">
+				<p:column headerText="#{text['operacionUno']}"> 
 					<!--  rendered="#{gestionarIncidenciaWeb.estadoVista eq 'Pendientes'}"> -->
 					
 					<p:commandButton value="Asignar Operario"
@@ -69,7 +69,7 @@
 						rendered="#{incidencia.getEstado() == 'ASIGNADA'}"
 						 />
 				</p:column>
-				<p:column headerText="Operación 2">
+				<p:column headerText="#{text['operacionDos']}">
 					
 					
 					<p:commandButton value="Cancelar Incidencia"
@@ -113,12 +113,13 @@
 		<p:dialog widgetVar="w_resolverIncidencia" id="resolverIncidencia">
 			<h:form>
 		
-			
 				<p:outputLabel value="Motivo" />
 				<p:inputText value="#{motivo}" />
 				
 				<p:outputLabel for="checkbox" value="Disponible:" />
             	<p:selectBooleanCheckbox id="checkbox" value="#{disponible}" />
+				 
+				 <br/> 
 				 
 				<p:commandButton value="Resolver Incidencia"
 					update=":incidencias"

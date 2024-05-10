@@ -47,7 +47,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		String id = null;
 		try {
 			Bicicleta bicicleta = repositorioBicicletas.getById(idBicicleta);
-			// if (bicicleta != null
 			if (bicicleta.isDisponible()) {
 				Incidencia incidencia = new Incidencia();
 				incidencia.setId(UUID.randomUUID().toString()); // ID
@@ -100,10 +99,11 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			throw new ServicioIncidenciasException("No se encontró la bici");
 		}
 	}
+
 	@Override
 	public void cancelarIncidencia(String idIncidencia, String motivoCierre) throws ServicioIncidenciasException {
 
-		Incidencia incidencia=((IRepositorioBicicletasAdHoc)repositorioBicicletas).getIncidenciaById(idIncidencia);
+		Incidencia incidencia = ((IRepositorioBicicletasAdHoc) repositorioBicicletas).getIncidenciaById(idIncidencia);
 		if (motivoCierre == null || motivoCierre.isEmpty())
 			throw new IllegalArgumentException(
 					"Tiene que haber un motivo de cierre de la incidencia que se quiere cancelar.");
@@ -127,7 +127,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		}
 
 	}
-
 
 	@Override
 	public void asignarIncidencia(Incidencia incidencia, String idOperarioAsignado)
@@ -156,12 +155,11 @@ public class ServicioIncidencias implements IServicioIncidencias {
 					"Error no se encontró la bici vinculada a la incidencia: " + incidencia.getBicicleta().getId());
 		}
 	}
-	
+
 	@Override
-	public void asignarIncidencia(String idIncidencia, String idOperarioAsignado)
-			throws ServicioIncidenciasException {
-		
-		Incidencia incidencia=((IRepositorioBicicletasAdHoc)repositorioBicicletas).getIncidenciaById(idIncidencia);
+	public void asignarIncidencia(String idIncidencia, String idOperarioAsignado) throws ServicioIncidenciasException {
+
+		Incidencia incidencia = ((IRepositorioBicicletasAdHoc) repositorioBicicletas).getIncidenciaById(idIncidencia);
 		if (idOperarioAsignado == null || idOperarioAsignado.isEmpty())
 			throw new IllegalArgumentException(
 					"El id del Operario, al que le ha sido asignada esta incidencia, no puede ser nulo.");
@@ -171,8 +169,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 		incidencia.setEstado(EstadoIncidencia.ASIGNADA);
 		incidencia.setIdOperarioAsignado(idOperarioAsignado);
-		
-		try {	
+
+		try {
 			repositorioBicicletas.update(incidencia.getBicicleta());
 			servicioEstaciones.retirarBicicleta(incidencia.getBicicleta().getId());
 
@@ -184,13 +182,9 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			throw new ServicioIncidenciasException(
 					"Error no se encontró la bici vinculada a la incidencia: " + incidencia.getBicicleta().getId());
 		}
-		
+
 	}
 
-
-
-	// TODO: pasar directamenteel id de la incidencia?
-	//
 	@Override
 	public void resolverIncidencia(Incidencia incidencia, String motivoCierre, boolean isReparada)
 			throws ServicioIncidenciasException {
@@ -229,9 +223,9 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	@Override
 	public void resolverIncidencia(String idIncidencia, String motivoCierre, boolean isReparada)
 			throws ServicioIncidenciasException {
-		
-		Incidencia incidencia=getIncidenciaByID(idIncidencia);
-		
+
+		Incidencia incidencia = getIncidenciaByID(idIncidencia);
+
 		if (motivoCierre == null || motivoCierre.isEmpty())
 			throw new IllegalArgumentException(
 					"Tiene que haber un motivo de cierre de la incidencia que se quiere resolver.");
@@ -242,8 +236,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 		try {
 			Bicicleta bici = incidencia.getBicicleta();
-			
-			
+
 			incidencia.setEstado(EstadoIncidencia.RESUELTA);
 			incidencia.setFechaFin(LocalDate.now());
 			incidencia.setMotivoCierre(motivoCierre);
@@ -261,10 +254,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			e.printStackTrace();
 		}
 	}
-	
-
-
-
 
 	/**
 	 * Recuperar incidencias abiertas. Esta operación devolverá un listado de
@@ -275,28 +264,25 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciasAbiertas();
 	}
 
-	
 	@Override
 	public List<Incidencia> getIncidenciasResueltas() {
 		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciasResueltas();
 	}
-	
+
 	@Override
 	public List<Incidencia> getIncidenciasCanceladas() {
 		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciasCanceladas();
 	}
-	
+
 	@Override
 	public List<Incidencia> getIncidenciasPendientes() {
 		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciasPendientes();
 	}
+
 	@Override
 	public List<Incidencia> getIncidenciasAsignadas() {
 		return ((RepositorioBicicletaAdHocJPA) repositorioBicicletas).getIncidenciasAsignadas();
 	}
-
-
-
 
 	// DTO
 
@@ -371,7 +357,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 		return incidenciasDTO;
 
-		
 	}
 
 	@Override
@@ -397,7 +382,6 @@ public class ServicioIncidencias implements IServicioIncidencias {
 			incidenciasDTO.add(transformToDTO(b));
 
 		return incidenciasDTO;
-
 
 	}
 
@@ -425,9 +409,8 @@ public class ServicioIncidencias implements IServicioIncidencias {
 
 		return incidenciasDTO;
 
-		
 	}
-	
+
 	@Override
 	public List<IncidenciaDTO> incidenciasCanceladasLazy(int start, int max) throws ServicioIncidenciasException {
 		List<Incidencia> incidenciasCanceladas = getIncidenciasCanceladas();
@@ -473,6 +456,5 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	public int countIncidenciasCanceladas() throws ServicioIncidenciasException {
 		return getIncidenciasCanceladas().size();
 	}
-
 
 }

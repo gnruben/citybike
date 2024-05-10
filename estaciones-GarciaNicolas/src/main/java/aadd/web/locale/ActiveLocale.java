@@ -18,9 +18,8 @@ import javax.inject.Named;
 @SessionScoped
 public class ActiveLocale implements Serializable {
 
-
-    private Locale actual;
-
+	private static final long serialVersionUID = 1L;
+	private Locale actual;
     private List<Locale> localesDisponibles;
 
     @Inject
@@ -37,19 +36,12 @@ public class ActiveLocale implements Serializable {
 
         actual = app.getViewHandler().calculateLocale(context);
         bundle = ResourceBundle.getBundle("i18n.text", actual);
-
         localesDisponibles = new ArrayList<>();
-
         localesDisponibles.add(app.getDefaultLocale());
-
         Iterator<Locale> supported = app.getSupportedLocales();
-
         while(supported.hasNext()) {
-
             localesDisponibles.add(supported.next());
-
         }           
-
     }
 
 
@@ -59,34 +51,23 @@ public class ActiveLocale implements Serializable {
 
 
     public Locale getActual() {
-
         return actual;
-
     }
 
     public String getLanguageTag() {
-
         return actual.toLanguageTag();
-
     }
 
     public void setLanguageTag(String languageTag) {
-
         actual = Locale.forLanguageTag(languageTag);
         bundle = ResourceBundle.getBundle("i18n.text", actual);
-
     }
 
     public List<Locale> getLocalesDisponibles() {
-
         return localesDisponibles;
-
     }
-
 
 	public ResourceBundle getBundle() {
 		return bundle;
-	}
-    
-    
+	}    
 }

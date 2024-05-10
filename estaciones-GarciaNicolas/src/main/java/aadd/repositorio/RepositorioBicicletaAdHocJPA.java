@@ -52,10 +52,10 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 		return query.getResultList();
 	}
-	
+
 	@Override
 	public Incidencia getIncidenciaById(String idIncidencia) {
-		
+
 		EntityManager em = EntityManagerHelper.getEntityManager();
 
 		String queryString = "SELECT DISTINCT i " + " FROM Bicicleta b " + " INNER JOIN b.incidencias i "
@@ -63,8 +63,8 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		query.setParameter("idIncidencia", idIncidencia);
-		//query.setHint(QueryHints.REFRESH, HintValues.TRUE);
-		
+		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+
 		return query.getResultList().get(0);
 	}
 
@@ -81,7 +81,7 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
 		return query.getResultList();
-		
+
 	}
 
 	@Override
@@ -92,11 +92,11 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 				+ " WHERE i.estado = :estadoAsignada";
 
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
-		
+
 		query.setParameter("estadoAsignada", EstadoIncidencia.ASIGNADA);
 		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 		return query.getResultList();
-		
+
 	}
 
 	@Override
@@ -107,12 +107,12 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 				+ " WHERE i.estado = :estadoResuelta";
 
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
-		
+
 		query.setParameter("estadoResuelta", EstadoIncidencia.RESUELTA);
 		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
 		return query.getResultList();
-		
+
 	}
 
 	@Override
@@ -126,9 +126,8 @@ public class RepositorioBicicletaAdHocJPA extends RepositorioJPA<Bicicleta> impl
 		TypedQuery<Incidencia> query = em.createQuery(queryString, Incidencia.class);
 		query.setParameter("estadoCancelada", EstadoIncidencia.CANCELADA);
 		query.setHint(QueryHints.REFRESH, HintValues.TRUE);
-		
 
 		return query.getResultList();
-		
+
 	}
 }

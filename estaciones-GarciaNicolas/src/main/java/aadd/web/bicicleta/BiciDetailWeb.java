@@ -20,14 +20,12 @@ import servicio.FactoriaServicios;
 @ViewScoped
 public class BiciDetailWeb implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String idBicicleta;
-
 	private IServicioEstaciones servicioEstaciones;
 	private IServicioIncidencias servicioIncidencias;
-
 	private BicicletaDTO bicicleta;
 	private String descripcion;
-	
 	
 	@Inject
 	private ActiveLocale localeConfig;
@@ -40,7 +38,7 @@ public class BiciDetailWeb implements Serializable {
 
 	        servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 	        servicioIncidencias = FactoriaServicios.getServicio(IServicioIncidencias.class);        
-	    }
+	}
 
 	public void load() {
 
@@ -63,16 +61,15 @@ public class BiciDetailWeb implements Serializable {
 			servicioIncidencias.crearIncidencia(idBicicleta, descripcion);
 			facesContext.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "", localeConfig.getBundle().getString("exitoReportarIncidencia")));
-
 			load();
+			
 		} catch (ServicioIncidenciasException  e) {
-
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", e.getMessage()));
-
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			
 		} catch (IllegalArgumentException e) {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", e.getMessage()));
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 

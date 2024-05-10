@@ -24,7 +24,6 @@ import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
-import aadd.modelo.Bicicleta;
 import aadd.modelo.Estacion;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
@@ -74,9 +73,7 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		AggregateIterable<Document> resultado=coleccionSinCodificar.aggregate(Arrays.asList(unwind,group,sort));
 		for(Document doc:resultado) {
 			list.add(getById(doc.get("_id").toString()));
-		}
-		
-		
+		}	
 		return list;
 	}
 
@@ -96,5 +93,4 @@ public class RepositorioEstacionesMongoDB extends RepositorioMongoDB<Estacion> i
 		return coleccion;
 	}
 	
-
 }

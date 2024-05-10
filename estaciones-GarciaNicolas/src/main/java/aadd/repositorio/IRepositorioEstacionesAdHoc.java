@@ -10,5 +10,4 @@ import repositorio.RepositorioString;
 public interface IRepositorioEstacionesAdHoc extends RepositorioString<Estacion> {
 	public List<Estacion> getEstacionesTuristicas() throws RepositorioException, EntidadNoEncontrada;
 	List<Estacion> getEstacionesCercanasA(double lat, double lng, int limit);
-
 }

@@ -23,35 +23,22 @@ import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import servicio.FactoriaServicios;
 
-//TODO
-/*
- * Refresco al asignar la incidencia sin tener que refrescar manualmente. 
- * Al asignar la última incidencia y refrescar manualmente, nos sale un error de "Error: No se han encontrado incidencias resueltas", donde no tendría que mostrarlo.
- * El conteo se tiene que recalcular (Total).
- * 
- * Teniendo arreglado lo anterior, faltaría Cancelar y Resolver una incidencia.
- */
-
 @Named
 @ViewScoped
 public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 	private IServicioEstaciones servicioEstaciones;
 	private IServicioIncidencias servicioIncidencias;
 	private Repositorio<Bicicleta, String> repositorioBicicletas;
-
 	private List<IncidenciaDTO> incidencias;
 	private IncidenciaDTO incidenciaDTO;
-
 	private String estadoVista;
 	private String idIncidencia;
 	private String idOperarioAsignado;
 	private String motivo;
 	private boolean disponible;
+
 	public boolean isDisponible() {
 		return disponible;
 	}
@@ -104,7 +91,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 			default: {
 				total = servicioIncidencias.countIncidenciasPendientes();
-				//System.out.println("pasa por findTotalResults default: " + estadoVista);
 				break;
 			}
 			}
@@ -152,7 +138,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 		}
 
 		return null;
-
 	}
 
 	public List<IncidenciaDTO> buscarIncidenciasPendientes(int inicio, int size) {
@@ -165,7 +150,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 		}
 
 		return null;
-
 	}
 
 	public List<IncidenciaDTO> buscarIncidenciasAsignadas(int inicio, int size) {
@@ -178,7 +162,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 		}
 
 		return null;
-
 	}
 
 	public List<IncidenciaDTO> buscarIncidenciasResueltas(int inicio, int size) {
@@ -191,7 +174,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 		}
 
 		return null;
-
 	}
 
 	public List<IncidenciaDTO> buscarIncidenciasCanceladas(int inicio, int size) {
@@ -204,7 +186,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 		}
 
 		return null;
-
 	}
 
 	@Override
@@ -215,7 +196,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void buscarAbiertas() {
 		try {
 			total = servicioIncidencias.countIncidenciasAbiertas();
-			
+
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -224,7 +205,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void buscarResueltas() {
 		try {
 			total = servicioIncidencias.countIncidenciasResueltas();
-			
+
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -233,7 +214,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void buscarAsignadas() {
 		try {
 			total = servicioIncidencias.countIncidenciasAsignadas();
-			
+
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -242,7 +223,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void buscarPendientes() {
 		try {
 			total = servicioIncidencias.countIncidenciasPendientes();
-			
+
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -251,7 +232,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void buscarCanceladas() {
 		try {
 			total = servicioIncidencias.countIncidenciasCanceladas();
-			
+
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -260,13 +241,8 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void asignarIncidencia(String idOperario) {
 		try {
 			idOperarioAsignado = idOperario;
-	        //System.out.println("Estado antes de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
-
 			servicioIncidencias.asignarIncidencia(idIncidencia, idOperarioAsignado);
-	        //System.out.println("Estado después de asignar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
-
-			buscarPendientes(); // actualiza el total
-			
+			buscarPendientes(); 
 
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
@@ -275,13 +251,9 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 	public void cancelarIncidencia(String motivo) {
 		try {
-	       // System.out.println("Estado antes de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
-
 			servicioIncidencias.cancelarIncidencia(idIncidencia, motivo);
-	        //System.out.println("Estado después de cancelar: " + servicioIncidencias.getIncidenciaByID(idIncidencia).getEstado());
+			buscarPendientes(); 
 
-			buscarPendientes(); // actualiza el total
-			
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -290,8 +262,8 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	public void resolverIncidencia(String motivo, boolean disponible) {
 		try {
 			servicioIncidencias.resolverIncidencia(idIncidencia, motivo, disponible);
-			buscarResueltas(); // actualiza el total
-			
+			buscarResueltas();
+
 		} catch (ServicioIncidenciasException e) {
 			System.out.println(e.getMessage());
 		}
@@ -344,9 +316,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 			buscarPendientes();
 			break;
 		}
-
-		//findTotalResults();
-		//System.out.println("Se ha cambiado el estado a " + estadoVista);
 	}
 
 	public String getEstadoVista() {

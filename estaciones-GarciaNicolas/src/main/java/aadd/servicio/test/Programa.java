@@ -44,14 +44,11 @@ import javax.xml.parsers.ParserConfigurationException;
 		            double longitud = -1.12865 ;
 		            
 		            List<ResumenSitioTuristico> resumenesCercanos = sitiosTuristicos.getResumenesCercanos(latitud, longitud);
-		            
-		            
-   
+		            		     
 		            // Imprimir resúmenes de sitios turísticos cercanos
 		            System.out.println("Resúmenes de sitios turísticos cercanos a la latitud: "+latitud+" y la longitud: "+longitud+"\n");
 		            for (ResumenSitioTuristico resumen : resumenesCercanos) {
-		                System.out.println(resumen);
-		                
+		                System.out.println(resumen);		         
 		            }
 		            
 		            List<SitioTuristico> sitioss = new ArrayList<SitioTuristico>();
@@ -63,8 +60,7 @@ import javax.xml.parsers.ParserConfigurationException;
 		            	//System.out.println(nombre);
 		            	SitioTuristico st = sitiosTuristicos.getSitioTuristico(nombre);
 		            	
-		            	sitioss.add(st);
-		            	
+		            	sitioss.add(st);		            	
 		            }
 		             
 		            Estacion es = new Estacion("es1", 10, "2008", latitud, longitud);
@@ -76,9 +72,6 @@ import javax.xml.parsers.ParserConfigurationException;
 		            
 		            servicioEstaciones.eliminar(id);
 		            
-		            
-		          
- 
 		            String estacionId = servicioEstaciones.crear("Otra Estación", 30, "456 Elm St", 41.0, -74.0);
 		            Estacion estacionn = new Estacion("Otra Estación", 30, "456 Elm St", 41.0, -74.0);
 		            estacionn.setId(estacionId);

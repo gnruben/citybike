@@ -29,8 +29,4 @@ import servicio.FactoriaServicios;
 public class loginWeb implements Serializable{
 	private String Nombre;
 	private String Rol;
-	
-	
-	
-
 }

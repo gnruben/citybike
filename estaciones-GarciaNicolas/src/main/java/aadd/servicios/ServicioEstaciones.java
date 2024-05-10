@@ -26,14 +26,11 @@ import servicio.FactoriaServicios;
 
 public class ServicioEstaciones implements IServicioEstaciones {
 
-
 	private Repositorio<Estacion, String> repositorioEstaciones = FactoriaRepositorios.getRepositorio(Estacion.class);
 	private Repositorio<RegistroHistoricoEstacionamiento, String> repositorioHistorial = FactoriaRepositorios
 			.getRepositorio(RegistroHistoricoEstacionamiento.class);
 	private Repositorio<Bicicleta, String> repositorioBicicletas = FactoriaRepositorios.getRepositorio(Bicicleta.class);
 	private ISitiosTuristicos serviciosTuristicos = FactoriaServicios.getServicio(ISitiosTuristicos.class);
-
-
 
 	@Override
 	public String crear(String nombre, int numeroPuestos, String postalcode, double lat, double lng)
@@ -46,7 +43,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 		Estacion estacion = new Estacion(nombre, numeroPuestos, postalcode, lat, lng);
 
-		estacion.setFechaAlta(LocalDateTime.now());//TODO: LocalDateTime o LocalDate?
+		estacion.setFechaAlta(LocalDateTime.now());// TODO: LocalDateTime o LocalDate?
 
 		String id;
 		try {
@@ -176,13 +173,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		try {
 
 			List<String> list_ids = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getIds();
-			
+
 			Boolean flag = false;
 			int i = 0;
 
-			
 			while (i < list_ids.size() && !flag) {
-				
+
 				if (hayPuestosLibres(list_ids.get(i))) {
 					flag = true;
 					estacionarBicicleta(idBicicleta, list_ids.get(i));
@@ -199,15 +195,15 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void estacionarBicicleta(String idBicicleta, String idEstacion) throws ServicioEstacionesException {
 		try {
-			if(((IRepositorioHistorialEstacionamientoAdHoc)repositorioHistorial).isEstacionada(idBicicleta)) {
+			if (((IRepositorioHistorialEstacionamientoAdHoc) repositorioHistorial).isEstacionada(idBicicleta)) {
 				throw new ServicioEstacionesException("La bicicleta ya está estacionada");
 			}
 
 			if (hayPuestosLibres(idEstacion)) {
-				Bicicleta bici=repositorioBicicletas.getById(idBicicleta);
+				Bicicleta bici = repositorioBicicletas.getById(idBicicleta);
 				bici.setDisponible(true);
 				repositorioBicicletas.update(bici);
-				
+
 				RegistroHistoricoEstacionamiento rh = new RegistroHistoricoEstacionamiento();
 				rh.setFechaInicio(LocalDate.now());
 				rh.setIdBici(idBicicleta);
@@ -234,20 +230,23 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	 * estacionada y procede a quitarla de la estación. Además, actualiza el
 	 * registro histórico para esa bici y estación estableciendo automáticamente la
 	 * fecha de fin.
-	 * @throws ServicioEstacionesException 
+	 * 
+	 * @throws ServicioEstacionesException
 	 */
 	@Override
 	public void retirarBicicleta(String idBicicleta) throws ServicioEstacionesException {
 		try {
-			Bicicleta bici=repositorioBicicletas.getById(idBicicleta);
-			
-			if(!((IRepositorioHistorialEstacionamientoAdHoc)repositorioHistorial).isEstacionada(idBicicleta)) {
-				throw new ServicioEstacionesException("La bicicleta no está estacionada, no se puede retirar " + idBicicleta);
+			Bicicleta bici = repositorioBicicletas.getById(idBicicleta);
+
+			if (!((IRepositorioHistorialEstacionamientoAdHoc) repositorioHistorial).isEstacionada(idBicicleta)) {
+				throw new ServicioEstacionesException(
+						"La bicicleta no está estacionada, no se puede retirar " + idBicicleta);
 			}
-			
+
 			bici.setDisponible(false);
 			repositorioBicicletas.update(bici);
-			RegistroHistoricoEstacionamiento rh=((RepositorioHistorialMongoDB)repositorioHistorial).getUltimoRegistroByIdBici(idBicicleta);
+			RegistroHistoricoEstacionamiento rh = ((RepositorioHistorialMongoDB) repositorioHistorial)
+					.getUltimoRegistroByIdBici(idBicicleta);
 			rh.setFechaFin(LocalDate.now());
 			repositorioHistorial.update(rh);
 		} catch (RepositorioException e) {
@@ -263,48 +262,49 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	 * Esta operación recibe como parámetro el identificador de la bici y el motivo
 	 * de baja. Establece automáticamente la fecha de baja. Esta bici se considera
 	 * no disponible y ya no ocupa sitio en la estación (se retira de la estación).
-	 * @throws ServicioEstacionesException 
+	 * 
+	 * @throws ServicioEstacionesException
 	 */
 	@Override
 	public void darBajaBicicleta(String idBicicleta, String motivoBaja) throws ServicioEstacionesException {
-		
-			Bicicleta bici;
-			try {
-				bici = repositorioBicicletas.getById(idBicicleta);
-				bici.setFechaBaja(LocalDate.now());
-				bici.setMotivo(motivoBaja);
-				repositorioBicicletas.update(bici);
-			} catch (RepositorioException e) {
-				throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idBicicleta);
-			} catch (EntidadNoEncontrada e) {
-				throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + idBicicleta);
-			}
-			
+
+		Bicicleta bici;
+		try {
+			bici = repositorioBicicletas.getById(idBicicleta);
+			bici.setFechaBaja(LocalDate.now());
+			bici.setMotivo(motivoBaja);
+			repositorioBicicletas.update(bici);
+		} catch (RepositorioException e) {
+			throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + idBicicleta);
+		} catch (EntidadNoEncontrada e) {
+			throw new ServicioEstacionesException("No se encontró la Bicicleta en el repositorio: " + idBicicleta);
+		}
+
 	}
 
 	/**
 	 * Esta operación recibirá unas coordenadas y devolverá las bicicletas aparcadas
 	 * y disponibles en las tres estaciones más cercanas a dichas coordenadas.
-	 * @throws ServicioEstacionesException 
+	 * 
+	 * @throws ServicioEstacionesException
 	 */
 	@Override
 	public List<Bicicleta> getBicisEstacionadasCerca(double lat, double lng) throws ServicioEstacionesException {
-		//TODO System.out.println("Lat: "+lat+", longitud:"+ lng);
 		List<Bicicleta> list = new LinkedList<Bicicleta>();
 		int limit = 3; // las tres estaciones más cercanas
-		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat, lng, limit);
-		
-		for(Estacion e: estaciones) {
-			//TODO System.out.println("Estacion con ID: "+e.getId());
-			List<String> idBicis = ((RepositorioHistorialMongoDB) repositorioHistorial).getIdBicisByIdEstacion(e.getId());
-			
-			for(String i: idBicis) {
-				//TODO System.out.println("ID's de las bicicletas de esta estación: "+i);
+		List<Estacion> estaciones = ((IRepositorioEstacionesAdHoc) repositorioEstaciones).getEstacionesCercanasA(lat,
+				lng, limit);
+
+		for (Estacion e : estaciones) {
+			List<String> idBicis = ((RepositorioHistorialMongoDB) repositorioHistorial)
+					.getIdBicisByIdEstacion(e.getId());
+
+			for (String i : idBicis) {
 				try {
 					Bicicleta bicicleta = repositorioBicicletas.getById(i);
 					if (bicicleta.isDisponible())
 						list.add(bicicleta);
-					
+
 				} catch (RepositorioException e1) {
 					throw new ServicioEstacionesException("Ocurrió un error en el repositorio " + i);
 				} catch (EntidadNoEncontrada e1) {
@@ -315,7 +315,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 		return list;
 	}
-	
 
 	/**
 	 * Método que dado el id de una estación devuelve un true si tiene puestos
@@ -337,7 +336,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	/**
 	 * Esta operación devuelve un listado de las estaciones ordenado de mayor a
 	 * menor número de sitios turísticos que tengan cerca.
-	 * @throws ServicioEstacionesException 
+	 * 
+	 * @throws ServicioEstacionesException
 	 */
 
 	@Override
@@ -349,73 +349,74 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		} catch (EntidadNoEncontrada e) {
 			throw new ServicioEstacionesException("No se encontró la Estacion en el repositorio: ");
 		}
-		
+
 	}
 
-	
 	// DTO
-	
-	private BicicletaDTO transformToDTO(Bicicleta bici) {        
-        BicicletaDTO bdto = new BicicletaDTO(bici.getId(), bici.getModelo(), bici.getFechaAlta(), bici.getFechaBaja(), bici.getMotivo());
-        for(Incidencia i: bici.getIncidencias()) {
-        	IncidenciaDTO inc = new IncidenciaDTO(i.getId(), i.getFechaInicio(), i.getFechaFin(), i.getDescripcion(), i.getMotivoCierre(), i.getEstado(), i.getIdOperarioAsignado(),
-        			i.getBicicleta().getId());
-            bdto.addIncidencia(inc);
-        }
-        return bdto;
-    }
+
+	private BicicletaDTO transformToDTO(Bicicleta bici) {
+		BicicletaDTO bdto = new BicicletaDTO(bici.getId(), bici.getModelo(), bici.getFechaAlta(), bici.getFechaBaja(),
+				bici.getMotivo());
+		for (Incidencia i : bici.getIncidencias()) {
+			IncidenciaDTO inc = new IncidenciaDTO(i.getId(), i.getFechaInicio(), i.getFechaFin(), i.getDescripcion(),
+					i.getMotivoCierre(), i.getEstado(), i.getIdOperarioAsignado(), i.getBicicleta().getId());
+			bdto.addIncidencia(inc);
+		}
+		return bdto;
+	}
 
 	@Override
-	public BicicletaDTO getById(String idBicicleta) throws ServicioEstacionesException{
+	public BicicletaDTO getById(String idBicicleta) throws ServicioEstacionesException {
 		try {
 			Bicicleta bici = repositorioBicicletas.getById(idBicicleta);
 			return transformToDTO(bici);
 		} catch (RepositorioException e) {
 			e.printStackTrace();
 			throw new ServicioEstacionesException(e.getMessage(), e);
-			
+
 		} catch (EntidadNoEncontrada e) {
 			e.printStackTrace();
 			throw new ServicioEstacionesException(e.getMessage(), e);
 		}
 	}
-	
+
 	// Lazy para Buscar Bicis Cercanas
-	
+
 	@Override
-	public List<BicicletaDTO> bicisCercanasLazy(double lat, double lng, int start, int max) throws ServicioEstacionesException {
+	public List<BicicletaDTO> bicisCercanasLazy(double lat, double lng, int start, int max)
+			throws ServicioEstacionesException {
 		List<Bicicleta> bicicletasCercas = getBicisEstacionadasCerca(lat, lng);
 		int tam = bicicletasCercas.size();
-		
+
 		List<BicicletaDTO> bicicletasDTO = new ArrayList<BicicletaDTO>();
 		List<Bicicleta> bicis;
-		
-		if(tam == 0)
+
+		if (tam == 0)
 			throw new ServicioEstacionesException("Error: No se han encontrado bicicletas cercanas");
-		
-		if (tam < start )
+
+		if (tam < start)
 			return new ArrayList<BicicletaDTO>();
-		
+
 		if (tam < (max + start + 1))
-			 bicis = bicicletasCercas.subList(start, tam);
+			bicis = bicicletasCercas.subList(start, tam);
 		else
 			bicis = bicicletasCercas.subList(start, start + max);
-		
-		for (Bicicleta b: bicis)
+
+		for (Bicicleta b : bicis)
 			bicicletasDTO.add(transformToDTO(b));
-		
+
 		return bicicletasDTO;
-	}	
-	
-	@Override
-	public int countBicicleta(double lat, double lng) throws ServicioEstacionesException{
-	    try {
-	        return getBicisEstacionadasCerca(lat, lng).size();
-	        
-	    } catch (ServicioEstacionesException e) {
-	        e.printStackTrace();
-	        throw new ServicioEstacionesException(e.getMessage(), e);
-	    }
 	}
-	
+
+	@Override
+	public int countBicicleta(double lat, double lng) throws ServicioEstacionesException {
+		try {
+			return getBicisEstacionadasCerca(lat, lng).size();
+
+		} catch (ServicioEstacionesException e) {
+			e.printStackTrace();
+			throw new ServicioEstacionesException(e.getMessage(), e);
+		}
+	}
+
 }
