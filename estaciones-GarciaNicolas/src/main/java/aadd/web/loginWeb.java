@@ -1,10 +1,11 @@
 package aadd.web;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -23,11 +24,13 @@ import aadd.servicios.ServicioIncidenciasException;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import servicio.FactoriaServicios;
-
+@Named
 @SessionScoped
-public class loginWeb {
+public class loginWeb implements Serializable{
 	private String Nombre;
 	private String Rol;
+	
+	
 	
 
 }
