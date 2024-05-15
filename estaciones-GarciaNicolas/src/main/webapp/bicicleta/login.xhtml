@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+template="/WEB-INF/template/template.xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    >
+  <ui:param name="estilo2" value="current" />
+    
+<ui:define name="title">
+#{text['tituloListadoBicicletas']}
+</ui:define>
+
+    <ui:define name="content">
+        <h:form id="login_form">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <h:panelGroup id="panelLogin">
+
+                    <p:fieldset legend="#{text['leyendaLogin']}" collapsed="false" toggleable="true">
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-2">#{text['labelIngreso']}</div>
+                            <div class="ui-g-10">
+                            	<label>#{text['labelRol']}</label>
+                                <p:inputText value="#{loginWeb.rol}"/>
+                                
+                            </div>                         
+                        </div>
+
+                        <div style="text-align: center;">
+                            <p:commandButton value="#{text['botonLogin']}"
+                                actionListener="#{loginWeb.login()}"
+                                update="tabla_header total " icon="fa fa-search" />
+                        </div>
+
+
+                    </p:fieldset>
+                </h:panelGroup>
+
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
