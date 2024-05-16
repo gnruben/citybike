@@ -33,21 +33,34 @@
 			</h1>
 			<!-- Nav --> <nav id="nav">
 			<ul>
+				
+				<h:panelGroup rendered="#{sessionScope.rol eq 'Cliente' or sessionScope.rol eq 'Gestor' }">
 				<li class="#{estilo1}"><a
 					href="#{request.contextPath}/index.xhtml">#{text['inicio']}</a></li>
-
+				</h:panelGroup>	
+				
+				<h:panelGroup rendered="#{sessionScope.rol eq 'Cliente' }">
 				<li class="#{estilo2}"><a 
 					href="#{request.contextPath}/bicicleta/listLazy.xhtml">#{text['buscarBicicletasCercanas']}</a></li>
+				</h:panelGroup>
 				
+				<h:panelGroup rendered="#{sessionScope.rol eq 'Cliente' }">
 				<li class="#{estilo3}"><a 
 					href="#{request.contextPath}/bicicleta/crearIncidencia.xhtml">#{text['reportarIncidencia']}</a></li>
+				</h:panelGroup>
 				
-						
+					
+				<h:panelGroup rendered="#{sessionScope.rol eq 'Gestor' }">
 				<li class="#{estilo4}"><a 
 				href="#{request.contextPath}/bicicleta/verIncidenciasAbiertas.xhtml">#{text['verIncidenciasAbiertas']}</a></li>
+				</h:panelGroup>
 				
+			   <h:panelGroup rendered="#{sessionScope.rol eq 'Gestor' }">
 				<li class="#{estilo5}"><a 
 				href="#{request.contextPath}/bicicleta/gestionarIncidencias.xhtml">#{text['gestionarIncidencias']}</a></li>
+				</h:panelGroup>	
+				
+				<h:panelGroup rendered="#{sessionScope.rol eq 'Cliente' or sessionScope.rol eq 'Gestor' }">
 				
 				<li><h:form>
 						<h:selectOneMenu value="#{activeLocale.languageTag}">
@@ -57,7 +70,30 @@
 							</f:selectItems>
 							<f:ajax listener="#{activeLocale.reload()}" />
 						</h:selectOneMenu>
-					</h:form></li>
+						
+				</h:form></li>
+				
+				<li>
+				<p:commandButton value="#{sessionScope.rol}"
+					oncomplete="PF('w_logout').show();"
+				/>
+				
+				</li>
+				<p:dialog widgetVar="w_logout" id="logout">
+					<h:form>
+		
+						<p:commandButton value="logout "
+							actionListener="#{loginWeb.logout()}"
+							oncomplete="PF('w_logout').hide();" />
+		
+						<p:commandButton value="Cancelar" immediate="true"
+							oncomplete="PF('w_logout').hide();" />
+					</h:form>
+				</p:dialog>
+				
+				</h:panelGroup>
+				
+				
 			</ul>
 			</nav> </section>
 			<section id="main">
@@ -68,6 +104,8 @@
 			<ui:include src="/WEB-INF/template/footer.xhtml" />
 		</div>
 
+        
+        
 		<h:outputScript library="primefaces" name="jquery/jquery.js" />
 		<h:outputScript name="assets/js/jquery.dropotron.min.js" />
 		<h:outputScript name="assets/js/browser.min.js" />

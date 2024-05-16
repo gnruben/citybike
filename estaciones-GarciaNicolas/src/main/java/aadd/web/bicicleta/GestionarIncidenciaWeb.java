@@ -14,13 +14,9 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import aadd.dto.IncidenciaDTO;
-import aadd.modelo.Bicicleta;
 import aadd.modelo.Incidencia;
-import aadd.servicios.IServicioEstaciones;
 import aadd.servicios.IServicioIncidencias;
 import aadd.servicios.ServicioIncidenciasException;
-import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio;
 import servicio.FactoriaServicios;
 
 @Named
@@ -28,10 +24,7 @@ import servicio.FactoriaServicios;
 public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 	private static final long serialVersionUID = 1L;
-	private IServicioEstaciones servicioEstaciones;
 	private IServicioIncidencias servicioIncidencias;
-	private Repositorio<Bicicleta, String> repositorioBicicletas;
-	private List<IncidenciaDTO> incidencias;
 	private IncidenciaDTO incidenciaDTO;
 	private String estadoVista;
 	private String idIncidencia;
@@ -54,7 +47,6 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 
 	@PostConstruct
 	public void init() {
-		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 		if (estadoVista == null) {
 			estadoVista = "Pendientes";
 		}
@@ -102,10 +94,7 @@ public class GestionarIncidenciaWeb extends LazyDataModel<IncidenciaDTO> {
 	}
 
 	public GestionarIncidenciaWeb() {
-
-		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 		servicioIncidencias = FactoriaServicios.getServicio(IServicioIncidencias.class);
-		repositorioBicicletas = FactoriaRepositorios.getRepositorio(Bicicleta.class);
 		incidenciaDTO = null;
 	}
 

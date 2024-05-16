@@ -5,10 +5,10 @@ template="/WEB-INF/template/template.xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     >
-  <ui:param name="estilo2" value="current" />
+  <ui:param name="estilo6" value="current" />
     
 <ui:define name="title">
-#{text['tituloListadoBicicletas']}
+#{text['leyendaLogin']}
 </ui:define>
 
     <ui:define name="content">
@@ -20,24 +20,26 @@ template="/WEB-INF/template/template.xhtml"
                         <div class="ui-g ui-fluid">
                             <div class="ui-g-2">#{text['labelIngreso']}</div>
                             <div class="ui-g-10">
-                            	<label>#{text['labelRol']}</label>
-                                <p:inputText value="#{loginWeb.rol}"/>
-                                
+                            	<p:outputLabel value="#{text['labelRol']}" />
+									<p:selectOneMenu value="#{loginWeb.rol}">
+										<f:selectItem itemLabel="Gestor" itemValue="Gestor" />
+										<f:selectItem itemLabel="Cliente" itemValue="Cliente" />
+									</p:selectOneMenu>
+										
                             </div>                         
                         </div>
 
                         <div style="text-align: center;">
                             <p:commandButton value="#{text['botonLogin']}"
-                                actionListener="#{loginWeb.login()}"
-                                update="tabla_header total " icon="fa fa-search" />
+                                actionListener="#{loginWeb.login()}"/>
                         </div>
 
-
+                        
                     </p:fieldset>
                 </h:panelGroup>
 
             </div>
 
-        </h:form>
+           </h:form>
     </ui:define>
 </ui:composition>

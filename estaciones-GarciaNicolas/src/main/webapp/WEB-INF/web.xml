@@ -3,7 +3,7 @@
 
 	<display-name>AADD</display-name>
 	<welcome-file-list>
-		<welcome-file>login.xhtml</welcome-file>
+		<welcome-file>/bicicleta/login.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<servlet>

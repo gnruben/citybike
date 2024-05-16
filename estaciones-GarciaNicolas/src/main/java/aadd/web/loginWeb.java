@@ -44,11 +44,9 @@ public class loginWeb implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("rol");
 		
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rol", rol);
-		
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/index.xhtml");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -58,7 +56,7 @@ public class loginWeb implements Serializable{
 		
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/login.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/bicicleta/login.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
